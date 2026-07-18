@@ -36,12 +36,16 @@ jobs:
             | base64 --decode \
             | gzip --decompress \
             > /tmp/gdd-build/source.html
-          python3 -m py_compile scripts/build_gdd.py
+          python3 -m py_compile scripts/build_gdd.py scripts/patch_point5_gardener.py
           python3 scripts/build_gdd.py /tmp/gdd-build/source.html _site/index.html
+          python3 scripts/patch_point5_gardener.py _site/index.html
           test -s _site/index.html
-          grep -q 'Game Design Document · v9' _site/index.html
+          grep -q 'Game Design Document · v10' _site/index.html
+          grep -q '5.7 Progressão do Jardineiro' _site/index.html
+          grep -q 'Benefícios exclusivos de VIP' _site/index.html
+          grep -q 'Sistemas acelerados pelo VIP' _site/index.html
           grep -q 'O nível libera sistemas. O mapa libera conteúdo. O VIP aumenta eficiência, capacidade e conforto.' _site/index.html
-          grep -q '5. Progressão individual do Bud e do Jardineiro' _site/index.html
+          grep -q 'O VIP não ignora requisitos de nível' _site/index.html
           ! grep -q 'Ainda precisa ser decidido se a conta terá um nível próprio de Jardineiro' _site/index.html
           touch _site/.nojekyll
 
