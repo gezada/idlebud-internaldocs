@@ -26,17 +26,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Build static GDD
+      - name: Build static GDD from last known-good payload
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site
-          cat payload-v8/*.txt \
+          mkdir -p _site /tmp/gdd-build
+          cat payload/*.txt \
             | tr -d '\n\r\t ' \
             | base64 --decode \
             | gzip --decompress \
-            > _site/index.html
+            > /tmp/gdd-build/source.html
+          python3 scripts/build_gdd.py /tmp/gdd-build/source.html _site/index.html
           test -s _site/index.html
+          grep -q 'Game Design Document · v8' _site/index.html
+          grep -q 'nove espécies' _site/index.html
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
