@@ -11,7 +11,7 @@
 <main><strong>Idle Bud</strong><p>Carregando o Game Design Document…</p></main>
 <script>
 (async()=>{
-  const files=['payload/01.txt', 'payload/02.txt', 'payload/03.txt', 'payload/04.txt', 'payload/05.txt', 'payload/06.txt', 'payload/07.txt'];
+  const files=['payload/01.txt','payload/02.txt','payload/03.txt','payload/04.txt','payload/05.txt','payload/06.txt','payload/07.txt','payload/08.txt','payload/09.txt','payload/10.txt','payload/11.txt'];
   const parts=await Promise.all(files.map(async file=>{
     const response=await fetch(file,{cache:'no-store'});
     if(!response.ok) throw new Error(`Falha ao carregar ${file}`);
