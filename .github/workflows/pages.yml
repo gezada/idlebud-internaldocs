@@ -36,17 +36,82 @@ jobs:
             | base64 --decode \
             | gzip --decompress \
             > /tmp/gdd-build/source.html
-          python3 -m py_compile scripts/build_gdd.py scripts/patch_point5_gardener.py
+
+          python3 -m py_compile \
+            scripts/build_gdd.py \
+            scripts/patch_point5_gardener.py \
+            scripts/patch_point6_battle.py
+
           python3 scripts/build_gdd.py /tmp/gdd-build/source.html _site/index.html
           python3 scripts/patch_point5_gardener.py _site/index.html
+          python3 scripts/patch_point6_battle.py _site/index.html
           test -s _site/index.html
-          grep -q 'Game Design Document · v10' _site/index.html
-          grep -q '5.7 Progressão do Jardineiro' _site/index.html
-          grep -q 'Benefícios exclusivos de VIP' _site/index.html
-          grep -q 'Sistemas acelerados pelo VIP' _site/index.html
-          grep -q 'O nível libera sistemas. O mapa libera conteúdo. O VIP aumenta eficiência, capacidade e conforto.' _site/index.html
-          grep -q 'O VIP não ignora requisitos de nível' _site/index.html
-          ! grep -q 'Ainda precisa ser decidido se a conta terá um nível próprio de Jardineiro' _site/index.html
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          html = Path('_site/index.html').read_text(encoding='utf-8')
+          required_global = [
+              'Game Design Document · v11',
+              '5.7 Progressão do Jardineiro',
+              'O nível libera sistemas. O mapa libera conteúdo. O VIP aumenta eficiência, capacidade e conforto.',
+              '6. Battle Level, Atributos de Batalha e Poder de Combate',
+              '24 Pontos Inatos de Batalha',
+              '24 Pontos Inatos de Cultivo',
+              '100 pontos distribuíveis',
+              'Não existem equipamentos adicionais',
+              'Chance final = Base + (Teto − Base) × Score ÷ (Score + K)',
+              'P(A vencer) = 4% + 92% × R⁴ ÷ (1 + R⁴)',
+              'CP = C × √(Impacto Esperado × Sobrevivência Efetiva)',
+              'CP e Poder de Confronto',
+              '<strong>Balanceamento de combate:</strong>',
+          ]
+          for item in required_global:
+              assert item in html, f'Conteúdo obrigatório ausente: {item}'
+
+          battle_match = re.search(r'<section id="battle-level">.*?</section>', html, re.S)
+          assert battle_match, 'Seção battle-level não encontrada.'
+          battle = battle_match.group(0)
+
+          required_battle = [
+              '6.1 Battle XP, Farm XP e pontos por nível',
+              '6.2 Pontos Inatos de nascimento',
+              '6.3 Distribuição, crescimento e reset',
+              '6.4 Função dos seis Atributos de Batalha',
+              '6.5 Status derivados exibidos',
+              '6.6 Núcleo Arcano e Totem: únicos attachments',
+              '6.7 Ordem única de cálculo',
+              '6.8 Raridade e Vigor',
+              '6.9 Retornos decrescentes e hard caps',
+              '6.10 Probabilidade competitiva entre 4% e 96%',
+              '6.11 Poder de Batalha (CP) e Poder de Confronto',
+              '6.12 Autoridade, precisão e balanceamento restante',
+              '1,1025×',
+              'Battle Level 1',
+              'Farm Level 1',
+              'Potência de Controle',
+              'ativações probabilísticas elegíveis',
+              'dano crítico começa fixado em <strong>150%</strong>',
+          ]
+          for item in required_battle:
+              assert item in battle, f'Conteúdo do Ponto 6 ausente: {item}'
+
+          stale = [
+              'review-state rs-provisional',
+              'geração de energia',
+              'execução de skills',
+              'procs raros',
+              'bônus provisório',
+              'Ainda precisa ser decidido se a conta terá um nível próprio de Jardineiro',
+          ]
+          for item in stale:
+              assert item not in battle, f'Texto obsoleto no Ponto 6: {item}'
+
+          assert battle.count('<h3>6.') == 12, 'Quantidade inesperada de subseções no Ponto 6.'
+          assert html.count('<section id="battle-level">') == 1, 'Seção battle-level duplicada.'
+          PY
+
           touch _site/.nojekyll
 
       - name: Configure GitHub Pages
