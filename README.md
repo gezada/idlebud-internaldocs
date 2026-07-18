@@ -6,7 +6,9 @@ Este repositório mantém a versão viva e oficial do GDD de **Idle Bud**.
 
 O documento é publicado pelo GitHub Pages a partir de um workflow em `.github/workflows/pages.yml`.
 
-Após o Pages ser habilitado para **GitHub Actions**, o endereço esperado é:
+O GitHub Pages está configurado para usar **GitHub Actions**.
+
+Endereço permanente:
 
 `https://gezada.github.io/idlebud-gdd/`
 
