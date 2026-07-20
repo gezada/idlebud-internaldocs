@@ -144,7 +144,7 @@ jobs:
               '7.12 O que ainda permanece em validação',
               'cultivar não consome Stamina',
               'passivas condicionais',
-              'Somente batalhas consomem Stamina',
+              'somente batalhas consomem Stamina',
               'um processo ativo por vez',
               'uso automático de fertilizantes previamente autorizados',
               'FP — Farm Power / Poder de Cultivo',
