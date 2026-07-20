@@ -43,7 +43,8 @@ jobs:
             scripts/patch_point6_battle.py \
             scripts/finalize_point6.py \
             scripts/patch_point7_farming.py \
-            scripts/finalize_point7.py
+            scripts/finalize_point7.py \
+            scripts/patch_point8_pve.py
 
           python3 scripts/build_gdd.py /tmp/gdd-build/source.html _site/index.html
           python3 scripts/patch_point5_gardener.py _site/index.html
@@ -51,6 +52,7 @@ jobs:
           python3 scripts/finalize_point6.py _site/index.html
           python3 scripts/patch_point7_farming.py _site/index.html
           python3 scripts/finalize_point7.py _site/index.html
+          python3 scripts/patch_point8_pve.py _site/index.html
           test -s _site/index.html
 
           python3 - <<'PY'
@@ -59,7 +61,7 @@ jobs:
 
           html = Path('_site/index.html').read_text(encoding='utf-8')
           required_global = [
-              'Game Design Document · v13',
+              'Game Design Document · v14',
               '5.7 Progressão do Jardineiro',
               'O nível libera sistemas. O mapa libera conteúdo. O VIP aumenta eficiência, capacidade e conforto.',
               '6. Battle Level, Atributos de Batalha e Poder de Combate',
@@ -75,6 +77,7 @@ jobs:
               'CP e Poder de Confronto',
               '7. Farm Level, Cultivo, Stamina e Processos do Plot',
               'Fácil de entender, difícil de masterizar.',
+              '8. Carry, Treinamento e Progressão PvE',
               '<strong>Balanceamento de combate:</strong>',
           ]
           for item in required_global:
@@ -186,6 +189,54 @@ jobs:
 
           assert farm.count('<h3>7.') == 16, 'Quantidade inesperada de subseções no Ponto 7.'
           assert html.count('<section id="farm-level">') == 1, 'Seção farm-level duplicada.'
+
+          pve_match = re.search(r'<section id="pve-training">.*?</section>', html, re.S)
+          assert pve_match, 'Seção pve-training não encontrada.'
+          pve = pve_match.group(0)
+
+          required_pve = [
+              '8.1 Quem recebe Battle XP',
+              '8.2 XP fixa por inimigo',
+              '8.3 Peso de XP por diferença de nível',
+              '8.4 Distribuição dinâmica da pool',
+              '8.5 Snapshot de entrada e level up no encerramento',
+              '8.6 Repetição, treinamento e carry',
+              '8.7 Desconto individual de Stamina no PvE',
+              '8.8 Stamina paga na entrada',
+              '8.9 Derrota temporária e retorno no PvE',
+              '8.10 Condição de derrota da fase',
+              '8.11 Tempo de Retorno',
+              '8.12 Passivas de Núcleo e Totem',
+              '8.13 Fronteira entre PvE e PvP',
+              'XP do Bud = XP do inimigo × Peso do Bud ÷ Soma dos pesos positivos elegíveis',
+              'Menor que −15</td><td><strong>0%',
+              '+15 ou mais</td><td><strong>0%',
+              '+23 ou mais</td><td><strong>10%',
+              'custo mínimo é 1 Stamina',
+              'débito é atômico',
+              'continua elegível para receber sua parte da XP',
+              'todos os Buds estiverem derrotados simultaneamente',
+              'valor inicial de protótipo: <strong>60 segundos</strong>',
+              'redução máxima acumulada: <strong>50%</strong>',
+              'retorno mínimo é <strong>30 segundos</strong>',
+              'Primeira leva do Ponto 8 registrada.',
+          ]
+          for item in required_pve:
+              assert item in pve, f'Conteúdo do Ponto 8 ausente: {item}'
+
+          premature_pve = [
+              'XP somente na vitória',
+              'XP parcial na derrota',
+              'Enrage',
+              'inimigos invocados',
+              'substituição manual durante a fase',
+          ]
+          for item in premature_pve:
+              assert item not in pve, f'Decisão não aprovada apareceu no Ponto 8: {item}'
+
+          assert pve.count('<h3>8.') == 13, 'Quantidade inesperada de subseções no Ponto 8.'
+          assert html.count('<section id="pve-training">') == 1, 'Seção pve-training duplicada.'
+          assert html.count('<h2>8.') == 1, 'Mais de uma seção numerada como Ponto 8.'
           PY
 
           touch _site/.nojekyll
