@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 from pathlib import Path
+from urllib.parse import unquote
 import html
+import re
 import sys
 
 
@@ -193,6 +195,120 @@ def build_placeholder(title: str, description: str) -> str:
     return page(f"{title} · Idle Bud", body, description=description)
 
 
+def _visible_text(fragment: str) -> str:
+    no_tags = re.sub(r"<[^>]+>", " ", fragment)
+    return " ".join(html.unescape(no_tags).split())
+
+
+def _top_level_point(text: str) -> int | None:
+    match = re.match(
+        r"^(?:Ponto\s+)?0*(\d+)(?:\.(?!\d)|\s*[—–:-]\s*|\s+|$)",
+        text,
+        flags=re.I,
+    )
+    return int(match.group(1)) if match else None
+
+
+def repair_gdd_navigation(gdd_path: Path) -> None:
+    """Align every top-level GDD navigation button with its actual section id."""
+    text = gdd_path.read_text(encoding="utf-8")
+
+    section_ids: dict[int, str] = {}
+    section_pattern = re.compile(
+        r"<section\b(?P<attrs>[^>]*)>(?P<body>.*?)</section>",
+        flags=re.I | re.S,
+    )
+    id_pattern = re.compile(r"\bid\s*=\s*(['\"])(?P<id>.*?)\1", flags=re.I)
+    h2_pattern = re.compile(r"<h2\b[^>]*>(?P<body>.*?)</h2>", flags=re.I | re.S)
+
+    for section in section_pattern.finditer(text):
+        id_match = id_pattern.search(section.group("attrs"))
+        h2_match = h2_pattern.search(section.group("body"))
+        if not id_match or not h2_match:
+            continue
+        point = _top_level_point(_visible_text(h2_match.group("body")))
+        if point is not None:
+            section_ids[point] = id_match.group("id")
+
+    if section_ids.get(8) != "pve-training":
+        raise RuntimeError("Point 8 section id was not resolved as #pve-training.")
+
+    clickable_pattern = re.compile(
+        r"<(?P<tag>a|button)\b(?P<attrs>[^>]*)>(?P<body>.*?)</(?P=tag)>",
+        flags=re.I | re.S,
+    )
+    href_pattern = re.compile(
+        r"(?P<prefix>\bhref\s*=\s*)(?P<quote>['\"])#(?P<target>[^'\"]*)(?P=quote)",
+        flags=re.I,
+    )
+    data_target_pattern = re.compile(
+        r"(?P<prefix>\b(?:data-target|data-section)\s*=\s*)(?P<quote>['\"])(?P<hash>#?)(?P<target>[^'\"]*)(?P=quote)",
+        flags=re.I,
+    )
+
+    seen_point_buttons: set[int] = set()
+    rewrites: list[tuple[int, str, str]] = []
+
+    def repair_clickable(match: re.Match[str]) -> str:
+        tag = match.group("tag")
+        attrs = match.group("attrs")
+        body = match.group("body")
+        point = _top_level_point(_visible_text(body))
+        desired = section_ids.get(point) if point is not None else None
+        if desired is None:
+            return match.group(0)
+
+        href_match = href_pattern.search(attrs)
+        data_match = data_target_pattern.search(attrs)
+        target_match = href_match or data_match
+        if target_match is None:
+            return match.group(0)
+
+        seen_point_buttons.add(point)
+        current = unquote(target_match.group("target"))
+        if current == desired:
+            return match.group(0)
+
+        start, end = target_match.span("target")
+        attrs = attrs[:start] + desired + attrs[end:]
+        rewrites.append((point, current, desired))
+        return f"<{tag}{attrs}>{body}</{tag}>"
+
+    text = clickable_pattern.sub(repair_clickable, text)
+
+    missing_buttons = sorted(set(range(1, 9)) - seen_point_buttons)
+    if missing_buttons:
+        raise RuntimeError(f"Top-level GDD navigation buttons not found: {missing_buttons}")
+
+    all_targets = {
+        match.group("id")
+        for match in re.finditer(r"\b(?:id|name)\s*=\s*(['\"])(?P<id>.*?)\1", text, flags=re.I)
+    }
+    internal_links = {
+        unquote(match.group("target"))
+        for match in re.finditer(
+            r"\bhref\s*=\s*(['\"])#(?P<target>[^'\"]*)\1",
+            text,
+            flags=re.I,
+        )
+        if match.group("target") not in {"", "!"}
+    }
+    broken = sorted(target for target in internal_links if target not in all_targets)
+    if broken:
+        raise RuntimeError(f"Broken internal GDD anchors after repair: {broken}")
+
+    point8_links = [target for point, _, target in rewrites if point == 8]
+    if "#pve-training" not in text and not point8_links:
+        raise RuntimeError("Point 8 navigation was not linked to #pve-training.")
+
+    marker = "<!-- gdd-navigation-validated -->"
+    if marker not in text:
+        text = text.replace("</body>", marker + "</body>", 1)
+
+    gdd_path.write_text(text, encoding="utf-8")
+    print(f"Validated GDD navigation: {len(seen_point_buttons)} point buttons; {len(rewrites)} repaired.")
+
+
 def add_gdd_portal_link(gdd_path: Path) -> None:
     text = gdd_path.read_text(encoding="utf-8")
     marker = "<!-- internal-docs-navigation -->"
@@ -223,6 +339,8 @@ def main() -> None:
     gdd_path = Path(sys.argv[2])
     if not gdd_path.exists():
         raise FileNotFoundError(gdd_path)
+
+    repair_gdd_navigation(gdd_path)
 
     assets = site / "assets"
     assets.mkdir(parents=True, exist_ok=True)
@@ -264,6 +382,11 @@ def main() -> None:
     home = (site / "index.html").read_text(encoding="utf-8")
     for phrase in ["Game Design Document", "Economy", "Enemies, Drops &amp; Craft", "Technology Guidelines"]:
         assert phrase in home, f"Missing portal entry: {phrase}"
+
+    gdd = gdd_path.read_text(encoding="utf-8")
+    assert '<section id="pve-training">' in gdd
+    assert re.search(r'(?:href|data-target|data-section)=[\"\']#?pve-training[\"\']', gdd)
+    assert '<!-- gdd-navigation-validated -->' in gdd
 
     print(f"Built internal docs portal in {site}")
 
