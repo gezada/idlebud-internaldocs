@@ -1,17 +1,30 @@
-# Idle Bud — Game Design Document
+# Idle Bud — Internal Documentation
 
-Este repositório mantém a versão viva e oficial do GDD de **Idle Bud**.
+Este repositório mantém a documentação interna viva e oficial de **Idle Bud**.
 
-## Site
+## Portal
 
-O documento é publicado pelo GitHub Pages a partir de um workflow em `.github/workflows/pages.yml`.
+O conteúdo é publicado pelo GitHub Pages a partir do workflow em `.github/workflows/pages.yml`.
 
-O GitHub Pages está configurado para usar **GitHub Actions**.
+Após a renomeação do repositório, o endereço será:
 
-Endereço permanente:
+`https://gezada.github.io/idlebud-internaldocs/`
 
-`https://gezada.github.io/idlebud-gdd/`
+O portal centraliza:
 
-## Fluxo de atualização
+- **Game Design Document** — documento vivo atualmente disponível em `/gdd/`;
+- **Economy** — TBD;
+- **Enemies, Drops & Craft** — TBD;
+- **Technology Guidelines** — TBD.
 
-O conteúdo publicado é gerado a partir dos arquivos compactados em `content/`. Cada atualização do GDD substitui esse payload e dispara uma nova publicação automaticamente.
+## Publicação
+
+O GitHub Pages usa **GitHub Actions**. O workflow reconstrói o GDD a partir do payload estático, aplica os patches validados, publica o documento em `/gdd/` e gera a página inicial e os documentos placeholder.
+
+## Estrutura publicada
+
+- `/` — portal de documentação;
+- `/gdd/` — Game Design Document;
+- `/economy/` — TBD;
+- `/enemies-drops-craft/` — TBD;
+- `/technology-guidelines/` — TBD.
