@@ -3,6 +3,7 @@ from pathlib import Path
 import re
 import sys
 
+import finalize_gdd_v17
 import patch_point8_battlefield_v2 as canonical
 
 
@@ -138,16 +139,26 @@ def patch_reference_table(gdd: str) -> str:
 
 
 def main() -> None:
-    canonical.main()
-
     if len(sys.argv) != 3:
-        return
+        raise SystemExit("Usage: patch_point8_battlefield.py <gdd_html> <portal_html>")
 
     gdd_path = Path(sys.argv[1])
+    portal_path = Path(sys.argv[2])
+    existing = gdd_path.read_text(encoding="utf-8")
+    already_v17 = (
+        "Game Design Document · v17" in existing
+        and 'id="battlefield-formation"' in existing
+    )
+
+    if not already_v17:
+        canonical.main()
+
     gdd = gdd_path.read_text(encoding="utf-8")
     gdd = patch_reference_table(gdd)
     gdd_path.write_text(gdd, encoding="utf-8")
     print("Refined Point 2.2 reference table copy and semantic colors.")
+
+    finalize_gdd_v17.finalize(gdd_path, portal_path)
 
 
 canonical.replace_subsection = replace_subsection
