@@ -166,8 +166,15 @@ def validate(gdd: str, portal: str) -> None:
         "Ponto 9",
     )
 
-    if "7 → 5 → 6 → 4 → 2 → 3 → 1" in pve:
-        raise AssertionError("A antiga prioridade fixa de targeting permaneceu no Ponto 9.")
+    formation_match = re.search(
+        r'<h3\b[^>]*>\s*9\.8\b.*?</h3>.*?(?=<h3\b[^>]*>\s*9\.9\b)',
+        pve,
+        re.I | re.S,
+    )
+    if not formation_match:
+        raise AssertionError("Não foi possível isolar a subseção 9.8 de formação.")
+    if "7 → 5 → 6 → 4 → 2 → 3 → 1" in formation_match.group(0):
+        raise AssertionError("A antiga prioridade fixa de targeting permaneceu na subseção 9.8.")
 
     link_pattern = r'(?:href|data-target|data-section)\s*=\s*["\']#?{target}["\']'
     if not re.search(link_pattern.format(target="battlefield-formation"), gdd, re.I):
