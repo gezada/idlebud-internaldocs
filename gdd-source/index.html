@@ -150,6 +150,29 @@
     .mobile-field{border:1px solid #31513e;border-radius:18px;min-height:520px;display:grid;grid-template-rows:1fr 54px 1fr;align-items:center;padding:20px;background:#07100b}
     .mobile-field .team{grid-template-columns:repeat(3,38px);grid-template-rows:repeat(5,38px);transform:none}
     .mobile-field .p1{grid-column:2;grid-row:1}.mobile-field .p2{grid-column:1;grid-row:2}.mobile-field .p3{grid-column:3;grid-row:2}.mobile-field .p4{grid-column:2;grid-row:3}.mobile-field .p5{grid-column:1;grid-row:4}.mobile-field .p6{grid-column:3;grid-row:4}.mobile-field .p7{grid-column:2;grid-row:5}
+    .board-concept{margin:24px 0;border:1px solid #31513e;border-radius:22px;overflow:hidden;background:#07100b;box-shadow:0 18px 46px rgba(0,0,0,.2)}
+    .board-concept svg{display:block;width:100%;height:auto;background:radial-gradient(circle at center,rgba(105,185,255,.07),transparent 34%),#07100b}
+    .board-concept .board-mobile{display:none}
+    .board-bg{fill:transparent;stroke:rgba(112,226,143,.14);stroke-width:2}
+    .board-divider{stroke:#3b5747;stroke-width:2;stroke-dasharray:7 10}
+    .board-depth{stroke:#294537;stroke-width:1;stroke-dasharray:3 9}
+    .board-corridor{fill:none;stroke-width:5;stroke-linecap:round;opacity:.32}
+    .board-corridor.ally{stroke:#70e28f}.board-corridor.enemy{stroke:#ff7d66}
+    .board-slot{cursor:help;outline:none}
+    .board-slot circle{stroke-width:3;transition:fill .16s ease,stroke-width .16s ease,filter .16s ease}
+    .board-slot.ally circle{fill:#10291a;stroke:#70e28f}.board-slot.enemy circle{fill:#2a1614;stroke:#ff7d66}
+    .board-slot:hover circle,.board-slot:focus circle{stroke-width:5;filter:drop-shadow(0 0 8px rgba(255,255,255,.2))}
+    .board-slot text{fill:#edf7f0;font-size:20px;font-weight:950;text-anchor:middle;dominant-baseline:middle;pointer-events:none}
+    .board-team-label{font-size:16px;font-weight:950;letter-spacing:.12em;text-anchor:middle}
+    .board-team-label.ally{fill:#9df0b2}.board-team-label.enemy{fill:#ffb0a2}
+    .board-direction{fill:#789184;font-size:12px;font-weight:800;letter-spacing:.08em;text-anchor:middle}
+    .board-vs{fill:#f0f7f2;font-size:25px;font-weight:950;letter-spacing:.12em;text-anchor:middle;dominant-baseline:middle}
+    .board-rule{fill:#9eb0a4;font-size:13px;font-weight:700;text-anchor:middle}
+    .board-caption{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;padding:15px 18px;border-top:1px solid #294537;background:#0b1710}
+    .board-caption p{margin:0;font-size:13px;line-height:1.55;color:#aabcb0}
+    .board-legend{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end;flex:none}
+    .board-key{display:inline-flex;align-items:center;gap:7px;padding:5px 9px;border:1px solid #294537;border-radius:999px;color:#b9c9be;font-size:11px;white-space:nowrap}
+    .board-key i{display:block;width:9px;height:9px;border-radius:50%}.board-key .ally{background:#70e28f}.board-key .enemy{background:#ff7d66}.board-key .corridor{width:16px;height:0;border-radius:0;border-top:2px dashed #6eaed3;background:transparent}
     .type-wheel{border:1px solid var(--line);border-radius:20px;padding:18px;background:#08110c;margin:22px 0;overflow:hidden}
     .wheel-note{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
     .legend{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#b8c7bc;padding:6px 9px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.02)}
@@ -221,6 +244,10 @@
       .status-legend{grid-template-columns:1fr}
       .battlefield .enemy{transform:rotate(180deg)}
       .mobile-field .enemy{transform:none}
+      .board-concept .board-desktop{display:none}
+      .board-concept .board-mobile{display:block}
+      .board-caption{display:block}
+      .board-legend{justify-content:flex-start;margin-top:12px}
     }
     @media print{
       :root{--bg:#fff;--panel:#fff;--panel-2:#f7faf8;--panel-3:#f1f5f2;--text:#111;--muted:#555;--line:#d6ded9}
@@ -1113,6 +1140,78 @@
 <h3>8.1 Campo canônico e identidade das sete posições</h3>
 <p>Cada equipe possui até sete posições lógicas próprias, organizadas da frente para a retaguarda na formação fixa <strong>1–2–1–2–1</strong>.</p>
 <div class="formula">Frente → P1 → P2/P3 → P4 → P5/P6 → P7 → Retaguarda</div>
+<figure class="board-concept" aria-labelledby="board-caption">
+<svg class="board-desktop" viewBox="0 0 1200 520" role="img" aria-labelledby="board-desktop-title board-desktop-desc">
+<title id="board-desktop-title">Tabuleiro conceitual em orientação desktop</title>
+<desc id="board-desktop-desc">Duas formações de sete posições em arranjo um, dois, um, dois, um, espelhadas horizontalmente. A formação do jogador aparece em verde à esquerda e a inimiga em vermelho à direita.</desc>
+<rect class="board-bg" x="1" y="1" width="1198" height="518" rx="22"/>
+<line class="board-divider" x1="600" y1="92" x2="600" y2="430"/>
+<g aria-hidden="true">
+<line class="board-depth" x1="140" y1="112" x2="140" y2="408"/><line class="board-depth" x1="235" y1="112" x2="235" y2="408"/><line class="board-depth" x1="330" y1="112" x2="330" y2="408"/><line class="board-depth" x1="420" y1="112" x2="420" y2="408"/><line class="board-depth" x1="505" y1="112" x2="505" y2="408"/>
+<line class="board-depth" x1="695" y1="112" x2="695" y2="408"/><line class="board-depth" x1="780" y1="112" x2="780" y2="408"/><line class="board-depth" x1="870" y1="112" x2="870" y2="408"/><line class="board-depth" x1="965" y1="112" x2="965" y2="408"/><line class="board-depth" x1="1060" y1="112" x2="1060" y2="408"/>
+<path class="board-corridor ally" d="M140 260H330H505 M235 160H420 M235 360H420"/>
+<path class="board-corridor enemy" d="M695 260H870H1060 M780 160H965 M780 360H965"/>
+</g>
+<text class="board-team-label ally" x="320" y="48">SUA FORMAÇÃO</text>
+<text class="board-team-label enemy" x="880" y="48">FORMAÇÃO INIMIGA</text>
+<text class="board-direction" x="140" y="88">RETAGUARDA</text><text class="board-direction" x="505" y="88">FRENTE</text>
+<text class="board-direction" x="695" y="88">FRENTE</text><text class="board-direction" x="1060" y="88">RETAGUARDA</text>
+<text class="board-vs" x="600" y="260">VS</text>
+
+<g class="board-slot ally" tabindex="0" aria-label="P1, posição frontal central"><title>P1 — posição frontal central</title><circle cx="505" cy="260" r="40"/><text x="505" y="260">P1</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P2, ala superior da segunda camada"><title>P2 — ala superior da segunda camada</title><circle cx="420" cy="160" r="40"/><text x="420" y="160">P2</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P3, ala inferior da segunda camada"><title>P3 — ala inferior da segunda camada</title><circle cx="420" cy="360" r="40"/><text x="420" y="360">P3</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P4, posição central do campo"><title>P4 — posição central do campo</title><circle cx="330" cy="260" r="40"/><text x="330" y="260">P4</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P5, ala superior da retaguarda"><title>P5 — ala superior da retaguarda</title><circle cx="235" cy="160" r="40"/><text x="235" y="160">P5</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P6, ala inferior da retaguarda"><title>P6 — ala inferior da retaguarda</title><circle cx="235" cy="360" r="40"/><text x="235" y="360">P6</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P7, posição mais profunda"><title>P7 — posição mais profunda</title><circle cx="140" cy="260" r="40"/><text x="140" y="260">P7</text></g>
+
+<g class="board-slot enemy" tabindex="0" aria-label="P1 inimiga, posição frontal central"><title>P1 inimiga — posição frontal central</title><circle cx="695" cy="260" r="40"/><text x="695" y="260">P1</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P2 inimiga, ala superior da segunda camada"><title>P2 inimiga — ala superior da segunda camada</title><circle cx="780" cy="160" r="40"/><text x="780" y="160">P2</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P3 inimiga, ala inferior da segunda camada"><title>P3 inimiga — ala inferior da segunda camada</title><circle cx="780" cy="360" r="40"/><text x="780" y="360">P3</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P4 inimiga, posição central do campo"><title>P4 inimiga — posição central do campo</title><circle cx="870" cy="260" r="40"/><text x="870" y="260">P4</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P5 inimiga, ala superior da retaguarda"><title>P5 inimiga — ala superior da retaguarda</title><circle cx="965" cy="160" r="40"/><text x="965" y="160">P5</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P6 inimiga, ala inferior da retaguarda"><title>P6 inimiga — ala inferior da retaguarda</title><circle cx="965" cy="360" r="40"/><text x="965" y="360">P6</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P7 inimiga, posição mais profunda"><title>P7 inimiga — posição mais profunda</title><circle cx="1060" cy="260" r="40"/><text x="1060" y="260">P7</text></g>
+<text class="board-rule" x="600" y="482">1–2–1–2–1 · posições lógicas fixas · sem movimento durante a batalha</text>
+</svg>
+
+<svg class="board-mobile" viewBox="0 0 620 1220" role="img" aria-labelledby="board-mobile-title board-mobile-desc">
+<title id="board-mobile-title">Tabuleiro conceitual em orientação mobile</title>
+<desc id="board-mobile-desc">A formação inimiga aparece em vermelho na parte superior e a formação do jogador em verde na parte inferior, mantendo as mesmas posições lógicas do desktop.</desc>
+<rect class="board-bg" x="1" y="1" width="618" height="1218" rx="22"/>
+<line class="board-divider" x1="90" y1="610" x2="530" y2="610"/>
+<g aria-hidden="true">
+<path class="board-corridor enemy" d="M310 120V310V500 M215 215V405 M405 215V405"/>
+<path class="board-corridor ally" d="M310 720V910V1100 M215 815V1005 M405 815V1005"/>
+</g>
+<text class="board-team-label enemy" x="310" y="46">FORMAÇÃO INIMIGA</text>
+<text class="board-direction" x="92" y="124">RETAGUARDA</text><text class="board-direction" x="92" y="504">FRENTE</text>
+<text class="board-direction" x="92" y="724">FRENTE</text><text class="board-direction" x="92" y="1104">RETAGUARDA</text>
+<text class="board-vs" x="310" y="610">VS</text>
+
+<g class="board-slot enemy" tabindex="0" aria-label="P7 inimiga, posição mais profunda"><title>P7 inimiga — posição mais profunda</title><circle cx="310" cy="120" r="42"/><text x="310" y="120">P7</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P5 inimiga, ala superior da retaguarda"><title>P5 inimiga — ala superior da retaguarda</title><circle cx="215" cy="215" r="42"/><text x="215" y="215">P5</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P6 inimiga, ala inferior da retaguarda"><title>P6 inimiga — ala inferior da retaguarda</title><circle cx="405" cy="215" r="42"/><text x="405" y="215">P6</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P4 inimiga, posição central do campo"><title>P4 inimiga — posição central do campo</title><circle cx="310" cy="310" r="42"/><text x="310" y="310">P4</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P2 inimiga, ala superior da segunda camada"><title>P2 inimiga — ala superior da segunda camada</title><circle cx="215" cy="405" r="42"/><text x="215" y="405">P2</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P3 inimiga, ala inferior da segunda camada"><title>P3 inimiga — ala inferior da segunda camada</title><circle cx="405" cy="405" r="42"/><text x="405" y="405">P3</text></g>
+<g class="board-slot enemy" tabindex="0" aria-label="P1 inimiga, posição frontal central"><title>P1 inimiga — posição frontal central</title><circle cx="310" cy="500" r="42"/><text x="310" y="500">P1</text></g>
+
+<g class="board-slot ally" tabindex="0" aria-label="P1, posição frontal central"><title>P1 — posição frontal central</title><circle cx="310" cy="720" r="42"/><text x="310" y="720">P1</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P2, ala superior da segunda camada"><title>P2 — ala superior da segunda camada</title><circle cx="215" cy="815" r="42"/><text x="215" y="815">P2</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P3, ala inferior da segunda camada"><title>P3 — ala inferior da segunda camada</title><circle cx="405" cy="815" r="42"/><text x="405" y="815">P3</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P4, posição central do campo"><title>P4 — posição central do campo</title><circle cx="310" cy="910" r="42"/><text x="310" y="910">P4</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P5, ala superior da retaguarda"><title>P5 — ala superior da retaguarda</title><circle cx="215" cy="1005" r="42"/><text x="215" y="1005">P5</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P6, ala inferior da retaguarda"><title>P6 — ala inferior da retaguarda</title><circle cx="405" cy="1005" r="42"/><text x="405" y="1005">P6</text></g>
+<g class="board-slot ally" tabindex="0" aria-label="P7, posição mais profunda"><title>P7 — posição mais profunda</title><circle cx="310" cy="1100" r="42"/><text x="310" y="1100">P7</text></g>
+<text class="board-team-label ally" x="310" y="1182">SUA FORMAÇÃO</text>
+</svg>
+<figcaption class="board-caption" id="board-caption">
+<p><strong>Leitura conceitual:</strong> P1 é sempre a frente e P7 é sempre a posição mais profunda. As linhas conectam apenas os três corredores canônicos; não representam movimento, alcance físico nem prioridade de ataque. Passe o mouse ou use o foco sobre um slot para ver sua função.</p>
+<span class="board-legend" aria-label="Legenda do tabuleiro"><span class="board-key"><i class="ally"></i>Sua formação</span><span class="board-key"><i class="enemy"></i>Formação inimiga</span><span class="board-key"><i class="corridor"></i>Corredores</span></span>
+</figcaption>
+</figure>
 <table>
 <thead><tr><th>Posição</th><th>Identidade lógica</th></tr></thead>
 <tbody>
