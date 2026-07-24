@@ -66,8 +66,9 @@
     .layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:42px;padding:44px 0 100px}
     nav{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;padding-right:10px}
     nav .nav-title{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#6f8678;font-weight:900;margin-bottom:12px}
-    nav a{display:block;padding:8px 10px;border-radius:9px;color:#9cb0a2;font-size:13px;line-height:1.3}
+    nav a{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:9px;color:#9cb0a2;font-size:13px;line-height:1.3}
     nav a:hover{background:var(--panel);color:#fff;text-decoration:none}
+    .nav-status{order:-1;flex:0 0 16px;font-size:12px;line-height:1.35;text-align:center}
     main{min-width:0}
     section{padding:18px 0 46px;border-bottom:1px solid var(--line)}
     section:last-child{border-bottom:0}
@@ -87,6 +88,7 @@
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:20px 0}
     .grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
     .grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .grid.five{grid-template-columns:repeat(5,minmax(0,1fr))}
     .card{
       border:1px solid var(--line);border-radius:var(--radius);padding:22px;
       background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));
@@ -223,8 +225,8 @@
     @media(max-width:980px){
       .layout{grid-template-columns:1fr}
       nav{position:relative;top:auto;max-height:none;border:1px solid var(--line);padding:15px;border-radius:16px;background:var(--panel)}
-      nav a{display:inline-block}
-      .grid,.grid.three,.grid.four{grid-template-columns:1fr}
+      nav a{display:inline-flex}
+      .grid,.grid.three,.grid.four,.grid.five{grid-template-columns:1fr}
       .flow{grid-template-columns:1fr}
       .flow .node:not(:last-child)::after{content:"↓";right:auto;bottom:-18px;left:50%;top:auto}
       .layer-stack{grid-template-columns:1fr}
@@ -329,30 +331,30 @@
 <div class="shell layout">
 <nav aria-label="Sumário">
 <div class="nav-title">Sumário</div>
-<a href="#natureza">1. Natureza do documento</a>
-<a href="#fantasia">2. Fantasia central</a>
-<a href="#loop">3. Loop principal</a>
-<a href="#identidade">4. Identidade do Bud</a>
-<a href="#progressao">5. Progressão individual</a>
-<a href="#battle-level">6. Battle Level</a>
-<a href="#farm-level">7. Farm Level</a>
-<a href="#battlefield-formation">8. Campo de batalha e formação</a><a href="#pve-training">9. Carry, treinamento e PvE</a>
-
-<a href="#pve">10. PvE totalmente idle</a>
-<a href="#mapas">11. Mapas e regiões</a>
-<a href="#tipos">12. Tipos e counters</a>
-<a href="#jardins">13. Jardim e plots</a>
-<a href="#nascimento">14. Cultivo e nascimento</a>
-<a href="#equipamentos">15. Bud, Núcleo e Totem</a>
-<a href="#crafting">16. Forja e crafting</a>
-<a href="#bestiario">17. Bestiário e inimigos</a>
-<a href="#estados">18. Estados e alocação</a>
-<a href="#pvp">19. PvP síncrono</a>
-<a href="#wiki">20. Codex e wiki</a>
-<a href="#economia">21. Economia e mercado</a>
-<a href="#mvp">22. Protótipo e escopo</a>
-<a href="#decisoes">23. Decisões consolidadas</a>
-<a href="#aberto">24. Questões em aberto</a>
+<a href="#natureza" title="Definido">1. Natureza do documento<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#fantasia" title="Definido">2. Fantasia central<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#loop" title="Definido">3. Loop principal<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#identidade" title="Definido">4. Identidade do Bud<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#progressao" title="Definido">5. Progressão individual<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#battle-level" title="Definido">6. Battle Level<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#farm-level" title="Definido">7. Farm Level<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#battlefield-formation" title="Definido">8. Campo de batalha e formação<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#pve-training" title="Definido">9. Carry, treinamento e PvE<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#pve" title="Definido">10. PvE totalmente idle<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#mapas" title="Definido">11. Mapas e regiões<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#tipos" title="Definido">12. Tipos e counters<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#jardins" title="Definido">13. Jardim e plots<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#nascimento" title="Definido">14. Cultivo e nascimento<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#equipamentos" title="Definido">15. Bud, Núcleo e Totem<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#crafting" title="Definido">16. Forja e crafting<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#bestiario" title="Definido">17. Bestiário e inimigos<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#estados" title="Definido">18. Estados e alocação<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#pvp" title="Definido">19. PvP síncrono<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#wiki" title="Definido">20. Codex e wiki<span class="nav-status" aria-hidden="true">✅</span></a>
+<a href="#economia" title="Provisório">21. Economia e mercado<span class="nav-status" aria-hidden="true">⌛</span></a>
+<a href="#mvp" title="Provisório">22. Protótipo e escopo<span class="nav-status" aria-hidden="true">⌛</span></a>
+<a href="#decisoes" title="Provisório">23. Decisões consolidadas<span class="nav-status" aria-hidden="true">⌛</span></a>
+<a href="#aberto" title="Provisório">24. Questões em aberto<span class="nav-status" aria-hidden="true">⌛</span></a>
 </nav>
 <main>
 <section id="natureza">
@@ -516,12 +518,12 @@
 <li>o apelido não integra a identidade pública nem aumenta o valor de mercado;</li>
 <li>ao ser negociado, o Bud chega ao novo proprietário sem o apelido privado do antigo dono.</li>
 </ul>
-<h3>4.4 Budgram — Catálogo de espécies</h3>
-<span class="review-state rs-provisional">Provisório</span>
-<p><strong>Budgram</strong> é o nome provisório do catálogo geral de espécies. A função do sistema está definida; o nome será validado junto da interface e da identidade visual.</p>
+<h3>4.4 Aba Buds — Catálogo de espécies</h3>
+<span class="review-state rs-defined">Definido</span>
+<p><strong>Buds</strong> é a aba de espécies dentro do Codex. Ela é um catálogo de descoberta pessoal, separado da coleção de indivíduos e sem nome paralelo lúdico.</p>
 <div class="grid two">
-<div class="card blue"><h4>Catálogo geral</h4><ul><li>espécies descobertas;</li><li>silhuetas das ainda desconhecidas;</li><li>elemento;</li><li>status-base;</li><li>Basic Attack e Power Move de cada espécie;</li><li>regiões e fontes conhecidas.</li></ul></div>
-<div class="card violet"><h4>Descoberta, não inventário</h4><p>O Budgram responde “quais espécies existem e o que já descobri?”. Ele não substitui o elenco, o inventário, o mercado ou a ficha de um espécime individual.</p></div>
+<div class="card blue"><h4>Catálogo de espécies</h4><ul><li>espécies descobertas;</li><li>silhuetas das ainda desconhecidas;</li><li>elemento;</li><li>status-base;</li><li>Basic Attack e Power Move de cada espécie;</li><li>regiões e fontes conhecidas.</li></ul></div>
+<div class="card violet"><h4>Descoberta, não inventário</h4><p>A aba Buds responde “quais espécies existem e o que já descobri?”. Ela não substitui o elenco, o inventário, o mercado ou a ficha de um espécime individual.</p></div>
 </div>
 <h3>4.5 Registro individual do Bud</h3>
 <p>A ficha principal mostra as informações necessárias para uso rápido. Dados históricos e específicos ficam em uma camada expansível, como um botão <strong>“Mais informações”</strong>, uma seta ou um ícone contextual, evitando poluir a leitura diária.</p>
@@ -2468,15 +2470,53 @@
 </section>
 <section id="wiki">
 <span class="tag blue">Conhecimento como sistema</span>
-<span class="review-state rs-provisional">Provisório</span>
+<span class="review-state rs-defined">Definido</span>
 <h2>20. Informação dentro e fora do jogo</h2>
-<p>Um jogo com muitos Buds, tipos, itens, Plots, passivas e patches precisa de informação excelente. A comunidade deve conseguir aprender sem depender de adivinhação, mas ainda ter espaço para descobrir combinações.</p>
+<p>Idle Bud precisa ser simples de consultar sem esconder a profundidade. O jogador descobre o mundo dentro do jogo; quando uma regra, fonte ou número já está vivo, a referência oficial permite entendê-lo sem adivinhação.</p>
 <div class="grid three">
-<div class="card"><h3>Interface</h3><p>Informação imediata para tomar a decisão atual: counters, Stamina, ganhos por hora, drops e taxa de vitória.</p></div>
-<div class="card"><h3>Codex interno</h3><p>Buds conhecidos, elementos, itens, regiões, inimigos e histórico desbloqueado.</p></div>
-<div class="card"><h3>Wiki externa</h3><p>Fórmulas, tabelas completas, drops, builds, patches, mapas e documentação profunda.</p></div>
+<div class="card"><h3>Interface</h3><p>Leitura imediata da decisão atual: counters, Stamina, ganhos reais por hora, drops relevantes e chance estimada de vitória.</p></div>
+<div class="card"><h3>Codex interno</h3><p>Catálogo pessoal de Buds, Inimigos, Itens e Forja, Mapas e Mecânicas, com descoberta, filtros e favoritos.</p></div>
+<div class="card"><h3>Wiki oficial</h3><p>Fórmulas, tabelas completas, probabilidades, fontes, histórico de patches e conteúdo arquivado por versão.</p></div>
 </div>
-<p>A wiki deve idealmente consumir a mesma base de conteúdo versionado do jogo. Isso reduz páginas desatualizadas e permite um domínio como <code>wiki.&lt;domínio oficial de Idle Bud&gt;</code> desde as primeiras fases públicas.</p>
+<h3>20.1 Acesso e cinco abas do Codex</h3>
+<p>O Codex permanece oculto durante o tutorial. Ao concluir o primeiro nascimento de Bud, ele é liberado de uma vez com todas as Mecânicas-base; o restante cresce pela descoberta pessoal.</p>
+<div class="grid five">
+<div class="card"><h4>Buds</h4><p>Espécies, elementos, status-base, Basic Attack, Power Move, regiões e fontes.</p></div>
+<div class="card"><h4>Inimigos</h4><p>Entradas individuais com filtros Comum, Elite e Boss.</p></div>
+<div class="card"><h4>Itens e Forja</h4><p>Materiais, attachments, receitas, fontes, usos e pools.</p></div>
+<div class="card"><h4>Mapas</h4><p>Regiões, caminhos, inimigos, marcos e fontes já liberados.</p></div>
+<div class="card"><h4>Mecânicas</h4><p>Elementos, combate, Stamina, estados, raridades e regras-base.</p></div>
+</div>
+<ul>
+<li>a aba <strong>Buds</strong> cataloga espécies; a ficha de um Bud individual, seu apelido, build e histórico continuam na coleção;</li>
+<li>busca global, filtros por categoria, elemento, raridade e região e favoritos tornam o catálogo consultável sem criar novas telas de gestão;</li>
+<li>o Codex mostra sempre a versão atual do conteúdo vivo.</li>
+</ul>
+<h3>20.2 Descoberta pessoal, sem ocultar o necessário</h3>
+<table><thead><tr><th>Entrada</th><th>Condição de desbloqueio no Codex</th><th>Antes do desbloqueio</th></tr></thead><tbody>
+<tr><td><strong>Espécie de Bud</strong></td><td>Primeiro nascimento ou obtenção.</td><td>Silhueta e “Não descoberto”. Ver o Bud em mercado, PvP ou replay não desbloqueia a ficha.</td></tr>
+<tr><td><strong>Inimigo</strong></td><td>Primeiro abate.</td><td>Silhueta e “Não descoberto”.</td></tr>
+<tr><td><strong>Material ou attachment</strong></td><td>Primeira obtenção.</td><td>Silhueta e “Não descoberto”.</td></tr>
+<tr><td><strong>Receita</strong></td><td>Pesquisa correspondente.</td><td>Oculta no Codex pessoal.</td></tr>
+<tr><td><strong>Mapa</strong></td><td>Primeira entrada.</td><td>Caminho futuro em silhueta, sem nome, drops ou inimigos.</td></tr>
+</tbody></table>
+<p>Ao ser desbloqueado, um inimigo revela categoria, família, região, elemento, papéis, ataques, gatilhos, Ressonância e drops possíveis, conforme o Ponto 17. O Codex mostra fontes, garantias e resultados possíveis; não precisa carregar a tabela numérica inteira para cada decisão rápida.</p>
+<h3>20.3 Transparência operacional</h3>
+<p>Antes de gasto, plantio, entrada em fase, Síntese, Calibração ou escolha competitiva, a interface mostra tudo que é necessário para decidir. O Codex explica em linguagem simples; a wiki oficial expõe fórmulas, tabelas e probabilidades completas de todo conteúdo já lançado. Não há multiplicadores, condições ou fontes ativas escondidas por design.</p>
+<ul>
+<li>Mecânicas-base são liberadas integralmente quando o Codex abre: matriz elemental, combate, Stamina, estados, raridades, Vigor e regras estruturais;</li>
+<li>Itens e Forja mostram materiais, usos, fontes, receitas pesquisadas e pools de Núcleo/Totem; rolagens pertencem à ficha do item individual;</li>
+<li>Mapas mostram em detalhe o que é acessível ou já visitado, preservando apenas os caminhos futuros ainda não liberados;</li>
+<li>a wiki pode explicar builds e combinações, mas não substitui as leituras e confirmações obrigatórias dentro do jogo.</li>
+</ul>
+<h3>20.4 Wiki oficial, versões e arquivo</h3>
+<p>A wiki oficial é pública, editorial e mantida pela Idle Lovers; não aceita edição pública direta. Ela consome a mesma base versionada do jogo para manter conteúdo, fórmulas e tabelas sincronizados com o patch atual. A comunidade continua livre para criar guias e ferramentas próprias fora dela.</p>
+<ul>
+<li>cada patch possui resumo curto e não obrigatório dentro do jogo, com nota completa, pesquisável e versionada na wiki;</li>
+<li>conteúdo removido ou sazonal permanece arquivado com versão, período de disponibilidade e aviso claro de que não é fonte ativa;</li>
+<li>a wiki é pública e completa para conteúdo já lançado, independentemente do progresso individual no Codex;</li>
+<li>o domínio alvo é <code>wiki.&lt;domínio oficial de Idle Bud&gt;</code>.</li>
+</ul>
 </section>
 <section id="economia">
 <span class="tag yellow">Valor e mercado</span>
@@ -2567,7 +2607,7 @@
 <div class="decision"><div><strong>Identidade do Bud</strong><p>Cada Bud é um espécime único e persistente; nascimento, progressão, build atual e proveniência acompanham o indivíduo.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Espécies da primeira temporada</strong><p>Toda espécie regular possui exatamente um elemento e pode nascer em qualquer raridade e em toda a faixa permitida de Vigor, sob as mesmas regras de cultivo.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Nome e apelido</strong><p>O nome oficial pertence à espécie; o apelido é privado da conta, alterável e nunca aparece para terceiros ou no mercado.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Budgram</strong><p>Catálogo geral de espécies descobertas, status-base, golpes e fontes; função definida e nome provisório.</p></div><span class="status s-rule">Nome provisório</span></div>
+<div class="decision"><div><strong>Codex — aba Buds</strong><p>Catálogo pessoal de espécies dentro do Codex, sem nome paralelo; descoberta por nascimento ou obtenção, com silhuetas para espécies ainda não descobertas.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Registro individual</strong><p>A ficha do Bud separa leitura rápida de dados históricos expansíveis; o backend preserva proveniência e proprietários anteriores.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Transferência</strong><p>A negociação transfere o Bud real com progressão, história, configuração e direitos gratuitos já consumidos; não cria uma cópia limpa.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Reset por grupo</strong><p>Batalha e Cultivo possuem resets independentes: uma utilização gratuita por Bud e por grupo; novos usos são liberados para VIP.</p></div><span class="status s-defined">Definido</span></div>
@@ -2658,7 +2698,6 @@
 <li><strong>Espécies iniciais:</strong> nomes, status-base, Basic Attack, Power Move e função de cada um dos nove Buds do Alpha.</li>
 <li><strong>Sementes:</strong> fontes, taxas de drop, vínculo, famílias de pool, tabelas de espécies por elemento e regras econômicas de negociação.</li>
 <li><strong>Conteúdo de Germinação e Fertilizantes:</strong> coeficientes da Matriz Semente → Plot, pesos-base de raridade/Vigor, receitas, tiers, valores, oferta e potência probabilística dos três perfis.</li>
-<li><strong>Budgram:</strong> nome definitivo, descoberta, desbloqueios, busca, filtros, silhuetas e integração com a ficha individual.</li>
 <li><strong>Registro individual:</strong> hierarquia visual, dados públicos, tooltips, expansão e possíveis regras futuras para mostrar proprietários anteriores.</li>
 <li><strong>Movimentos:</strong> efeitos, números, animações, frequência-base e limites de Basic Attack e Power Move.</li>
 <li><strong>Reset por grupo:</strong> UX, confirmação, logs, sincronização do VIP e apresentação dos direitos gratuitos no mercado.</li><li><strong>Progressão do Jardineiro:</strong> curva de XP, cap, ordem exata dos desbloqueios e limites de aceleração VIP.</li>
