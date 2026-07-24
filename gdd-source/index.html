@@ -321,7 +321,7 @@
 <span class="chip">Jardim → Plot → Bud</span><span class="chip">Sementes → Germinação → Bud</span>
 <span class="chip">Vigor fixo · 50–500</span>
 <span class="chip">Síntese · Calibração · Fusão · Ascensão</span>
-<span class="chip">PvE e PvP assíncrono</span>
+<span class="chip">PvE idle e PvP síncrono</span>
 <span class="chip">Economia preparada para RMT</span>
 </div>
 </div>
@@ -347,7 +347,7 @@
 <a href="#crafting">16. Forja e crafting</a>
 <a href="#bestiario">17. Bestiário e inimigos</a>
 <a href="#estados">18. Estados e alocação</a>
-<a href="#pvp">19. PvP assíncrono</a>
+<a href="#pvp">19. PvP síncrono</a>
 <a href="#wiki">20. Codex e wiki</a>
 <a href="#economia">21. Economia e mercado</a>
 <a href="#mvp">22. Protótipo e escopo</a>
@@ -433,7 +433,7 @@
 </div>
 <div class="grid three">
 <div class="card"><h4>Alocar</h4><p>O Jardineiro decide quais Buds entram no esquadrão, quais ocupam Plots, quais cultivam, recuperam ou aguardam e quais permanecem disponíveis para outras atividades.</p></div>
-<div class="card"><h4>Produzir e batalhar</h4><p>O Jardim produz e recupera enquanto o esquadrão percorre fases idle. Farm e PvE usam alocação exclusiva; presets de PvP não interrompem essas atividades.</p></div>
+<div class="card"><h4>Produzir e batalhar</h4><p>O Jardim produz e recupera enquanto o esquadrão percorre fases idle. Farm e PvE usam alocação exclusiva; presets de PvP não travam essas atividades, mas uma partida PvP aceita as pausa temporariamente e as retoma ao terminar.</p></div>
 <div class="card"><h4>Coletar</h4><p>O jogador recebe XP, materiais, sementes, insumos, conhecimento, progresso de mapas e resultados competitivos.</p></div>
 <div class="card"><h4>Avaliar</h4><p>Ele identifica gargalos: time travado, Bud atrasado, falta de recurso, plot inadequado, semente promissora ou item que deve ser usado, vendido, guardado ou destruído.</p></div>
 <div class="card"><h4>Desenvolver</h4><p>O valor coletado retorna ao sistema por níveis, atributos, Infraestrutura de Cultivo, plots, pesquisa e Forja.</p></div>
@@ -677,14 +677,14 @@
 <span class="tag red">Battle Level</span>
 <span class="review-state rs-defined">Definido</span>
 <h2>6. Battle Level, Atributos de Batalha e Poder de Combate</h2>
-<p>O Battle Level é individual, possui cap 100 na primeira temporada e avança exclusivamente por participação válida em PvE e PvP. Ele não compartilha experiência com o Farm Level e não eleva automaticamente outros Buds da conta.</p>
+<p>O Battle Level é individual, possui cap 100 na primeira temporada e avança exclusivamente por participação válida em PvE e PvP ranqueado. Amistosos não concedem Battle XP. Ele não compartilha experiência com o Farm Level e não eleva automaticamente outros Buds da conta.</p>
 <div class="statement"><strong>Cada nível concede uma decisão.</strong> O crescimento natural da espécie, os pontos inatos do nascimento e a distribuição do jogador formam camadas diferentes da identidade de combate.</div>
 
 <h3>6.1 Battle XP, Farm XP e pontos por nível</h3>
 <table>
 <thead><tr><th>Trilha</th><th>Fonte de experiência</th><th>Pontos concedidos</th></tr></thead>
 <tbody>
-<tr><td><strong>Battle Level</strong></td><td>Participação válida em batalhas PvE e PvP.</td><td>Um Ponto de Batalha por nível.</td></tr>
+<tr><td><strong>Battle Level</strong></td><td>Participação válida em batalhas PvE e PvP ranqueado.</td><td>Um Ponto de Batalha por nível.</td></tr>
 <tr><td><strong>Farm Level</strong></td><td>Produção no plot e recuperação legítima enquanto o Bud está alocado no jardim.</td><td>Um Ponto de Cultivo por nível.</td></tr>
 </tbody>
 </table>
@@ -1016,15 +1016,13 @@
 </ul>
 
 <h3>7.10 Economia de Stamina e Recuperação</h3>
-<p>Somente batalhas consomem Stamina. O custo é previsível e independente de dano causado, dano recebido, cura ou duração da luta.</p>
+<p>Somente a entrada em batalhas <strong>PvE</strong> consome Stamina. O custo é previsível e independente de dano causado, dano recebido, cura ou duração da luta. PvP ranqueado e amistoso custam sempre zero Stamina.</p>
 <table>
 <thead><tr><th>Atividade</th><th>Custo inicial de protótipo por Bud participante</th></tr></thead>
 <tbody>
 <tr><td>PvE normal</td><td>10</td></tr>
 <tr><td>PvE elite</td><td>15</td></tr>
 <tr><td>Boss</td><td>25</td></tr>
-<tr><td>Ataque PvP</td><td>12</td></tr>
-<tr><td>Defesa PvP assíncrona</td><td>0</td></tr>
 </tbody>
 </table>
 <ul>
@@ -1033,7 +1031,7 @@
 <li>a derrota consome o custo normalmente;</li>
 <li>cancelamentos técnicos ou falhas do servidor devem reembolsar o custo;</li>
 <li>um Bud não inicia nova atividade sem Stamina suficiente;</li>
-<li>defesa PvP assíncrona não consome Stamina para impedir que terceiros esgotem o elenco;</li>
+<li>PvP nunca consome Stamina: a reserva existe para entradas em fases PvE;</li>
 <li>HP, Mana e cooldowns reiniciam depois de cada batalha.</li>
 </ul>
 <h4>Recuperação</h4>
@@ -1106,7 +1104,7 @@
 <li>se o Bud que entra estiver Cultivando ou Recuperando, a troca exige confirmação para cancelar o processo; Cultivo entrega somente o saldo real já acumulado e Recuperação preserva apenas Stamina e Farm XP já validados;</li>
 <li>após esse swap, o Bud removido chega ao novo Plot em <strong>Em espera</strong>. O Free escolhe manualmente a próxima ação; o VIP pode executar uma ação pós-swap pré-autorizada, sem consumo quando a configuração for inválida.</li>
 <li>o Bud não abandona batalha em andamento; falha de vínculo, Plot ocupado ou configuração inválida pausa a automação com diagnóstico claro;</li>
-<li>presets PvP são separados e nunca criam, removem ou alteram essa reserva de Plot.</li>
+<li>presets PvP são separados e nunca criam, removem ou alteram essa reserva de Plot; uma partida PvP aceita apenas pausa temporariamente a atividade corrente dos Buds escolhidos e a retoma ao encerrar.</li>
 </ul>
 
 <h3>7.14 FP — Farming Power / Poder de Cultivo</h3>
@@ -1741,7 +1739,7 @@
 <ul><li>um Bud no cap continua podendo lutar, carregar outros Buds e obter materiais;</li><li>se possuir peso positivo contra o inimigo, continua participando da divisão da pool;</li><li>a XP destinada a ele é descartada;</li><li>não existe armazenamento de XP excedente no cap;</li><li>usar um Bud no cap não cria uma exceção que aumente artificialmente a XP dos demais.</li></ul>
 
 <h3>9.20 Fronteira PvE/PvP e documentação de itemização</h3>
-<div class="grid"><div class="card good"><h4>PvE</h4><p>Buds podem retornar; XP e drops dos inimigos definitivamente derrotados são preservados mesmo sem vitória.</p></div><div class="card danger"><h4>PvP</h4><p>Bud derrotado permanece derrotado até o fim. Não existe retorno, Rebrota ou contagem regressiva. XP, recompensas e balanceamento serão definidos no ponto específico de PvP.</p></div></div>
+<div class="grid"><div class="card good"><h4>PvE</h4><p>Buds podem retornar; XP e drops dos inimigos definitivamente derrotados são preservados mesmo sem vitória.</p></div><div class="card danger"><h4>PvP</h4><p>Bud derrotado permanece derrotado até o fim. Não existe retorno, Rebrota ou contagem regressiva. Battle XP, Gold, materiais, AR e exceções de empate seguem o Ponto 19.</p></div></div>
 <p>O GDD principal registra apenas as regras estruturais de drops. Catálogos, tabelas, raridades, receitas, probabilidades, fontes, vínculos, economia, desmanche e crafting serão tratados em um documento próprio: <strong>Idle Bud — Itemization, Drops &amp; Crafting Bible</strong>.</p>
 <div class="statement"><strong>O Ponto 9 está estruturalmente definido.</strong> Permanecem para simulador, Alpha e patches apenas valores de XP dos inimigos, curva de XP por Battle Level, tempos específicos abaixo dos tetos, potência final do Frenesi, duração-base de retorno e conteúdo detalhado de drops.</div>
 </section>
@@ -1960,7 +1958,7 @@
 <li>ao concluir um nascimento, o Bud entra automaticamente na coleção e o Plot é liberado, salvo quando uma automação VIP válida iniciar imediatamente o Plano de Cultivo pré-configurado;</li>
 <li>um Bud em processo ativo ou PvE em andamento não pode ser realocado para contornar alocação exclusiva; a única exceção é o swap entre Plot e time PvE fora de batalha, após a confirmação de cancelamento quando houver processo, definido no Ponto 18;</li>
 <li>ativar um time PvE reserva um Plot vinculado por Bud, até sete; cada reserva permanece indisponível para os demais processos até o retorno;</li>
-<li>presets PvE e PvP não criam reserva; somente a atividade PvE real trava Buds e Plots;</li>
+<li>presets PvE e PvP não criam reserva; somente a atividade PvE real reserva Buds e Plots. Uma partida PvP aceita aplica bloqueio temporário aos seus Buds, pausa a atividade do Plot sem liberá-lo e a retoma no encerramento;</li>
 <li>um Plot só pode ser removido ou negociado quando estiver vazio, sem processo ativo, Bud alocado ou reserva PvE.</li>
 </ul>
 <p>Farm continua offline para todos após o processo começar. Cuidados manuais, automação VIP, Fertilizantes, presets e retorno do PvE obedecem ao Ponto 7; Jardim e Plot não criam uma segunda regra para esses sistemas.</p>
@@ -2335,7 +2333,7 @@
 <span class="review-state rs-defined">Definido</span>
 <h2>18. Estados do Bud e alocação exclusiva</h2>
 <div class="statement"><strong>Todo Bud possui exatamente um estado operacional principal.</strong> Ele informa onde o Bud está, o que pode fazer agora e quais recursos pode gerar. Essa regra impede duplicação de valor sem transformar presets em travas artificiais.</div>
-<p>Estados não são uma punição nem uma tela extra de administração: eles tornam explícito o custo de alocar um Bud. PvP usa presets independentes; Forja e resets são instantâneos; somente atividades reais, Plot e mercado alteram o estado operacional.</p>
+<p>Estados não são uma punição nem uma tela extra de administração: eles tornam explícito o custo de alocar um Bud. PvP usa presets independentes e, ao ser aceito, aplica apenas um bloqueio temporário que pausa a atividade anterior; Forja e resets são instantâneos; somente atividades reais, Plot e mercado alteram o estado operacional.</p>
 <h3>18.1 Os seis estados</h3>
 <table>
 <thead><tr><th>Estado</th><th>O que faz</th><th>O que não faz</th></tr></thead>
@@ -2351,8 +2349,9 @@
 <h3>18.2 O que não cria estado</h3>
 <ul>
 <li>constar em preset PvE ou PvP não muda o estado: um Bud Cultivando ou Recuperando pode aparecer em vários presets, inclusive simultaneamente;</li>
-<li>somente o time PvE efetivamente ativado reserva Buds e Plots; PvP não consome Stamina, não reserva Plot e não interrompe nenhuma atividade;</li>
-<li>uma batalha em andamento é um bloqueio temporário dentro de PvE ativo, não um sétimo estado; integrantes e posições só mudam entre tentativas;</li>
+<li>somente o time PvE efetivamente ativado reserva Buds e Plots; PvP não consome Stamina nem reserva Plot, mas uma partida aceita pausa por completo a atividade corrente de cada Bud escolhido;</li>
+<li>uma batalha em andamento é um bloqueio temporário, não um sétimo estado: no PvE ela ocorre dentro de PvE ativo; no PvP ela preserva e pausa o estado anterior até o resultado;</li>
+<li>no fim da partida PvP, todos os Buds retomam automaticamente sua atividade anterior — Cultivo, Recuperação ou Em espera — no ponto exato em que foi pausada, tanto para Free quanto para VIP;</li>
 <li><strong>Aguardando cuidado</strong> é uma condição dentro de Cultivando ou Recuperando: o processo continua ocupando Plot, não avança até o cuidado e pode ser cancelado;</li>
 <li>Calibração, Ascensão, Fusão, Desmontagem e resets são operações instantâneas e atômicas: não criam fila, ritual temporizado, estado especial ou indisponibilidade persistente.</li>
 </ul>
@@ -2385,35 +2384,87 @@
 <p>A ficha e o Jardim mostram sempre o estado atual, Plot associado quando existir, Stamina, processo ou política em curso, próximo cuidado e ação necessária. O objetivo é que o jogador entenda em poucos segundos por que um Bud está indisponível e qual ação o libera.</p>
 </section>
 <section id="pvp">
-<span class="tag red">Competição assíncrona</span>
-<span class="review-state rs-provisional">Provisório</span>
-<h2>19. PvP assíncrono</h2>
-<div class="statement" data-canonical="pvp-formation-role"><strong>PvP usa presets próprios.</strong> Eles são composições salvas e resolvidas pelo servidor, sem reservar Bud, Plot ou Stamina e sem interromper Farm ou PvE.</div>
-<ul data-canonical="pvp-asynchronous-scope">
-<li>o PvP assíncrono existe para farm e teste de composição;</li>
-<li>o PvP assíncrono não gera ranking;</li>
-<li>o PvP com ranking não pode ser assíncrono;</li>
-<li>o formato do PvP ranqueado será definido na revisão específica do sistema.</li>
-</ul>
-<h3>19.1 Slots e preset ativo</h3>
+<span class="tag red">Competição sincronizada</span>
+<span class="review-state rs-defined">Definido</span>
+<h2>19. PvP síncrono, Arena Ranking e replays</h2>
+<div class="statement"><strong>Todo PvP de Idle Bud é síncrono.</strong> Dois jogadores online aceitam a mesma partida; o servidor congela os dois times no estado vivo atual, calcula e registra o resultado autoritativamente no instante zero e ambos assistem à mesma apresentação da luta. Não existe defesa assíncrona, ataque contra jogador ausente nem PvP de farm.</div>
+<p>O núcleo de combate, a formação 1–2–1–2–1, a matriz elementar e a resolução simultânea são os mesmos do PvE. A diferença é competitiva: não há Retorno ou Rebrota durante a partida, cada Bud derrotado permanece fora até o encerramento e nenhum jogador recebe vantagem de velocidade, automação ou VIP.</p>
+
+<h3>19.1 Presets, sala pronta e bloqueio temporário</h3>
 <ul>
-<li>o jogador gratuito salva até <strong>três presets PvP</strong>; o VIP salva até <strong>sete</strong>;</li>
-<li>somente um preset fica ativo como defesa por vez;</li>
-<li>os demais são composições salvas para troca rápida e podem ser escolhidos em ataques sem substituir automaticamente a defesa;</li>
-<li>um mesmo Bud pode aparecer em vários presets PvP e PvE, inclusive simultaneamente;</li>
-<li>cada composição aceita de um a sete Buds individuais válidos e não permite repetir o mesmo espécime dentro do próprio time.</li>
+<li>Free salva até <strong>três presets PvP</strong>; VIP salva até <strong>sete</strong>;</li>
+<li>cada preset guarda somente seleção, ordem e posições de um a sete Buds, sem repetir o mesmo espécime no próprio time;</li>
+<li>não existe preset de defesa: antes de entrar na fila ou aceitar uma revanche, o jogador escolhe o preset que quer usar;</li>
+<li>editar ou salvar preset não altera Plot, Stamina, Farm, Recuperação ou preset PvE; Buds e attachments sempre usam seu estado vivo atual;</li>
+<li>quando os dois jogadores aceitam a sala pronta, servidor fixa Buds, Núcleos, Totens, atributos, passivas, posições e versão de regras exclusivamente para aquela partida; mudanças posteriores valem somente para a próxima;</li>
+<li>a conta participa de apenas uma partida PvP por vez e um Bud não pode integrar duas partidas simultâneas.</li>
 </ul>
-<h3>19.2 Independência operacional</h3>
+<div class="formula">Escolher preset → encontrar adversário → ambos aceitam → congelar estado vivo + RNG → resolver no servidor → apresentar e aplicar resultado</div>
+<p>Ao aceitar, cada Bud do time recebe um <strong>bloqueio temporário de combate PvP</strong>. Se estava Cultivando, Recuperando ou Em espera, seu Plot continua ocupado e seu processo é pausado sem cancelamento, perda ou progresso. Ao encerrar — inclusive após desconexão — todos retomam automaticamente a atividade anterior no ponto exato em que parou. PvP custa sempre <strong>0 Stamina</strong>.</p>
+
+<h3>19.2 Partida, duração e autoridade</h3>
 <ul>
-<li>salvar, editar ou ativar preset não remove Bud do Jardim, não bloqueia Plot, não consome Stamina e não altera presets PvE;</li>
-<li>o preset guarda Buds, formação e posições; Núcleo, Totem, atributos, passivas e elementos são sempre resolvidos no estado vivo atual de cada Bud;</li>
-<li>o combate é resolvido pelo mesmo game core do PvE;</li>
-<li>o defensor não precisa estar online;</li>
-<li>qualquer alteração em Bud ou attachment alcança todos os presets que o utilizam. Quando uma luta inicia, o servidor fixa os dois times somente para resolver aquela partida; alterações posteriores valem para a próxima;</li>
-<li>o resultado oficial nunca é decidido pelo cliente;</li>
-<li>replays permitem entender derrota, meta e bugs.</li>
+<li>o resultado inteiro é calculado de forma determinística e autoritativa quando ambos aceitam; cliente, espectador e replay apenas apresentam esse resultado;</li>
+<li>a apresentação ao vivo ocorre sempre em <strong>1×</strong>, para jogadores e espectadores. VIP não acelera, pula ou altera uma luta PvP;</li>
+<li>a duração lógica regular é de até <strong>5 minutos</strong>. Se persistirem Buds dos dois lados, inicia-se Morte Súbita de até 60 segundos, com dano progressivamente maior;</li>
+<li>se a Morte Súbita terminar em eliminação simultânea, o resultado é empate: não há AR, Gold ou materiais; ambos recebem Battle XP reduzido;</li>
+<li>queda de conexão após o aceite não anula a luta. O servidor conclui e aplica o resultado; ao voltar, o jogador vê o resultado final e seus Buds já retomaram a atividade anterior;</li>
+<li>o resultado oficial, as recompensas e a liberação dos Buds são operações atômicas, idempotentes e impossíveis de decidir pelo cliente.</li>
 </ul>
-<p>Rankings, ligas, energia, matchmaking, recompensas e proteção contra abuso permanecem abertos para uma etapa específica de PvP.</p>
+
+<h3>19.3 Ranqueada global e Arena Ranking (AR)</h3>
+<p>A fila ranqueada é global e usa <strong>AR — Arena Ranking</strong>, um valor visível, sem MMR oculto, bônus por performance individual ou energia competitiva. A partida é automática; a qualidade da decisão está em elenco, formação, elementos, attachments e preset escolhido.</p>
+<div class="formula">E = 1 ÷ (1 + 10^((AR adversário − AR jogador) ÷ 400)) &nbsp;·&nbsp; ΔAR = arredondar(32 × (resultado − E))</div>
+<ul>
+<li>resultado é 1 na vitória e 0 na derrota; contra AR igual, o resultado esperado é 0,5 e a variação é ±16 AR;</li>
+<li>cada temporada começa com <strong>10 partidas de posicionamento</strong>: o sistema usa 600 AR provisório e K = 64; depois usa K = 32;</li>
+<li>a posição de saída é limitada a <strong>Ouro I (899 AR)</strong>; ninguém inicia a temporada acima desse teto;</li>
+<li>a busca começa em ±100 AR e pode expandir gradualmente até ±300 AR conforme o tempo de espera, sem ultrapassar esse limite;</li>
+<li>promoções e rebaixamentos são automáticos pela faixa de AR; não existem séries promocionais.</li>
+</ul>
+<table>
+<thead><tr><th>Liga</th><th>Divisões</th><th>Faixa de AR</th></tr></thead>
+<tbody>
+<tr><td><strong>Bronze</strong></td><td>III, II, I</td><td>0–299</td></tr>
+<tr><td><strong>Prata</strong></td><td>III, II, I</td><td>300–599</td></tr>
+<tr><td><strong>Ouro</strong></td><td>III, II, I</td><td>600–899</td></tr>
+<tr><td><strong>Platina</strong></td><td>III, II, I</td><td>900–1199</td></tr>
+<tr><td><strong>Diamante</strong></td><td>III, II, I</td><td>1200–1499</td></tr>
+<tr><td><strong>Mestre</strong></td><td>Único</td><td>Top 100 global com 1500+ AR</td></tr>
+</tbody>
+</table>
+<p><strong>Mestre</strong> possui somente 100 vagas globais. Ao entrar um jogador elegível acima do corte, o último Mestre retorna automaticamente para Diamante I em 1499 AR. Budmaster continua sendo o reconhecimento amplo do jogo e não é uma liga PvP.</p>
+
+<h3>19.4 Temporada, recompensas e abandono de fila</h3>
+<ul>
+<li>cada temporada competitiva dura <strong>90 dias</strong> e reinicia junto da temporada global do jogo; AR e posicionamento são refeitos do zero;</li>
+<li>Alpha e Beta possuem ranqueada para teste, mas AR, ranking e recompensas desses períodos não são válidos nem persistem para a Temporada 1;</li>
+<li>vitória ranqueada concede AR, Gold, materiais de crafting e Battle XP; derrota reduz AR, concede menos Gold e menos Battle XP, mas nunca materiais de crafting;</li>
+<li>as recompensas finais de temporada são moldura, emblema cosmético e materiais de Forja escalados pela liga; nunca concedem atributos ou poder exclusivo;</li>
+<li>amistosos não concedem AR, Gold, Battle XP ou materiais;</li>
+<li>recusar ou expirar o aceite antes da confirmação cancela a busca sem resultado. A 3ª recusa em 10 minutos bloqueia a fila por 5 min; novas ocorrências no mesmo período escalam para 15 e 30 min. Após 30 min sem nova recusa, a escalada zera;</li>
+<li>essas punições afetam somente a fila PvP e nunca Jardim, PvE, Stamina ou progresso geral.</li>
+</ul>
+
+<h3>19.5 Amigos, amistosos e revanche</h3>
+<p>Amistosos existem exclusivamente entre amigos aceitos. A lista social usa pedido e aceite; bloquear remove a amizade e impede novos convites enquanto o bloqueio existir.</p>
+<ul>
+<li>o anfitrião abre uma sala e convida um amigo; pode liberar espectadores apenas para participantes, para amigos ou publicamente;</li>
+<li>uma revanche exige aceite dos dois jogadores e pode ocorrer quantas vezes desejarem até completar no máximo uma <strong>MD5</strong>;</li>
+<li>cada jogo da MD5 é uma partida completa e independente: AR, Gold, materiais e Battle XP seguem o resultado normal; o placar da série é somente visual, sem bônus ou penalidade próprios;</li>
+<li>antes de cada novo jogo, ambos podem escolher outro preset PvP;</li>
+<li>quando a MD5 termina ou qualquer lado a encerra, a dupla recebe proteção de pareamento de 30 minutos e não volta a se encontrar na ranqueada nesse intervalo.</li>
+</ul>
+
+<h3>19.6 Espectadores, torneios e replays</h3>
+<p>Toda partida ranqueada é pública para espectadores ao vivo. Como as decisões estratégicas já foram congeladas antes do início e não existe input durante a luta, a transmissão não oferece vantagem competitiva. A base de torneios oferece salas, convites/códigos, espectadores e resultados autoritativos; chaves, formatos, calendário e prêmios pertencem ao futuro capítulo competitivo.</p>
+<p>O replay não é vídeo. O servidor armazena um pacote determinístico com ID da partida, versão das regras, equipes imutáveis, Buds, attachments, posições, timestamps, seed e log exato de RNG e ações resolvidas. O cliente apenas reproduz visualmente a partida já decidida.</p>
+<ul>
+<li>todo jogador acessa as <strong>100 partidas mais recentes</strong>; pode manter até 20 favoritas permanentemente, e replays de torneio também são permanentes;</li>
+<li>replays permitem pausar, avançar, retroceder e ajustar velocidade livremente, pois não são uma transmissão ao vivo;</li>
+<li>o proprietário pode compartilhar links de partidas; o link reproduz o registro oficial enquanto estiver disponível;</li>
+<li><strong>todas as partidas</strong>, não apenas as 100 visíveis ao jogador, permanecem registradas no banco de auditoria para revisão de bugs, denúncias, fraude, torneios e integridade competitiva.</li>
+</ul>
 </section>
 <section id="wiki">
 <span class="tag blue">Conhecimento como sistema</span>
@@ -2487,8 +2538,8 @@
 <h2>22. O que o protótipo precisa provar</h2>
 <p>O protótipo não precisa conter toda a profundidade do Codex. Ele precisa comprovar que as decisões principais são divertidas antes de multiplicarmos conteúdo.</p>
 <div class="grid">
-<div class="card good"><h3>Entrar cedo</h3><ul><li>formação de sete em 1–2–1–2–1;</li><li>combate automático determinístico;</li><li>Battle Level e Farm Level estruturados para cap 100;</li><li>Battle Level com seis atributos;</li><li>Farm Level com seis atributos;</li><li>separação entre atributos distribuíveis e status derivados;</li><li>raridade e Vigor fixos de 50 a 500;</li><li>um Jardim 7×7, começando com três Plots e preparado para 49;</li><li>Plots elementais;</li><li>Bud, Núcleo e Totem;</li><li>nove espécies no Alpha, uma por elemento;</li><li>Basic Attack e Power Move fixos por espécie;</li><li>RNG controlado de Power Move e Desvio Perfeito;</li><li>nove tipos e matriz completa;</li><li>três presets PvE e três presets PvP no Free, escaláveis para sete com VIP;</li><li>seis estados claros de Bud, cancelamento proporcional e swap entre Plot e PvE fora de batalha;</li><li>reserva de um Plot por Bud somente pelo time PvE ativo;</li><li>políticas PvE Estável, Avançar, Recuar e Adaptativo;</li><li>sessão online gratuita, expedição offline VIP e rotação PvE → Recuperação → PvE;</li><li>três sementes tutoriais escalonadas, de elementos distintos;</li><li>Germinação em três etapas de 20 min, sem falha total;</li><li>pool congelada no plantio, roll autoritativo no fim da etapa 3 e Proteção de Raridade;</li><li>plantio em Plots comuns e elementais, com Água obrigatória;</li><li>três perfis de Fertilizante para raridade e Vigor;</li><li>criação do Bud autoritativa e idempotente no servidor durante o nascimento;</li></ul></div>
-<div class="card danger"><h3>Entrar depois</h3><ul><li>marketplace entre jogadores, incluindo Plots, e mercado RMT aberto;</li><li>breeding ou genética;</li><li>guildas complexas;</li><li>PvP em tempo real;</li><li>dezenas de mapas;</li><li>múltiplos sistemas de vizinhança;</li><li>cadeia completa de Síntese, Calibração, Fusão e Ascensão;</li><li>toda a ferramenta premium de Calibração;</li><li>todos os assets finais.</li></ul></div>
+<div class="card good"><h3>Entrar cedo</h3><ul><li>formação de sete em 1–2–1–2–1;</li><li>combate automático determinístico;</li><li>Battle Level e Farm Level estruturados para cap 100;</li><li>Battle Level com seis atributos;</li><li>Farm Level com seis atributos;</li><li>separação entre atributos distribuíveis e status derivados;</li><li>raridade e Vigor fixos de 50 a 500;</li><li>um Jardim 7×7, começando com três Plots e preparado para 49;</li><li>Plots elementais;</li><li>Bud, Núcleo e Totem;</li><li>nove espécies no Alpha, uma por elemento;</li><li>Basic Attack e Power Move fixos por espécie;</li><li>RNG controlado de Power Move e Desvio Perfeito;</li><li>nove tipos e matriz completa;</li><li>três presets PvE e três presets PvP no Free, escaláveis para sete com VIP;</li><li>PvP síncrono de teste: aceite, resolução autoritativa, AR temporário, replay e pausa segura de atividades;</li><li>seis estados claros de Bud, cancelamento proporcional e swap entre Plot e PvE fora de batalha;</li><li>reserva de um Plot por Bud somente pelo time PvE ativo;</li><li>políticas PvE Estável, Avançar, Recuar e Adaptativo;</li><li>sessão online gratuita, expedição offline VIP e rotação PvE → Recuperação → PvE;</li><li>três sementes tutoriais escalonadas, de elementos distintos;</li><li>Germinação em três etapas de 20 min, sem falha total;</li><li>pool congelada no plantio, roll autoritativo no fim da etapa 3 e Proteção de Raridade;</li><li>plantio em Plots comuns e elementais, com Água obrigatória;</li><li>três perfis de Fertilizante para raridade e Vigor;</li><li>criação do Bud autoritativa e idempotente no servidor durante o nascimento;</li></ul></div>
+<div class="card danger"><h3>Entrar depois</h3><ul><li>marketplace entre jogadores, incluindo Plots, e mercado RMT aberto;</li><li>breeding ou genética;</li><li>guildas complexas;</li><li>torneios competitivos avançados, chaves, calendário e prêmios externos;</li><li>dezenas de mapas;</li><li>múltiplos sistemas de vizinhança;</li><li>cadeia completa de Síntese, Calibração, Fusão e Ascensão;</li><li>toda a ferramenta premium de Calibração;</li><li>todos os assets finais.</li></ul></div>
 </div>
 <h3>22.1 Métricas de verdade</h3>
 <ul>
@@ -2532,7 +2583,7 @@
 <div class="decision"><div><strong>RNG de combate</strong><p>Raridade, Vigor e SOR podem elevar Power Move e Desvio Perfeito sob tetos de balanceamento.</p></div><span class="status s-rule">Regra-base</span></div>
 <div class="decision"><div><strong>Progressão do Jardineiro</strong><p>O nível da conta libera estrutura e complexidade; mapas liberam conteúdo; VIP amplia eficiência, capacidade e conforto sem aumentar diretamente os status dos Buds.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Cap inicial</strong><p>Battle Level e Farm Level chegam ao 100 na primeira temporada, sem XP excedente armazenado.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Battle e Farm Level</strong><p>Trilhas independentes: um ponto por level, 100 pontos distribuíveis por grupo no cap 100; Battle XP vem de PvE/PvP e Farm XP de plot e recuperação validada.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Battle e Farm Level</strong><p>Trilhas independentes: um ponto por level, 100 pontos distribuíveis por grupo no cap 100; Battle XP vem de PvE e PvP ranqueado, enquanto Farm XP vem de Plot e recuperação validada.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Pontos Inatos</strong><p>Cada Bud nasce com 24 pontos em Batalha e 24 em Cultivo, distribuídos separadamente entre 1 e 10 por atributo; são permanentes e não resetáveis.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Atributos de Batalha</strong><p>FOR, AGI, VIT, INT, DEX e SOR alimentam 14 status derivados com funções distintas e compreensíveis.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Attachments de combate</strong><p>Somente Núcleo Arcano e Totem compõem a build externa; não existem armas, armaduras, acessórios ou outros equipamentos.</p></div><span class="status s-defined">Definido</span></div>
@@ -2547,7 +2598,7 @@
 <div class="decision"><div><strong>Afinidade de Cultivo</strong><p>Plot Simples é 1,00×; Plots elementais variam de 0,50× a 2,00× e dividem o efeito por raiz quadrada entre quantidade e velocidade.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>ADA</strong><p>Mitiga até 60% das penalidades e amplia até 20% do bônus positivo, sempre com retorno decrescente e sem alterar o Plot Simples.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Planos de Cultivo</strong><p>Alpha parte de Cultivo Básico, Elemental e Regional, com durações de 1h30, 6h e 12h e pools progressivas ligadas ao PvE.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Stamina</strong><p>Somente batalhas consomem Stamina; base 100, custos previsíveis por atividade e recuperação total em até 60 minutos antes de REC e VIP.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Stamina</strong><p>Somente entradas PvE consomem Stamina; base 100, custos previsíveis por fase e recuperação total em até 60 minutos antes de REC e VIP. PvP custa sempre zero.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Fertilizantes</strong><p>Na Germinação existem três perfis: Raridade 80/20, Vigor 20/80 e Equilibrado 50/50. Dois iguais têm segundo efeito de 50%; perfis diferentes aplicam efeito completo.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Proteção de Raridade</strong><p>Contador visível por conta, elemento e família de pool desloca Comum/Incomum para Rara após azar consecutivo; em 10 falhas, garante Rara ou superior sem afetar Épica, Lendária, espécie, Vigor ou Pontos Inatos.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Tutorial de sementes</strong><p>Três sementes escalonadas, de elementos distintos escolhidos pelo jogador, ensinam a Germinação curta; usam RNG normal e contam para a Proteção de Raridade.</p></div><span class="status s-defined">Definido</span></div>
@@ -2581,7 +2632,7 @@
 <div class="decision"><div><strong>Jardim e Plots</strong><p>O único Jardim da conta usa grade 7×7, começa com três Plots e expande até 49 vagas permanentes. Plots limitam processos simultâneos, nunca coleção ou presets.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Negociação de Plots</strong><p>Vagas e os três Plots iniciais ficam vinculados à conta; demais Plots vazios podem circular por Gold preservando propriedades e melhorias. Infraestrutura de Cultivo nunca acompanha a venda.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Negociação de sementes</strong><p>Sementes podem circular por Gold e, sob regras futuras de economia, por moeda de Cash conversível. Germinação bloqueia transferência; Proteção de Raridade pertence à conta, não à semente.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Presets</strong><p>Free salva três presets PvE e três PvP; VIP salva sete de cada. Presets guardam somente seleção, ordem e posições e sempre usam o estado atual dos Buds e attachments. Apenas o time PvE ativo reserva Buds e Plots; um preset PvP fica ativo como defesa.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Presets</strong><p>Free salva três presets PvE e três PvP; VIP salva sete de cada. Presets guardam somente seleção, ordem e posições e sempre usam o estado atual dos Buds e attachments. Apenas o time PvE ativo reserva Buds e Plots; PvP não possui defesa ativa.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Infraestrutura de Cultivo</strong><p>Progressão gratuita de conta fornece até +30% de velocidade operacional; VIP soma +10% nos processos autorizados, exceto Germinação, que usa metade do tempo após a Infraestrutura. Nunca afeta PvE real.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Attachments</strong><p>Apenas Núcleo Arcano e Totem são equipáveis. Cada Bud usa até um de cada; os dois possuem raridade e elemento próprios, mas não criam skills ou ataques novos.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Origem dos attachments</strong><p>Núcleos e Totens completos nunca são drops; todos nascem por Síntese.</p></div><span class="status s-defined">Definido</span></div>
@@ -2593,8 +2644,8 @@
 <div class="decision"><div><strong>Passivas</strong><p>Dezoito pools separados por Núcleo/Totem e elemento; dentro de cada pool, raridade altera quantidade e faixa de níveis, não o catálogo elegível.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Reroll</strong><p>Atributos, passivas e níveis podem ser calibrados individualmente ou em conjunto; toda operação consome recursos de gameplay e preserva tipo, elemento e raridade.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Ponte Cash–Gold</strong><p>Reagentes de Cash podem ser vendidos por jogadores no marketplace em Gold.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Estados e alocação</strong><p>Bud usa exatamente um dos seis estados: Disponível, Em espera, Cultivando, Recuperando, PvE ativo ou Mercado. O time PvE reserva um Plot por Bud; presets não criam alocação e swaps Plot ↔ PvE preservam resultados proporcionais de processos cancelados.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>PvP</strong><p>Presets PvP são independentes de Farm, Stamina e PvE. O servidor resolve o estado vivo atual dos Buds ao iniciar cada luta e fixa apenas aquela partida.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Estados e alocação</strong><p>Bud usa exatamente um dos seis estados: Disponível, Em espera, Cultivando, Recuperando, PvE ativo ou Mercado. O time PvE reserva um Plot por Bud; presets não criam alocação e swaps Plot ↔ PvE preservam resultados proporcionais de processos cancelados. Uma partida PvP aceita pausa e depois retoma a atividade anterior.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>PvP síncrono</strong><p>Ranqueada global e amistosos entre amigos usam o estado vivo atual congelado na sala pronta, resolução autoritativa e 0 Stamina. AR é visível, sem MMR oculto; temporadas de 90 dias, Mestre Top 100, replays determinísticos, espectadores públicos e auditoria integral sustentam a competição.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Tipos</strong><p>Nove afinidades com matriz rigorosamente simétrica.</p></div><span class="status s-rule">Proposta-base</span></div>
 <div class="decision"><div><strong>Wiki</strong><p>Informação essencial no jogo e profundidade em wiki externa.</p></div><span class="status s-defined">Definido</span></div>
 </div>
@@ -2625,7 +2676,7 @@
 <li><strong>Jardim:</strong> custos, níveis e curva das 46 expansões de Plot, além dos tiers e requisitos da Infraestrutura de Cultivo.</li>
 <li><strong>Conteúdo de Plots e Cultivo:</strong> mapeamento final da Matriz Bud → Plot, qualidade, raridade, pools, quantidades, receitas, requisitos regionais, coeficientes K e normalização visual do FP.</li>
 
-<li><strong>PvP:</strong> ligas, energia, matchmaking, replays e recompensas.</li>
+<li><strong>Calibração competitiva:</strong> valores finais de Gold, Battle XP e materiais por resultado, cadência de expansão do matchmaking e telemetria de fila, Morte Súbita e ligas.</li>
 <li><strong>Budmaster:</strong> critérios, pesos por sistema, quantidade de classificados, desempates e recompensas sazonais.</li>
 <li><strong>Mercado:</strong> momento de liberação de Plots e sementes, taxas, limites de listagem, cooldowns, histórico de preço, moeda de Cash conversível, saque, demais ativos elegíveis e possível acesso futuro ao mercado de valor real.</li>
 </ol>
