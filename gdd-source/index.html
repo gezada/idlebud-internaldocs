@@ -620,7 +620,7 @@
 <p>A progressão global mistura três fontes de desbloqueio. Elas podem trabalhar em conjunto, mas cumprem papéis diferentes e não devem ser tratadas como substitutas umas das outras.</p>
 <div class="grid">
 <div class="card good"><h4>Nível do Jardineiro</h4><p><strong>Libera estrutura e complexidade.</strong></p><ul><li>novas vagas de Plot vinculadas à conta e melhorias de Infraestrutura de Cultivo;</li><li>acesso gradual às operações da Forja;</li><li>mais funções e limites-base do mercado;</li><li>novos tipos de atividade e gestão;</li><li>ferramentas de organização e qualidade de vida.</li></ul></div>
-<div class="card"><h4>Progressão nos mapas</h4><p><strong>Libera conteúdo do mundo.</strong></p><ul><li>novas regiões, fases e atividades;</li><li>materiais, sementes e ingredientes regionais;</li><li>tipos de plots e recursos avançados;</li><li>famílias de receitas e linhas de pesquisa;</li><li>bosses, minibosses e recompensas específicas.</li></ul></div>
+<div class="card"><h4>Progressão nos mapas</h4><p><strong>Libera conteúdo do mundo.</strong></p><ul><li>novas regiões, fases e atividades;</li><li>materiais, sementes e ingredientes regionais;</li><li>tipos de plots e recursos avançados;</li><li>famílias de receitas e linhas de pesquisa;</li><li>Elites, bosses e recompensas específicas.</li></ul></div>
 <div class="card"><h4>VIP</h4><p><strong>Amplia eficiência, capacidade e conforto.</strong></p><ul><li>mais processos simultâneos;</li><li>automações, presets e ferramentas avançadas;</li><li>maior aproveitamento do tempo offline;</li><li>resets adicionais e redução de atrito operacional;</li><li>acelerações controladas sobre sistemas já desbloqueados.</li></ul></div>
 </div>
 
@@ -1889,7 +1889,7 @@
 <p class="small">Esses são parâmetros explícitos e configuráveis do combate. Podem ser recalibrados no simulador, mas a simetria da matriz deve ser preservada.</p>
 <h3>12.2 Escopo do multiplicador</h3>
 <p>O multiplicador elemental afeta somente o dano causado por ataques e Power Moves ofensivos, de Buds e inimigos. Ele não altera cura, escudo, buffs, debuffs, duração de controle, drops ou recompensas.</p>
-<p>Inimigos podem ser Neutros, sem elemento associado; Neutro não é um décimo elemento. Todo inimigo, miniboss ou boss possui no máximo um elemento ativo no Alpha. Não existem combinações de dois ou três elementos ativos simultaneamente.</p>
+<p>Inimigos podem ser Neutros, sem elemento associado; Neutro não é um décimo elemento. Todo inimigo, Elite ou boss possui no máximo um elemento ativo no Alpha. Não existem combinações de dois ou três elementos ativos simultaneamente.</p>
 <h3>12.3 Matriz completa</h3>
 <div class="table-wrap">
 <table class="matchup">
@@ -2270,26 +2270,61 @@
 <div class="statement">A profundidade vem das decisões, dos recursos e do risco. A interface não precisa imitar espera, filas ou o trabalho físico de carregar materiais entre estações.</div>
 </section>
 <section id="bestiario">
-<span class="tag yellow">Em construção</span>
-<span class="review-state rs-open">Em aberto</span>
+<span class="tag yellow">Ameaças do mundo</span>
+<span class="review-state rs-defined">Definido</span>
 <h2>17. Bestiário, inimigos e ameaças regionais</h2>
-<div class="statement"><strong>As regiões de Idle Bud podem apresentar ameaças muito diferentes entre si.</strong> O mundo não precisa explicar imediatamente uma guerra única nem uma origem comum para tudo que os Buds enfrentam.</div>
-<p>A variedade pode ser deliberadamente surpreendente: animais, máquinas, alienígenas, criaturas naturais, entidades estranhas e outras categorias podem coexistir. O objetivo é produzir descoberta, humor e surpresa sem transformar o bestiário em uma coleção aleatória de assets.</p>
+<div class="statement"><strong>Inimigos devem ser fáceis de ler em uma luta e interessantes de dominar ao longo da campanha.</strong> A variedade visual pode ser surpreendente — animais, máquinas, alienígenas, criaturas naturais e entidades estranhas —, mas cada região mantém uma lógica ambiental, funcional e de recompensa própria.</div>
 <div class="grid three">
-<div class="card"><h3>Coerência regional</h3><p>Cada região deve possuir uma lógica visual, ambiental e funcional própria, mesmo que o conjunto do mundo seja imprevisível.</p></div>
-<div class="card blue"><h3>Liberdade de categorias</h3><p>A maioria dos inimigos não precisa ser vegetal. O jogo pode combinar ecossistemas, tecnologia e fenômenos desconhecidos.</p></div>
-<div class="card violet"><h3>Caos criativo</h3><p>Combinações inusitadas são bem-vindas quando parecem intencionais, memoráveis e coerentes dentro da região.</p></div>
+<div class="card"><h3>Coerência regional</h3><p>Famílias, silhuetas, materiais e comportamento fazem sentido juntos dentro da região, mesmo quando o mundo como um todo mistura ecossistemas, tecnologia e fenômenos desconhecidos.</p></div>
+<div class="card blue"><h3>Variação útil</h3><p>Fases mudam por formação, nível, papéis e traços visíveis; não dependem de criar um inimigo inédito para cada encontro.</p></div>
+<div class="card violet"><h3>Descoberta auditável</h3><p>O primeiro abate registra a ficha completa no Codex. O jogador aprende com o encontro, não com números ou afixos escondidos.</p></div>
 </div>
-<h3>17.1 Elementos dos inimigos</h3>
+<h3>17.1 Categorias de encontro</h3>
+<table><thead><tr><th>Categoria</th><th>Kit e papéis</th><th>Recompensa estrutural</th></tr></thead><tbody>
+<tr><td><strong>Comum</strong></td><td>Basic Attack e um papel principal.</td><td>XP, recursos universais e regionais.</td></tr>
+<tr><td><strong>Elite</strong></td><td>Basic Attack, exatamente dois papéis e, apenas quando a identidade do encontro exigir, Power Move com gatilho explícito.</td><td>XP, drops normais e componente especial próprio.</td></tr>
+<tr><td><strong>Boss</strong></td><td>Basic Attack, Power Move e dois ou três papéis. Pode redistribuí-los entre fases roteirizadas.</td><td>Conhecimento na primeira vitória; componente próprio em cada repetição posterior.</td></tr>
+</tbody></table>
+<p>O encontro especial intermediário é sempre uma Elite. Quando um mapa possuir Elite, ela ocupa obrigatoriamente a fase 9; quando não possuir, a fase 9 permanece comum, conforme o Ponto 11.</p>
+<h3>17.2 Kit, papéis e leitura de combate</h3>
+<p>O sistema não cria árvores de skills ou recursos paralelos para inimigos. Todo inimigo usa a linguagem já legível do combate: Basic Attack; quando permitido, um único Power Move ativo por fase; e traços de encontro claramente exibidos.</p>
+<table><thead><tr><th>Papel</th><th>Função de leitura</th><th>Ferramentas permitidas</th></tr></thead><tbody>
+<tr><td><strong>Brutamontes</strong></td><td>Absorve pressão e sustenta a frente.</td><td>HP, defesa, resistência e pressão frontal.</td></tr>
+<tr><td><strong>Atirador</strong></td><td>Ameaça posições expostas da retaguarda.</td><td>Prioridade de alvo e dano direcionado.</td></tr>
+<tr><td><strong>Suporte</strong></td><td>Mantém aliados relevantes por mais tempo.</td><td>Cura, escudo e buffs claros.</td></tr>
+<tr><td><strong>Controlador</strong></td><td>Reduz a capacidade de resposta do elenco.</td><td>Controle e debuffs já existentes no vocabulário de combate.</td></tr>
+<tr><td><strong>Executor</strong></td><td>Converte alvos enfraquecidos em eliminações.</td><td>Prioridade contra baixa vida e dano condicional visível.</td></tr>
+</tbody></table>
 <ul>
-<li>inimigos podem ser <strong>Neutros</strong>, sem elemento associado;</li>
-<li>Neutro é uma condição de inimigo, não um décimo elemento da matriz dos Buds;</li>
-<li>inimigos também podem possuir um elemento;</li>
-<li>todo inimigo, miniboss ou boss possui no máximo um elemento ativo no Alpha;</li>
-<li>não existem fórmulas de combinação, counter ou multiplicação para múltiplos elementos ativos.</li>
+<li>um Comum possui um papel; uma Elite possui exatamente dois; um Boss usa dois ou três e pode reorganizá-los ao trocar de fase;</li>
+<li>comuns usam apenas Basic Attack; Elites usam Power Move somente como exceção declarada; Bosses possuem Basic Attack e Power Move;</li>
+<li>traços de inimigos usam somente dano, defesa, cura, escudo, alvo, controle, vulnerabilidade e resistência; Bosses os combinam em fases roteirizadas, sem abrir subsistemas isolados;</li>
+<li>Power Moves e traços roteirizados disparam apenas por tempo/cooldown, HP próprio ou aliado, morte de aliado, entrada de reforço ou início de fase. Nunca por RNG;</li>
+<li>cada fase define previamente formação, posições, níveis, papéis, traços, gatilhos e drops. Não existem afixos aleatórios, variação oculta de status ou surpresa numérica fora da ficha.</li>
 </ul>
-<h3>17.2 O que será desenvolvido depois</h3>
-<p>Famílias de inimigos, facções, biomas, comportamento, identidade de cada região, regras de bosses, drops e papel narrativo serão construídos em um brainstorming próprio.</p>
+<h3>17.3 Elementos, Neutros e Ressonância regional</h3>
+<p>Cada entrada individual do Bestiário possui um único elemento fixo ou é Neutra. Uma família visual pode ter variações elementais, mas cada variação é uma entrada própria, clara no Codex. Neutro não é um décimo elemento, não participa de counters e nunca recebe Ressonância.</p>
+<div class="formula">Dano final ofensivo do inimigo destacado = dano normal × multiplicador elemental aplicável × (1 + Ressonância regional)</div>
+<table><thead><tr><th>Etapa da campanha</th><th>Neutros</th><th>Ressonância dos elementos destacados</th></tr></thead><tbody>
+<tr><td><strong>Inicial</strong></td><td>Começam sozinhos e cedem espaço gradualmente aos elementos.</td><td>0%</td></tr>
+<tr><td><strong>Mapas específicos</strong></td><td>Presença secundária.</td><td>+5%</td></tr>
+<tr><td><strong>Mapas mistos</strong></td><td>Presença rara.</td><td>+10%</td></tr>
+<tr><td><strong>Convergência Elemental</strong></td><td>Não aparecem.</td><td>+15%</td></tr>
+</tbody></table>
+<ul><li>a Ressonância afeta somente o dano causado pelos inimigos dos elementos destacados; não altera status, cura, escudo, drops, recompensas nem o dano dos Buds;</li><li>nos específicos, o elemento da região é destacado; nos mistos, os três elementos associados são destacados; na Convergência, os nove elementos são destacados;</li><li>os percentuais são parâmetros iniciais de balanceamento: permanecem públicos e podem ser recalibrados no simulador sem mudar a estrutura.</li></ul>
+<h3>17.4 Roster por mapa e progressão de ameaça</h3>
+<p>Todo mapa regular é construído com <strong>cinco inimigos Comuns</strong>: três da família principal e dois da secundária. As fases 1 a 8 — e a fase 9 quando não houver Elite — recombinam esses cinco em formações, posições, níveis e traços diferentes. O ganho de dificuldade não exige dez monstros inéditos nem se resume a aumentar números.</p>
+<ul>
+<li>quando existir, a Elite obrigatória da fase 9 acrescenta dois papéis, componente especial e identidade visual própria ao mapa;</li>
+<li>o Boss é uma criatura única, recorrente e memorável: o inicial é Neutro e simples; cada específico termina em seu Boss elemental;</li>
+<li>cada mapa misto reutiliza seis Comuns — dois de cada um dos três específicos associados —, pode ter sua própria Elite e termina com os três Bosses associados;</li>
+<li>a Convergência reapresenta os nove Bosses elementais fortalecidos, um por fase, com lacaios de Elite quando o encontro pedir;</li>
+<li>reforços surgidos durante uma batalha obedecem ao Ponto 9: ocupam posições reservadas, existem para pressionar o encontro e não concedem XP ou drops.</li>
+</ul>
+<h3>17.5 Recompensas, Codex e fronteira de conteúdo</h3>
+<p>Comuns sustentam materiais universais e regionais. Elites acrescentam seu componente especial em toda vitória. Bosses entregam Conhecimento na primeira vitória e seu componente próprio nas repetições; tabelas, quantidades, raridades e probabilidades pertencem à <strong>Idle Bud — Itemization, Drops &amp; Crafting Bible</strong>.</p>
+<div class="grid two"><div class="card good"><h4>Primeiro abate</h4><p>O Codex revela categoria, família, região, elemento, papel, Basic Attack, Power Move e gatilhos quando existirem, traços, fases, lista de drops possíveis e relação com a Ressonância.</p></div><div class="card"><h4>Informação pública suficiente</h4><p>O jogo mostra tudo que é necessário para planejar a próxima tentativa. Pesos numéricos de drop e tabelas completas ficam na wiki externa, alimentada pela mesma base versionada de conteúdo.</p></div></div>
+<p>Nomes, facções, biomas, silhuetas, valores de status, lista concreta das famílias, tabelas de loot e efeitos exatos de cada traço são trabalho de conteúdo e balanceamento posterior. As regras deste ponto garantem que esse catálogo cresça sem perder clareza ou criar complexidade mecânica gratuita.</p>
 </section>
 <section id="estados">
 <span class="tag yellow">Tempo como recurso</span>
@@ -2445,7 +2480,7 @@
 <div class="decision"><div><strong>Registro individual</strong><p>A ficha do Bud separa leitura rápida de dados históricos expansíveis; o backend preserva proveniência e proprietários anteriores.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Transferência</strong><p>A negociação transfere o Bud real com progressão, história, configuração e direitos gratuitos já consumidos; não cria uma cópia limpa.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Reset por grupo</strong><p>Batalha e Cultivo possuem resets independentes: uma utilização gratuita por Bud e por grupo; novos usos são liberados para VIP.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Bestiário</strong><p>Inimigos podem ser neutros ou elementais e incluir animais, máquinas, alienígenas e outras ameaças; regras detalhadas permanecem em construção.</p></div><span class="status s-rule">Em construção</span></div>
+<div class="decision"><div><strong>Bestiário</strong><p>Inimigos usam as categorias Comum, Elite e Boss; possuem papéis, gatilhos transparentes, Ressonância regional pública e Codex revelado no primeiro abate.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Loop principal</strong><p>O elenco opera em Alocar → Produzir/Batalhar → Coletar → Avaliar → Desenvolver → Realocar, em paralelo ao loop de nascimento.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Sementes</strong><p>Novos Buds começam como sementes elementais; no plantio, a Receita exibe pool, Plot, água, Fertilizantes e probabilidades, sem resultado pré-gerado.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Germinação</strong><p>Três etapas de 20 min, dois checkpoints, Água obrigatória e nenhuma falha total; Plot e Fertilizantes moldam raridade e Vigor sem garantir resultado.</p></div><span class="status s-defined">Definido</span></div>
@@ -2492,7 +2527,7 @@
 <div class="decision"><div><strong>Stamina de entrada PvE</strong><p>Cada Bud paga antecipadamente; veteranos recebem desconto progressivo até 10%, com arredondamento para cima e custo mínimo de 1.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Retorno no PvE</strong><p>Bud derrotado continua na XP e retorna restaurado após 60 segundos; Núcleo e Totem podem reduzir até 50%, e a fase acaba se todos morrerem juntos.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Encerramento, XP e drops</strong><p>XP e drops já conquistados são preservados em vitória, derrota, timeout ou abandono; recompensas de conclusão exigem vitória.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Invocações e bosses multifase</strong><p>Invocações não dão XP ou drops; bosses e minibosses só concedem suas recompensas após a derrota definitiva da última fase.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Invocações e bosses multifase</strong><p>Invocações não dão XP ou drops; Elites e bosses só concedem suas recompensas após a derrota definitiva do encontro.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Frenesi e duração PvE</strong><p>Tetos: Normal 4/6 min, Elite 6/8 min e Boss 8/10 min; após o Frenesi, inimigos acumulam +15% dano e +10% Penetração a cada 30 s.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>VIP 2× em tempo real</strong><p>Começa desativado, pode ser alternado durante a batalha e persiste entre tentativas até desativação ou expiração do VIP, sem alterar resultados.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Sessão e autoridade PvE</strong><p>Free joga PvE enquanto online e pausa com segurança ao desconectar; VIP continua no servidor por até 8 horas. Cobrança e resultado são atômicos, idempotentes e protegidos contra duplicação.</p></div><span class="status s-defined">Definido</span></div>
@@ -2542,8 +2577,8 @@
 <li><strong>Calibração de Farm XP e Stamina:</strong> curvas de XP, limites antiabuso, custos finais por atividade e ajustes de recuperação após testes.</li>
 <li><strong>Núcleo e Totem:</strong> famílias, receitas, moldes, materiais, atributos, passivas e mercado.</li>
 <li><strong>Forja:</strong> catálogo de materiais, receitas, fontes, pesos normalizados, catalisadores e custos finais de Síntese, Calibração, Fusão e Ascensão.</li>
-<li><strong>Pesquisa e mapas:</strong> nomes, biomas, trios elementais dos mapas mistos, famílias inimigas, bosses, tabelas de loot, árvores de conhecimento, ligas, caminhos, tiers e progressão regional de materiais.</li>
-<li><strong>Bestiário:</strong> famílias regionais, inimigos neutros, inimigos elementais, bosses, minibosses e drops.</li>
+<li><strong>Pesquisa e mapas:</strong> nomes, biomas, trios elementais dos mapas mistos, famílias inimigas, Elites, bosses, tabelas de loot, árvores de conhecimento, ligas, caminhos, tiers e progressão regional de materiais.</li>
+<li><strong>Bestiário:</strong> famílias regionais, inimigos Neutros e elementais, Elites, bosses, nomes, silhuetas, valores de status, traços concretos e drops.</li>
 <li><strong>Desmontagem:</strong> materiais elegíveis, exceções, arredondamentos e percentuais definitivos de jogador normal e VIP.</li>
 <li><strong>Reroll:</strong> custos, escalada, limites, materiais de gameplay e nomes definitivos dos reagentes de Cash.</li>
 <li><strong>Tipos:</strong> calibração dos multiplicadores no simulador, lore e nomes definitivos.</li>
