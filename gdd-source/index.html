@@ -386,7 +386,7 @@
 <p>A referência não é “uma fazenda com batalhas” nem “um Pokémon de jardim”. A identidade nasce da fusão entre:</p>
 <div class="grid four">
 <div class="card"><h3>Coleção</h3><p>Muitos Buds, espécies, tipos e builds individuais.</p></div>
-<div class="card"><h3>Cultivo</h3><p>Jardim, plots, recuperação, treinamento e produção passiva.</p></div>
+<div class="card"><h3>Cultivo</h3><p>Jardim, Plots, recuperação, alocação e produção passiva.</p></div>
 <div class="card"><h3>RPG</h3><p>Atributos, equipamentos, progressão e decisões irreversíveis ou custosas.</p></div>
 <div class="card"><h3>Estratégia</h3><p>Formação, counters, mapa, função, tempo e alocação.</p></div>
 </div>
@@ -432,7 +432,7 @@
 <div class="node">Realocar</div>
 </div>
 <div class="grid three">
-<div class="card"><h4>Alocar</h4><p>O Jardineiro decide quais Buds entram no esquadrão, quais ocupam plots e quais ficam em recuperação, treinamento ou outras atividades futuras.</p></div>
+<div class="card"><h4>Alocar</h4><p>O Jardineiro decide quais Buds entram no esquadrão, quais ocupam Plots, quais cultivam, recuperam ou aguardam e quais permanecem disponíveis para outras atividades.</p></div>
 <div class="card"><h4>Produzir e batalhar</h4><p>O Jardim produz e recupera enquanto o esquadrão percorre fases idle. Farm e PvE usam alocação exclusiva; presets de PvP não interrompem essas atividades.</p></div>
 <div class="card"><h4>Coletar</h4><p>O jogador recebe XP, materiais, sementes, insumos, conhecimento, progresso de mapas e resultados competitivos.</p></div>
 <div class="card"><h4>Avaliar</h4><p>Ele identifica gargalos: time travado, Bud atrasado, falta de recurso, plot inadequado, semente promissora ou item que deve ser usado, vendido, guardado ou destruído.</p></div>
@@ -473,7 +473,7 @@
 <div class="viz-node"><strong>Desenvolvimento persistente</strong><span>Battle Level, Farm Level, Atributos de Batalha, Atributos de Cultivo e progressos adquiridos.</span></div>
 <div class="viz-node"><strong>Build modificável</strong><span>Atributos redistribuíveis, Núcleo Arcano, Totem e configuração estratégica.</span></div>
 <div class="viz-node"><strong>Proveniência</strong><span>Jardineiro que realizou o plantio, temporada de origem, feitos, rankings, eventos e histórico de propriedade.</span></div>
-<div class="viz-node"><strong>Estado operacional</strong><span>Proprietário atual, alocação, equipe, plot, recuperação, treinamento, mercado e bloqueios temporários.</span></div>
+<div class="viz-node"><strong>Estado operacional</strong><span>Proprietário atual, alocação, equipe, Plot, cultivo, recuperação, espera, mercado e bloqueios temporários.</span></div>
 </div>
 <table>
 <thead><tr><th>Camada</th><th>Regra</th><th>Comportamento em negociação</th></tr></thead>
@@ -1100,8 +1100,11 @@
 <li>um processo já ativo precisa terminar ou ser cancelado por sua regra antes que o Plot possa ser reservado;</li>
 <li>Plot reservado não pode Germinar, Cultivar, Recuperar outro Bud nem ser movido;</li>
 <li>integrantes e posições podem ser trocados livremente entre tentativas, nunca durante uma batalha em andamento;</li>
-<li>no Free, pausa, troca ou Stamina insuficiente exigem a ação manual <strong>Retornar e Recuperar</strong> para enviar os Buds aos Plots e iniciar Recuperação;</li>
+<li>no Free, pausa ou Stamina insuficiente exigem a ação manual <strong>Retornar e Recuperar</strong> para enviar os Buds aos Plots e iniciar Recuperação;</li>
 <li>no VIP, a rotação PvE → Recuperação → PvE pode executar retorno, cuidados, conclusão e retomada automaticamente quando habilitada;</li>
+<li>fora de uma batalha, um Bud alocado em Plot pode trocar diretamente de lugar com um Bud do time PvE ativo: o Bud que entra no time assume o Plot reservado do outro, e o Bud removido ocupa o Plot anterior;</li>
+<li>se o Bud que entra estiver Cultivando ou Recuperando, a troca exige confirmação para cancelar o processo; Cultivo entrega somente o saldo real já acumulado e Recuperação preserva apenas Stamina e Farm XP já validados;</li>
+<li>após esse swap, o Bud removido chega ao novo Plot em <strong>Em espera</strong>. O Free escolhe manualmente a próxima ação; o VIP pode executar uma ação pós-swap pré-autorizada, sem consumo quando a configuração for inválida.</li>
 <li>o Bud não abandona batalha em andamento; falha de vínculo, Plot ocupado ou configuração inválida pausa a automação com diagnóstico claro;</li>
 <li>presets PvP são separados e nunca criam, removem ou alteram essa reserva de Plot.</li>
 </ul>
@@ -1955,7 +1958,7 @@
 <li>um Bud ou Plot livre pode ser reposicionado sem custo; a movimentação não redefine dados, níveis, afinidade, qualidade ou raridade;</li>
 <li>Germinação, Cultivo e Recuperação ficam vinculados ao Plot até concluir, pausar ou serem cancelados pelas regras do processo;</li>
 <li>ao concluir um nascimento, o Bud entra automaticamente na coleção e o Plot é liberado, salvo quando uma automação VIP válida iniciar imediatamente o Plano de Cultivo pré-configurado;</li>
-<li>um Bud em processo ativo ou PvE em andamento não pode ser realocado para contornar alocação exclusiva;</li>
+<li>um Bud em processo ativo ou PvE em andamento não pode ser realocado para contornar alocação exclusiva; a única exceção é o swap entre Plot e time PvE fora de batalha, após a confirmação de cancelamento quando houver processo, definido no Ponto 18;</li>
 <li>ativar um time PvE reserva um Plot vinculado por Bud, até sete; cada reserva permanece indisponível para os demais processos até o retorno;</li>
 <li>presets PvE e PvP não criam reserva; somente a atividade PvE real trava Buds e Plots;</li>
 <li>um Plot só pode ser removido ou negociado quando estiver vazio, sem processo ativo, Bud alocado ou reserva PvE.</li>
@@ -2329,21 +2332,57 @@
 </section>
 <section id="estados">
 <span class="tag yellow">Tempo como recurso</span>
-<span class="review-state rs-provisional">Provisório</span>
+<span class="review-state rs-defined">Definido</span>
 <h2>18. Estados do Bud e alocação exclusiva</h2>
-<p>Um Bud só pode estar em um estado principal por vez. Esse princípio impede duplicação de valor e transforma a alocação do elenco em decisão econômica.</p>
+<div class="statement"><strong>Todo Bud possui exatamente um estado operacional principal.</strong> Ele informa onde o Bud está, o que pode fazer agora e quais recursos pode gerar. Essa regra impede duplicação de valor sem transformar presets em travas artificiais.</div>
+<p>Estados não são uma punição nem uma tela extra de administração: eles tornam explícito o custo de alocar um Bud. PvP usa presets independentes; Forja e resets são instantâneos; somente atividades reais, Plot e mercado alteram o estado operacional.</p>
+<h3>18.1 Os seis estados</h3>
 <table>
 <thead><tr><th>Estado</th><th>O que faz</th><th>O que não faz</th></tr></thead>
 <tbody>
-<tr><td><strong>Equipe PvE ativa</strong></td><td>Participa de PvE e mantém seu Plot vinculado reservado.</td><td>Não produz nem recupera enquanto estiver em atividade.</td></tr>
-<tr><td><strong>Farmando</strong></td><td>Gera recursos e Farm XP.</td><td>Não luta nem recupera em velocidade máxima.</td></tr>
-<tr><td><strong>Recuperando</strong></td><td>Restaura Stamina no Plot e prepara o Bud para voltar às batalhas.</td><td>Não produz recursos relevantes.</td></tr>
-<tr><td><strong>Treinando</strong></td><td>Ganha progresso direcionado.</td><td>Não participa da formação ativa.</td></tr>
-<tr><td><strong>Processo especial</strong></td><td>Treinamento especial, ritual, reset, Calibração ou outra atividade de sistema.</td><td>Fica indisponível até conclusão.</td></tr>
+<tr><td><strong>Disponível</strong></td><td>Permanece na coleção, sem Plot reservado e pronto para ser alocado, equipar, organizar ou listar quando permitido.</td><td>Não produz recursos, não recupera Stamina e não participa de expedição real.</td></tr>
+<tr><td><strong>Em espera</strong></td><td>Ocupa um Plot sem processo ativo; preserva o lugar do Bud até o jogador escolher Cultivo, Recuperação ou outra alocação.</td><td>Não gera materiais, Farm XP ou Stamina.</td></tr>
+<tr><td><strong>Cultivando</strong></td><td>Executa um Plano de Cultivo no Plot, gerando materiais e Farm XP.</td><td>Não batalha nem recupera Stamina ao mesmo tempo.</td></tr>
+<tr><td><strong>Recuperando</strong></td><td>Restaura Stamina no Plot e recebe somente o Farm XP menor vinculado à recuperação real.</td><td>Não produz materiais de Cultivo nem participa do PvE.</td></tr>
+<tr><td><strong>PvE ativo</strong></td><td>Integra o time de expedição real e mantém seu Plot vinculado reservado para o ciclo de retorno.</td><td>Não cultiva nem recupera enquanto estiver nesse loop.</td></tr>
+<tr><td><strong>Mercado</strong></td><td>Permanece listado ou em transferência atômica, preservando sua identidade e a Stamina exata do instante da listagem.</td><td>Não ocupa Plot, não luta, não cultiva, não recupera e não pode sofrer alteração pelo vendedor.</td></tr>
 </tbody>
 </table>
-<p>Constar em preset PvE ou PvP não é estado operacional e pode coexistir com Farm, Recuperação ou outro preset. A alocação exclusiva começa somente quando o time PvE é realmente ativado.</p>
-<p>Trocas devem ser claras e rápidas, mas podem respeitar cooldowns ou compromissos quando houver risco econômico. O jogo deve mostrar sempre onde o Bud está e quando voltará a ficar disponível.</p>
+<h3>18.2 O que não cria estado</h3>
+<ul>
+<li>constar em preset PvE ou PvP não muda o estado: um Bud Cultivando ou Recuperando pode aparecer em vários presets, inclusive simultaneamente;</li>
+<li>somente o time PvE efetivamente ativado reserva Buds e Plots; PvP não consome Stamina, não reserva Plot e não interrompe nenhuma atividade;</li>
+<li>uma batalha em andamento é um bloqueio temporário dentro de PvE ativo, não um sétimo estado; integrantes e posições só mudam entre tentativas;</li>
+<li><strong>Aguardando cuidado</strong> é uma condição dentro de Cultivando ou Recuperando: o processo continua ocupando Plot, não avança até o cuidado e pode ser cancelado;</li>
+<li>Calibração, Ascensão, Fusão, Desmontagem e resets são operações instantâneas e atômicas: não criam fila, ritual temporizado, estado especial ou indisponibilidade persistente.</li>
+</ul>
+<h3>18.3 Cultivo, Recuperação e cancelamento proporcional</h3>
+<p>Cultivo e Recuperação são escolhas mutuamente exclusivas no Plot. Um Bud com Stamina cheia pode Cultivar; quando o jogador quer prepará-lo para PvE, troca-o para Recuperação. Também pode deixá-lo em espera, ocupando o Plot sem executar processo algum.</p>
+<div class="formula">Cancelar Cultivo → entregar somente produção real já acumulada · Cancelar Recuperação → preservar somente Stamina e Farm XP reais já validados</div>
+<ul>
+<li>a produção de Cultivo é acumulada autoritativamente pelo servidor; cancelar nunca entrega projeção, recompensa futura ou ciclo completo não concluído;</li>
+<li>Stamina retorna continuamente e Farm XP de Recuperação só nasce da Stamina efetivamente restaurada; cancelar preserva os dois valores já registrados;</li>
+<li>o jogador confirma o cancelamento antes de interromper Cultivo ou Recuperação, inclusive quando o processo estiver aguardando cuidado;</li>
+<li>o cancelamento libera o Plot e deixa o Bud Disponível, salvo quando fizer parte de um swap válido, caso em que a transição seguinte é aplicada atomicamente.</li>
+</ul>
+<h3>18.4 Swap entre Plot e time PvE</h3>
+<p>Fora de batalha, o jogador pode trocar diretamente um Bud em Plot por um Bud do time PvE ativo, sem exigir um terceiro Plot livre. A troca preserva a capacidade e a leitura de onde cada Bud estava.</p>
+<div class="formula">Bud A no Plot X ⇄ Bud B no PvE com Plot Y reservado → A entra no PvE e assume Y · B ocupa X em espera</div>
+<ul>
+<li>se A estiver em espera, o swap é imediato; se estiver Cultivando ou Recuperando, a interface primeiro oferece cancelar o processo com as regras proporcionais desta seção;</li>
+<li>B não herda Cultivo, Recuperação, progresso de processo ou itens de A: ele chega em X em espera e mantém sua própria Stamina;</li>
+<li>a política PvE e a fase atual permanecem; a nova formação vale para a próxima tentativa, nunca para uma batalha já iniciada;</li>
+<li>o jogador gratuito escolhe manualmente a próxima ação de B; o VIP pode autorizar previamente Cultivo ou Recuperação pós-swap. Configuração inválida pausa em <strong>Aguardando Ajuste</strong>, sem consumo adicional.</li>
+</ul>
+<h3>18.5 Mercado, Stamina e integridade</h3>
+<p>Para listar um Bud, ele precisa chegar ao estado Disponível. Um Bud em Cultivo ou Recuperação exige a confirmação de cancelamento; um Bud em PvE ativo exige retorno antes da listagem. Ao listar o Bud, Núcleo e Totem são enviados para a Bag e a listagem anuncia somente o Bud.</p>
+<ul>
+<li>a Stamina fica congelada no valor exato da listagem — um Bud pode ser vendido com 50%, 60% ou qualquer outro valor — e acompanha o mesmo indivíduo para o comprador;</li>
+<li>cancelar a listagem devolve o Bud Disponível com a mesma Stamina congelada; Mercado nunca recupera Stamina porque o Bud não ocupa Plot;</li>
+<li>listagem, cancelamento, troca de estado, swap e transferência são autoritativos, atômicos e idempotentes. Um Bud não pode produzir, lutar, ser modificado ou ser vendido duas vezes pelo mesmo evento.</li>
+</ul>
+<h3>18.6 Leitura para o jogador</h3>
+<p>A ficha e o Jardim mostram sempre o estado atual, Plot associado quando existir, Stamina, processo ou política em curso, próximo cuidado e ação necessária. O objetivo é que o jogador entenda em poucos segundos por que um Bud está indisponível e qual ação o libera.</p>
 </section>
 <section id="pvp">
 <span class="tag red">Competição assíncrona</span>
@@ -2448,7 +2487,7 @@
 <h2>22. O que o protótipo precisa provar</h2>
 <p>O protótipo não precisa conter toda a profundidade do Codex. Ele precisa comprovar que as decisões principais são divertidas antes de multiplicarmos conteúdo.</p>
 <div class="grid">
-<div class="card good"><h3>Entrar cedo</h3><ul><li>formação de sete em 1–2–1–2–1;</li><li>combate automático determinístico;</li><li>Battle Level e Farm Level estruturados para cap 100;</li><li>Battle Level com seis atributos;</li><li>Farm Level com seis atributos;</li><li>separação entre atributos distribuíveis e status derivados;</li><li>raridade e Vigor fixos de 50 a 500;</li><li>um Jardim 7×7, começando com três Plots e preparado para 49;</li><li>Plots elementais;</li><li>Bud, Núcleo e Totem;</li><li>nove espécies no Alpha, uma por elemento;</li><li>Basic Attack e Power Move fixos por espécie;</li><li>RNG controlado de Power Move e Desvio Perfeito;</li><li>nove tipos e matriz completa;</li><li>três presets PvE e três presets PvP no Free, escaláveis para sete com VIP;</li><li>reserva de um Plot por Bud somente pelo time PvE ativo;</li><li>políticas PvE Estável, Avançar, Recuar e Adaptativo;</li><li>sessão online gratuita, expedição offline VIP e rotação PvE → Recuperação → PvE;</li><li>três sementes tutoriais escalonadas, de elementos distintos;</li><li>Germinação em três etapas de 20 min, sem falha total;</li><li>pool congelada no plantio, roll autoritativo no fim da etapa 3 e Proteção de Raridade;</li><li>plantio em Plots comuns e elementais, com Água obrigatória;</li><li>três perfis de Fertilizante para raridade e Vigor;</li><li>criação do Bud autoritativa e idempotente no servidor durante o nascimento;</li></ul></div>
+<div class="card good"><h3>Entrar cedo</h3><ul><li>formação de sete em 1–2–1–2–1;</li><li>combate automático determinístico;</li><li>Battle Level e Farm Level estruturados para cap 100;</li><li>Battle Level com seis atributos;</li><li>Farm Level com seis atributos;</li><li>separação entre atributos distribuíveis e status derivados;</li><li>raridade e Vigor fixos de 50 a 500;</li><li>um Jardim 7×7, começando com três Plots e preparado para 49;</li><li>Plots elementais;</li><li>Bud, Núcleo e Totem;</li><li>nove espécies no Alpha, uma por elemento;</li><li>Basic Attack e Power Move fixos por espécie;</li><li>RNG controlado de Power Move e Desvio Perfeito;</li><li>nove tipos e matriz completa;</li><li>três presets PvE e três presets PvP no Free, escaláveis para sete com VIP;</li><li>seis estados claros de Bud, cancelamento proporcional e swap entre Plot e PvE fora de batalha;</li><li>reserva de um Plot por Bud somente pelo time PvE ativo;</li><li>políticas PvE Estável, Avançar, Recuar e Adaptativo;</li><li>sessão online gratuita, expedição offline VIP e rotação PvE → Recuperação → PvE;</li><li>três sementes tutoriais escalonadas, de elementos distintos;</li><li>Germinação em três etapas de 20 min, sem falha total;</li><li>pool congelada no plantio, roll autoritativo no fim da etapa 3 e Proteção de Raridade;</li><li>plantio em Plots comuns e elementais, com Água obrigatória;</li><li>três perfis de Fertilizante para raridade e Vigor;</li><li>criação do Bud autoritativa e idempotente no servidor durante o nascimento;</li></ul></div>
 <div class="card danger"><h3>Entrar depois</h3><ul><li>marketplace entre jogadores, incluindo Plots, e mercado RMT aberto;</li><li>breeding ou genética;</li><li>guildas complexas;</li><li>PvP em tempo real;</li><li>dezenas de mapas;</li><li>múltiplos sistemas de vizinhança;</li><li>cadeia completa de Síntese, Calibração, Fusão e Ascensão;</li><li>toda a ferramenta premium de Calibração;</li><li>todos os assets finais.</li></ul></div>
 </div>
 <h3>22.1 Métricas de verdade</h3>
@@ -2554,7 +2593,7 @@
 <div class="decision"><div><strong>Passivas</strong><p>Dezoito pools separados por Núcleo/Totem e elemento; dentro de cada pool, raridade altera quantidade e faixa de níveis, não o catálogo elegível.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Reroll</strong><p>Atributos, passivas e níveis podem ser calibrados individualmente ou em conjunto; toda operação consome recursos de gameplay e preserva tipo, elemento e raridade.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Ponte Cash–Gold</strong><p>Reagentes de Cash podem ser vendidos por jogadores no marketplace em Gold.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Alocação</strong><p>O time PvE ativo reserva um Plot por Bud, até sete; processos ativos ficam presos ao Plot até encerrar. Presets salvos não criam alocação.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Estados e alocação</strong><p>Bud usa exatamente um dos seis estados: Disponível, Em espera, Cultivando, Recuperando, PvE ativo ou Mercado. O time PvE reserva um Plot por Bud; presets não criam alocação e swaps Plot ↔ PvE preservam resultados proporcionais de processos cancelados.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>PvP</strong><p>Presets PvP são independentes de Farm, Stamina e PvE. O servidor resolve o estado vivo atual dos Buds ao iniciar cada luta e fixa apenas aquela partida.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Tipos</strong><p>Nove afinidades com matriz rigorosamente simétrica.</p></div><span class="status s-rule">Proposta-base</span></div>
 <div class="decision"><div><strong>Wiki</strong><p>Informação essencial no jogo e profundidade em wiki externa.</p></div><span class="status s-defined">Definido</span></div>
