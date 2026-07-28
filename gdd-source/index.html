@@ -351,7 +351,7 @@
 <a href="#estados" title="Definido">18. Estados e alocação<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#pvp" title="Definido">19. PvP síncrono<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#wiki" title="Definido">20. Codex e wiki<span class="nav-status" aria-hidden="true">✅</span></a>
-<a href="#economia" title="Provisório">21. Economia e mercado<span class="nav-status" aria-hidden="true">⌛</span></a>
+<a href="#economia" title="Definido">21. Economia, mercado e Trade<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#mvp" title="Provisório">22. Protótipo e escopo<span class="nav-status" aria-hidden="true">⌛</span></a>
 <a href="#decisoes" title="Provisório">23. Decisões consolidadas<span class="nav-status" aria-hidden="true">⌛</span></a>
 <a href="#aberto" title="Provisório">24. Questões em aberto<span class="nav-status" aria-hidden="true">⌛</span></a>
@@ -2520,30 +2520,87 @@
 </section>
 <section id="economia">
 <span class="tag yellow">Valor e mercado</span>
-<span class="review-state rs-provisional">Provisório</span>
-<h2>21. Pontes com economia, mercado e crafting</h2>
-<p>Este Codex não redefine a economia global já estabelecida pela Idle Lovers. Ele identifica onde o design do primeiro jogo cria demanda, consumo e diferenciação de ativos.</p>
+<span class="review-state rs-defined">Definido</span>
+<h2>21. Economia, mercado e Trade</h2>
+<p>O Idle Bud usa uma economia de conta separada por função: <strong>Gold</strong> sustenta o jogo, <strong>Cash</strong> é o saldo global Idol Lovers e <strong>Saldo</strong> recebe o valor das vendas em Cash. A estrutura abaixo define a operação entre jogadores; cotação, rotas de conversão ainda não aprovadas e parâmetros financeiros finais pertencem ao documento financeiro.</p>
 <div class="grid">
 <div class="card good"><h3>Fontes de desejo</h3><ul><li>Buds veteranos, raros e com Vigor alto;</li><li>sementes elementais e insumos de cultivo de alta qualidade;</li><li>Núcleos Arcanos e Totens sintetizados com bons rolls;</li><li>receitas, moldes e componentes de chefe;</li><li>Plots de alta qualidade;</li><li>materiais e ferramentas de Calibração;</li><li>Lendários, itens sazonais e históricos.</li></ul></div>
 <div class="card warn"><h3>Sinks naturais</h3><ul><li>plantio, água, Fertilizantes e tentativas de Germinação;</li><li>Síntese, Calibração, Fusão e Ascensão de Núcleos/Totens;</li><li>perdas de crafting e desmontagem parcial;</li><li>desbloqueio de vagas e melhoria de Plots;</li><li>formação de um elenco amplo até o cap.</li></ul></div>
 </div>
-<h3>21.1 Plots no marketplace</h3>
+<h3>21.1 Os três saldos</h3>
+<table>
+<thead><tr><th>Saldo</th><th>Função</th><th>Regra estrutural</th></tr></thead>
+<tbody>
+<tr><td><strong>Gold</strong></td><td>Moeda interna do Idle Bud.</td><td>Cada jogo futuro da Idol Lovers terá sua própria moeda de jogo; Gold não é saldo global.</td></tr>
+<tr><td><strong>Cash</strong></td><td>Saldo global da conta Idol Lovers, adquirido por PIX ou cripto.</td><td>Pode ser usado em qualquer jogo Idol Lovers que o aceite. No lançamento, o Idle Bud é o único jogo integrado.</td></tr>
+<tr><td><strong>Saldo</strong></td><td>Crédito global recebido por uma venda quitada em Cash.</td><td>Não é transferível entre jogadores; pode ser convertido em Cash ou solicitado para saque em cripto/stablecoin sob as regras financeiras aplicáveis.</td></tr>
+</tbody>
+</table>
+<ul>
+<li>não existe conversão automática entre Gold, Cash e Saldo;</li>
+<li>cotação, origem de preço, limites, taxas de rede e regras operacionais de compra, conversão e saque serão definidos no documento financeiro;</li>
+<li>o primeiro saque exige verificação de identidade. Nesta fase, saque por PIX não é oferecido: somente cripto/stablecoin.</li>
+</ul>
+<h3>21.2 Marketplace: anúncio, liquidação e taxa</h3>
+<p>Todo ativo elegível pode receber preço em <strong>Gold</strong>, em <strong>Cash</strong> ou nas duas moedas com preços independentes. No anúncio duplo, o comprador escolhe qual preço aceita; a primeira liquidação válida encerra o anúncio inteiro de forma atômica.</p>
+<table>
+<thead><tr><th>Liquidação escolhida</th><th>Pagamento do comprador</th><th>Recebimento do vendedor</th></tr></thead>
+<tbody>
+<tr><td>Preço em Gold</td><td>Preço anunciado em Gold.</td><td>90% do preço em Gold.</td></tr>
+<tr><td>Preço em Cash</td><td>Preço anunciado em Cash.</td><td>90% do preço em <strong>Saldo</strong>, nunca em Cash.</td></tr>
+</tbody>
+</table>
+<ul>
+<li>a taxa-base de Marketplace é <strong>10%</strong> em Gold ou Cash. Ela precisa existir como variável configurável e parâmetro de painel administrativo;</li>
+<li>a interface mostra moeda, preço, taxa, valor líquido e destino do recebimento antes da confirmação;</li>
+<li>listagem, cancelamento, pagamento, transferência e crédito ao vendedor são autoritativos, atômicos e idempotentes; o ativo não pode duplicar, ser alterado ou circular duas vezes durante a operação;</li>
+<li>cada categoria mantém suas próprias regras de elegibilidade. O fato de um ativo poder ser negociado não remove bloqueios de Germinação, batalha, Mercado ou demais estados definidos neste GDD.</li>
+</ul>
+<h3>21.3 Saldo: conversão e saque</h3>
+<p>O Saldo viabiliza a venda em Cash sem transformar Cash em meio de transferência direta entre contas. Ele não pode ser enviado a outro jogador.</p>
+<div class="formula">Venda de 100 Cash → 90 Saldo · Conversão opcional Saldo → Cash: 90 × (1 − 5%) = 85,5 Cash</div>
+<ul>
+<li>a conversão de Saldo para Cash cobra <strong>5%</strong>, além dos 10% já cobrados na venda original;</li>
+<li>o saque usa Saldo e é restrito inicialmente a cripto/stablecoin; taxas de rede são externas e separadas da taxa de Marketplace;</li>
+<li>a existência de Cash, Saldo ou Gold não garante cotação, saque, conversão ou disponibilidade de um ativo: essas condições dependem do documento financeiro e da operação habilitada.</li>
+</ul>
+<h3>21.4 Trade entre amigos</h3>
+<p><strong>Trade</strong> é a negociação direcionada entre amigos, processada pelo mesmo motor de custódia atômica do Marketplace. Ele facilita transações legítimas sem abrir presentes, transferências livres ou atalhos para evasão de taxa.</p>
+<div class="grid">
+<div class="card good"><h4>Venda direcionada</h4><p>Um amigo compra um ativo por Gold, Cash ou ambos, sob a mesma taxa de 10% e a mesma liquidação do Marketplace. Cash pago pelo comprador sempre gera Saldo para o vendedor.</p></div>
+<div class="card blue"><h4>Escambo</h4><p>Dois amigos trocam ativos em custódia atômica. Exige vínculo de amizade ativo há pelo menos sete dias e uma taxa de execução em Cash; Cash nunca é transferido de um jogador ao outro.</p></div>
+</div>
+<h4>Piso de preço da venda direcionada</h4>
+<div class="formula">Preço mínimo = máximo(Piso Administrativo, 50% × Preço de Referência)</div>
+<div class="formula">Preço de Referência = mediana das últimas 10 vendas públicas válidas nos últimos 14 dias</div>
+<ul>
+<li>sem histórico público suficiente, vale o Piso Administrativo da categoria;</li>
+<li>vendas direcionadas e escambos não alimentam o histórico público usado como referência;</li>
+<li>a referência usa vendas concluídas, e não o menor anúncio ativo, para reduzir manipulação por listagens artificiais;</li>
+<li>o Piso Administrativo, critérios de validade e exceções são parâmetros operacionais do documento financeiro.</li>
+</ul>
+<h4>Taxa do escambo</h4>
+<div class="formula">Taxa total em Cash = máximo(Taxa Mínima, 10% × valor de referência em Cash do item mais valioso)</div>
+<ul>
+<li>ambas as partes podem dividir a taxa livremente: uma pode pagar tudo, a outra pode pagar zero, ou qualquer divisão intermediária;</li>
+<li>o escambo só é confirmado quando a soma dos aportes cobre a taxa total; o valor pago é taxa da plataforma, não transferência entre os participantes;</li>
+<li>os dois lados colocam ativos e eventual contribuição em custódia antes da confirmação final. Se qualquer requisito falhar, nada é transferido.</li>
+</ul>
+<h3>21.5 Plots e sementes no marketplace</h3>
 <p>Plots não iniciais são ativos negociáveis entre jogadores por Gold. A transação transfere o mesmo Plot com suas propriedades e melhorias locais permanentes; vagas desbloqueadas e Infraestrutura de Cultivo continuam vinculadas à conta e não integram a venda.</p>
 <ul>
 <li>os três Plots Simples iniciais permanecem vinculados à conta;</li>
 <li>somente Plots removidos do Jardim, vazios e sem bloqueio operacional podem ser listados;</li>
 <li>o comprador pode armazenar o Plot sem vaga livre, mas precisa de uma vaga desbloqueada e desocupada para instalá-lo;</li>
-<li>listagem, cancelamento e transferência devem ser autoritativos, atômicos e protegidos contra duplicação.</li>
 </ul>
-<h3>21.2 Sementes no marketplace</h3>
-<p>Sementes são ativos de coleção e produção; elas não são caixas com Bud pré-definido. Quando o marketplace for liberado, poderão circular por Gold e, conforme o Documento de Economia, por moeda de Cash conversível.</p>
+<p>Sementes são ativos de coleção e produção; elas não são caixas com Bud pré-definido. Quando sua categoria estiver habilitada no Marketplace, poderão circular pelas moedas permitidas à categoria.</p>
 <ul>
 <li>a negociação transfere a semente real, seu elemento e sua origem, sem revelar espécie, raridade, Vigor ou Pontos Inatos futuros;</li>
 <li>semente em Germinação fica bloqueada até conclusão ou cancelamento e nunca pode ser listada, transferida ou duplicada;</li>
 <li>Proteção de Raridade pertence à conta compradora e não acompanha a semente;</li>
-<li>taxas, limites, saque, moeda e elegibilidade final para mercado de valor real pertencem ao Documento de Economia.</li>
+<li>moedas permitidas, liberação por categoria e condições financeiras finais pertencem ao documento financeiro.</li>
 </ul>
-<h3>21.3 Regra-base da Calibração</h3>
+<h3>21.6 Regra-base da Calibração</h3>
 <p>Toda operação de Calibração exige recursos obtidos por drops, crafting ou ambos. Não existe tentativa gratuita por Bud, categoria ou attachment: melhorar uma propriedade é parte real do loop de Forja.</p>
 <div class="formula">Recursos do jogo + componentes de Forja → Calibração individual ou completa</div>
 <ul>
@@ -2552,8 +2609,8 @@
 <li>Calibração preserva categoria, elemento e raridade do attachment;</li>
 <li>catalisadores de Gold, Cash ou marketplace, se adotados no Documento de Economia, complementam o custo de gameplay e nunca o substituem.</li>
 </ul>
-<p>Esse desenho mantém materiais, chefes, regiões e crafting relevantes. A eventual ponte entre Cash e Gold continua pertencendo ao Documento de Economia, sem conversão automática.</p>
-<h3>21.4 Ferramentas premium de Calibração</h3>
+<p>Esse desenho mantém materiais, chefes, regiões e crafting relevantes. Nenhum catalisador cria conversão automática entre Gold, Cash e Saldo.</p>
+<h3>21.7 Ferramentas premium de Calibração</h3>
 <p>Os nomes abaixo são provisórios, mas já representam funções desejadas. A intenção atual é que essas ferramentas de Calibração sejam vendidas na loja de Cash e possam circular no marketplace por Gold.</p>
 <table>
 <thead><tr><th>Item provisório</th><th>Função</th></tr></thead>
@@ -2568,8 +2625,8 @@
 </tbody>
 </table>
 <p>Custos finais, escalada de preço, obtenção dos materiais de gameplay e catálogo de catalisadores de Calibração serão fechados no documento específico de itemização e loja de Cash. As regras estruturais de Síntese, Fusão, Ascensão, Pesquisa e Desmontagem já estão definidas no Ponto 16.</p>
-<p>Plots já estão aprovados para circulação por Gold. A negociabilidade dos demais ativos, a eventual entrada de Plots no mercado de valor real e o momento de liberação de cada categoria continuam sujeitos às regras do Documento de Fundação e à validação gradual do MVP.</p>
-<h3>21.5 Transparência da expedição</h3>
+<p>Plots já estão aprovados para circulação por Gold. A negociabilidade dos demais ativos e o momento de liberação de cada categoria continuam sujeitos à validação gradual do MVP e às regras do documento financeiro.</p>
+<h3>21.8 Transparência da expedição</h3>
 <p>XP por hora, materiais por hora, Stamina gasta e taxa de vitória são leituras de resultado real recente, não multiplicadores ocultos de recompensa. A economia remunera inimigos definitivamente derrotados e conclusões de fase conforme o Ponto 9; a política PvE apenas decide a próxima tentativa.</p>
 </section>
 <section id="mvp">
@@ -2671,7 +2728,7 @@
 <div class="decision"><div><strong>Carry</strong><p>Buds veteranos podem elevar Buds atrasados em fases anteriores.</p></div><span class="status s-rule">Regra-base</span></div>
 <div class="decision"><div><strong>Jardim e Plots</strong><p>O único Jardim da conta usa grade 7×7, começa com três Plots e expande até 49 vagas permanentes. Plots limitam processos simultâneos, nunca coleção ou presets.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Negociação de Plots</strong><p>Vagas e os três Plots iniciais ficam vinculados à conta; demais Plots vazios podem circular por Gold preservando propriedades e melhorias. Infraestrutura de Cultivo nunca acompanha a venda.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Negociação de sementes</strong><p>Sementes podem circular por Gold e, sob regras futuras de economia, por moeda de Cash conversível. Germinação bloqueia transferência; Proteção de Raridade pertence à conta, não à semente.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Negociação de sementes</strong><p>Sementes podem circular pelas moedas habilitadas para sua categoria. Germinação bloqueia transferência; Proteção de Raridade pertence à conta, não à semente.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Presets</strong><p>Free salva três presets PvE e três PvP; VIP salva sete de cada. Presets guardam somente seleção, ordem e posições e sempre usam o estado atual dos Buds e attachments. Apenas o time PvE ativo reserva Buds e Plots; PvP não possui defesa ativa.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Infraestrutura de Cultivo</strong><p>Progressão gratuita de conta fornece até +30% de velocidade operacional; VIP soma +10% nos processos autorizados, exceto Germinação, que usa metade do tempo após a Infraestrutura. Nunca afeta PvE real.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Attachments</strong><p>Apenas Núcleo Arcano e Totem são equipáveis. Cada Bud usa até um de cada; os dois possuem raridade e elemento próprios, mas não criam skills ou ataques novos.</p></div><span class="status s-defined">Definido</span></div>
@@ -2683,7 +2740,9 @@
 <div class="decision"><div><strong>Desmontagem</strong><p>Retorno parcial provisório de 20% para contas normais e 40% para VIP, nunca 100%.</p></div><span class="status s-rule">Base provisória</span></div>
 <div class="decision"><div><strong>Passivas</strong><p>Dezoito pools separados por Núcleo/Totem e elemento; dentro de cada pool, raridade altera quantidade e faixa de níveis, não o catálogo elegível.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Reroll</strong><p>Atributos, passivas e níveis podem ser calibrados individualmente ou em conjunto; toda operação consome recursos de gameplay e preserva tipo, elemento e raridade.</p></div><span class="status s-defined">Definido</span></div>
-<div class="decision"><div><strong>Ponte Cash–Gold</strong><p>Reagentes de Cash podem ser vendidos por jogadores no marketplace em Gold.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Gold, Cash e Saldo</strong><p>Gold é exclusivo do Idle Bud; Cash é global Idol Lovers; venda em Cash credita Saldo, não Cash. Saldo não é transferível, pode virar Cash com taxa de 5% e pode ser sacado inicialmente apenas em cripto/stablecoin após verificação de identidade.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Marketplace</strong><p>Ativo elegível pode ter preço em Gold, Cash ou ambos. A taxa é 10%, configurável; venda em Gold entrega 90% em Gold e venda em Cash entrega 90% em Saldo. A primeira liquidação de anúncio duplo fecha o anúncio inteiro de forma atômica.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Trade</strong><p>Amigos podem fazer venda direcionada com a mesma taxa do Marketplace ou escambo após sete dias de amizade. O escambo usa custódia atômica e taxa em Cash, que ambos podem dividir livremente ou um deles pagar por inteiro; não há presentes nem transferência direta de Cash/Saldo.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Estados e alocação</strong><p>Bud usa exatamente um dos seis estados: Disponível, Em espera, Cultivando, Recuperando, PvE ativo ou Mercado. O time PvE reserva um Plot por Bud; presets não criam alocação e swaps Plot ↔ PvE preservam resultados proporcionais de processos cancelados. Uma partida PvP aceita pausa e depois retoma a atividade anterior.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>PvP síncrono</strong><p>Ranqueada global e amistosos entre amigos usam o estado vivo atual congelado na sala pronta, resolução autoritativa e 0 Stamina. AR é visível, sem MMR oculto; temporadas de 90 dias, Mestre Top 100, replays determinísticos, espectadores públicos e auditoria integral sustentam a competição.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Tipos</strong><p>Nove afinidades com matriz rigorosamente simétrica.</p></div><span class="status s-rule">Proposta-base</span></div>
@@ -2717,7 +2776,7 @@
 
 <li><strong>Calibração competitiva:</strong> valores finais de Gold, Battle XP e materiais por resultado, cadência de expansão do matchmaking e telemetria de fila, Morte Súbita e ligas.</li>
 <li><strong>Budmaster:</strong> critérios, pesos por sistema, quantidade de classificados, desempates e recompensas sazonais.</li>
-<li><strong>Mercado:</strong> momento de liberação de Plots e sementes, taxas, limites de listagem, cooldowns, histórico de preço, moeda de Cash conversível, saque, demais ativos elegíveis e possível acesso futuro ao mercado de valor real.</li>
+<li><strong>Mercado e finanças:</strong> cotação e rotas de conversão ainda não aprovadas entre Gold, Cash e Saldo; pisos administrativos, taxa mínima de escambo, critérios finais de preço de referência, limites, cooldowns, ativos elegíveis, operação de saque e cronograma de liberação por categoria.</li>
 </ol>
 <div class="statement">A revisão seguirá ponto a ponto. Identidade, apelidos, proveniência, transferência e resets por grupo já possuem regras definidas; nomes provisórios, interface, fórmulas e conteúdo detalhado serão fechados nos capítulos correspondentes.</div>
 </section>
