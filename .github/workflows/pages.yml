@@ -30,20 +30,22 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # The readable v17 source is the only published GDD input.
+          # Readable canonical sources are the only published inputs.
           python3 -m py_compile scripts/build_site.py scripts/build_docs_portal.py
           python3 scripts/build_site.py _site
           cmp gdd-source/index.html _site/gdd/index.html
+          cmp economy-source/index.html _site/economy/index.html
           python3 - <<'PY'
           from pathlib import Path
           import re
 
           gdd = Path('_site/gdd/index.html').read_text(encoding='utf-8')
+          economy = Path('_site/economy/index.html').read_text(encoding='utf-8')
           portal = Path('_site/index.html').read_text(encoding='utf-8')
+
           assert 'Game Design Document · v17' in gdd
           assert '<title>Idle Bud — Game Design Document v17</title>' in gdd
           assert 'Idle Bud — Game Design Document v17</footer>' in gdd
-          assert 'Available · v17' in portal
           headings = re.findall(r'<h2>\s*(\d+)\.\s*.*?</h2>', gdd, re.S)
           assert headings == [str(n) for n in range(1, 25)]
           ids = re.findall(r'\bid=["\']([^"\']+)["\']', gdd)
@@ -52,6 +54,46 @@ jobs:
           assert set(targets) <= set(ids)
           assert gdd.count('id="battlefield-formation"') == 1
           assert gdd.count('id="pve-training"') == 1
+
+          assert 'Available · v17' in portal
+          assert 'Available · v1.0' in portal
+          assert portal.count('>TBD<') == 2
+          assert './economy/' in portal
+
+          required_economy = [
+              '<html lang="pt-BR">',
+              '<title>Idle Bud — Economia v1.0</title>',
+              'Gold, Cash e Saldo',
+              'Preço mínimo = máx(Piso Administrativo, 50% × Preço de Referência)',
+              'Preço de Referência = mediana das últimas 10 vendas públicas válidas concluídas nos últimos 14 dias',
+              'Fee total em Cash = máx(Taxa Mínima, 10% × referência em Cash do item mais valioso)',
+              'Crédito Alpha = Cash gasto válido no Alpha × 1,30',
+              'Crédito Beta = Cash gasto válido no Beta × 1,20',
+              'Backlog financeiro real',
+              'Mapa de autoridade',
+              'Não é parecer jurídico nem promessa de saque',
+              'Idle Bud — Economia v1.0',
+          ]
+          for item in required_economy:
+              assert item in economy, f'Conteúdo obrigatório ausente em Economia: {item}'
+
+          forbidden_economy = [
+              'Ganhos globais',
+              'VIP de 7 dias',
+              'VIP de 30 dias',
+              '8% a 15%',
+              'stablecoin será o preço-base',
+              'Prize Pool da temporada =',
+          ]
+          for item in forbidden_economy:
+              assert item not in economy, f'Proposta histórica não aprovada em Economia: {item}'
+
+          economy_ids = re.findall(r'\bid=["\']([^"\']+)["\']', economy)
+          assert len(economy_ids) == len(set(economy_ids))
+          economy_targets = re.findall(r'href=["\']#([^"\']+)["\']', economy)
+          assert set(economy_targets) <= set(economy_ids)
+          assert economy.count('<section id=') == 17
+          assert economy.count('class="decision-row"') == 15
           PY
           exit 0
           mkdir -p _site/gdd /tmp/gdd-build

@@ -1,0 +1,1418 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Documento oficial de Economia do Idle Bud, alinhado ao Game Design Document v17.">
+  <title>Idle Bud — Economia v1.0</title>
+  <style>
+    :root {
+      --bg: #07100b;
+      --panel: #0d1711;
+      --panel-2: #122019;
+      --panel-3: #17271e;
+      --text: #edf7f0;
+      --muted: #9eafa4;
+      --line: #274033;
+      --leaf: #70e28f;
+      --leaf-soft: rgba(112, 226, 143, .1);
+      --water: #69b9ff;
+      --water-soft: rgba(105, 185, 255, .09);
+      --warn: #ffc86f;
+      --warn-soft: rgba(255, 200, 111, .09);
+      --violet: #bf9cff;
+      --violet-soft: rgba(191, 156, 255, .09);
+      --danger: #ff7f87;
+      --danger-soft: rgba(255, 127, 135, .08);
+      --max: 1280px;
+      --radius: 18px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .34);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 24px; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% -10%, rgba(112, 226, 143, .17), transparent 31rem),
+        radial-gradient(circle at 96% 6%, rgba(105, 185, 255, .1), transparent 30rem),
+        linear-gradient(180deg, #07100b 0%, #08110c 50%, #060d09 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.66;
+    }
+    a { color: #a9ccff; text-decoration-thickness: .08em; text-underline-offset: .18em; }
+    a:hover { color: #c7ddff; }
+    a:focus-visible, summary:focus-visible {
+      outline: 3px solid rgba(105, 185, 255, .7);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+    .skip-link {
+      position: fixed;
+      z-index: 10000;
+      top: 10px;
+      left: 10px;
+      transform: translateY(-180%);
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #e9fff0;
+      color: #07100b;
+      font-weight: 850;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .shell { max-width: var(--max); margin: auto; padding: 0 24px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(39, 64, 51, .75);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .brand { color: #dff4e5; font-weight: 900; letter-spacing: -.01em; }
+    .toplinks { display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-end; }
+    .toplinks a { color: #a8b9ad; font-weight: 720; text-decoration: none; }
+    .toplinks a:hover { color: #fff; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 68px 0 54px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -175px;
+      width: 450px;
+      height: 450px;
+      border: 1px solid rgba(112, 226, 143, .12);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 42px rgba(112, 226, 143, .025),
+        0 0 0 84px rgba(105, 185, 255, .02);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid rgba(112, 226, 143, .35);
+      border-radius: 999px;
+      background: rgba(112, 226, 143, .08);
+      color: #bff4cc;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 940px;
+      margin: 24px 0 18px;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+    .lead {
+      max-width: 940px;
+      margin: 0;
+      color: #c8d7cd;
+      font-size: clamp(18px, 2.15vw, 24px);
+      line-height: 1.5;
+    }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+    .chip {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .025);
+      color: #b8c9bd;
+      font-size: 13px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 276px minmax(0, 1fr);
+      gap: 44px;
+      padding: 44px 0 100px;
+    }
+    nav {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      padding: 0 10px 10px 0;
+      scrollbar-color: #365843 transparent;
+    }
+    .nav-title {
+      margin: 0 0 12px;
+      color: #6f8678;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    nav ol { margin: 0; padding: 0; list-style: none; counter-reset: nav; }
+    nav li { margin: 0; counter-increment: nav; }
+    nav a {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 7px;
+      padding: 7px 9px;
+      border-radius: 9px;
+      color: #9cb0a2;
+      font-size: 12.5px;
+      line-height: 1.3;
+      text-decoration: none;
+    }
+    nav a::before {
+      content: counter(nav, decimal-leading-zero);
+      color: #648070;
+      font-variant-numeric: tabular-nums;
+      font-size: 10px;
+      font-weight: 850;
+      line-height: 1.7;
+    }
+    nav a:hover { background: var(--panel); color: #fff; }
+    main { min-width: 0; }
+    section { padding: 18px 0 48px; border-bottom: 1px solid var(--line); }
+    section:last-child { border-bottom: 0; }
+    h2 {
+      margin: 12px 0 20px;
+      font-size: clamp(29px, 4vw, 45px);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+    h3 { margin: 32px 0 12px; font-size: 22px; line-height: 1.25; letter-spacing: -.018em; }
+    h4 { margin: 24px 0 8px; color: #e0eee4; font-size: 16px; }
+    p { margin: 0 0 16px; color: #c2d0c6; }
+    strong { color: #fff; }
+    ul, ol { padding-left: 21px; color: #c2d0c6; }
+    li { margin: 7px 0; }
+    code {
+      padding: 2px 6px;
+      border: 1px solid #2a4535;
+      border-radius: 6px;
+      background: #132019;
+      color: #d9f2e0;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: .92em;
+    }
+    .section-kicker {
+      display: block;
+      margin-bottom: 5px;
+      color: #789181;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .statement {
+      margin: 26px 0;
+      padding: 24px 26px;
+      border-left: 4px solid var(--leaf);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: linear-gradient(90deg, rgba(112, 226, 143, .13), rgba(112, 226, 143, .025));
+      color: #f3faf5;
+      font-size: 20px;
+      line-height: 1.47;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      min-width: 0;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .012));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+    }
+    .card h3, .card h4 { margin-top: 0; }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .card.defined { border-color: rgba(112, 226, 143, .35); background: var(--leaf-soft); }
+    .card.parameter { border-color: rgba(105, 185, 255, .34); background: var(--water-soft); }
+    .card.hypothesis { border-color: rgba(255, 200, 111, .38); background: var(--warn-soft); }
+    .card.open { border-color: rgba(191, 156, 255, .38); background: var(--violet-soft); }
+    .card.risk { border-color: rgba(255, 127, 135, .38); background: var(--danger-soft); }
+    .state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0 0 10px;
+      padding: 5px 9px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .state.defined { border-color: rgba(112, 226, 143, .25); background: var(--leaf-soft); color: #b9f4c7; }
+    .state.parameter { border-color: rgba(105, 185, 255, .25); background: var(--water-soft); color: #bddcff; }
+    .state.hypothesis { border-color: rgba(255, 200, 111, .25); background: var(--warn-soft); color: #f2d7a6; }
+    .state.open { border-color: rgba(191, 156, 255, .25); background: var(--violet-soft); color: #dac7ff; }
+    .legend-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 20px 0; }
+    .legend-item { padding: 14px; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, .015); }
+    .legend-item p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .metric { font-size: 38px; font-weight: 950; letter-spacing: -.045em; line-height: 1; }
+    .metric-label { margin-top: 8px; color: var(--muted); font-size: 13px; }
+    .table-wrap { margin: 20px 0; overflow: auto; border: 1px solid var(--line); border-radius: 14px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th {
+      background: #132019;
+      color: #edf7f0;
+      font-size: 11px;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+    td { color: #bdcbc1; font-size: 13.5px; }
+    tr:last-child td { border-bottom: 0; }
+    .money { color: #e9f7ed; font-variant-numeric: tabular-nums; font-weight: 760; white-space: nowrap; }
+    .formula {
+      margin: 18px 0;
+      padding: 20px;
+      border: 1px dashed #3d644c;
+      border-radius: 14px;
+      background: #09130d;
+      color: #e9f5ec;
+      font-size: clamp(15px, 2vw, 18px);
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      overflow-wrap: anywhere;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 9px;
+      align-items: stretch;
+      margin: 24px 0;
+    }
+    .flow.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .flow .node {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 94px;
+      padding: 15px 12px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--panel);
+      color: #dce9df;
+      font-size: 13px;
+      text-align: center;
+    }
+    .flow .node span { display: block; margin-top: 5px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+    .flow .node:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      z-index: 1;
+      right: -12px;
+      color: #658072;
+      font-weight: 900;
+    }
+    .callout {
+      margin: 18px 0;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, .018);
+    }
+    .callout strong { display: block; margin-bottom: 5px; }
+    .callout p:last-child { margin-bottom: 0; }
+    .callout.risk { border-color: rgba(255, 127, 135, .38); background: var(--danger-soft); }
+    .callout.open { border-color: rgba(191, 156, 255, .38); background: var(--violet-soft); }
+    .callout.parameter { border-color: rgba(105, 185, 255, .34); background: var(--water-soft); }
+    .small { color: #91a399; font-size: 12px; }
+    .checklist { list-style: none; padding: 0; }
+    .checklist li { position: relative; padding-left: 25px; }
+    .checklist li::before {
+      content: "";
+      position: absolute;
+      top: .54em;
+      left: 2px;
+      width: 10px;
+      height: 5px;
+      border: solid var(--leaf);
+      border-width: 0 0 2px 2px;
+      transform: rotate(-45deg);
+    }
+    .decision-list { margin: 18px 0; }
+    .decision-row {
+      display: grid;
+      grid-template-columns: minmax(150px, .75fr) 1.2fr 1.2fr;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px dashed #2b4636;
+    }
+    .decision-row:last-child { border-bottom: 0; }
+    .decision-row h4 { margin: 0; }
+    .decision-row p { margin: 0; font-size: 13px; }
+    .decision-row .label { color: #dac7ff; font-weight: 850; }
+    details {
+      margin: 12px 0;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .015);
+    }
+    summary {
+      padding: 14px 16px;
+      color: #e7f4eb;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    details > div { padding: 0 16px 16px; }
+    .glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+    .term { padding: 15px 0; border-bottom: 1px dashed #2b4636; }
+    .term dt { color: #f0faf3; font-weight: 850; }
+    .term dd { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .footer {
+      padding: 38px 0 70px;
+      border-top: 1px solid var(--line);
+      color: #7f9386;
+      font-size: 13px;
+    }
+    @media (max-width: 1040px) {
+      .layout { grid-template-columns: 1fr; }
+      nav {
+        position: relative;
+        top: auto;
+        max-height: none;
+        padding: 15px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: var(--panel);
+      }
+      nav ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+      .legend-grid, .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 760px) {
+      .shell { padding: 0 16px; }
+      .topbar { align-items: flex-start; }
+      .toplinks { display: grid; gap: 6px; text-align: right; }
+      .hero { padding-top: 48px; }
+      .grid, .grid.three, .grid.four, .legend-grid, .glossary { grid-template-columns: 1fr; }
+      nav { max-height: 360px; overflow: auto; }
+      nav ol { grid-template-columns: 1fr; }
+      .flow, .flow.four { grid-template-columns: 1fr; }
+      .flow .node:not(:last-child)::after { content: "↓"; right: auto; bottom: -19px; left: 50%; }
+      .decision-row { grid-template-columns: 1fr; gap: 7px; }
+      th, td { min-width: 150px; }
+    }
+    @media print {
+      :root { --bg: #fff; --panel: #fff; --text: #15231a; --muted: #526158; --line: #cbd7cf; }
+      body { color: #15231a; background: #fff; font-size: 10pt; }
+      .topbar, nav, .skip-link { display: none; }
+      .hero { padding: 24px 0; }
+      .hero::after { display: none; }
+      .layout { display: block; padding: 20px 0; }
+      section { break-inside: avoid-page; }
+      h1, h2, h3, h4, strong, .metric { color: #102117; }
+      p, li, td, .lead, .small, .term dd { color: #35483b; }
+      .card, .callout, .formula, details { box-shadow: none; background: #fff; }
+      a { color: #194d2b; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <header class="shell">
+    <div class="topbar">
+      <span class="brand">Idle Bud · Documentação interna</span>
+      <div class="toplinks">
+        <a href="../">Portal</a>
+        <a href="../gdd/">GDD v17</a>
+        <a href="#rastreabilidade">Rastreabilidade</a>
+        <a href="#backlog">Decisões abertas</a>
+      </div>
+    </div>
+    <div class="hero">
+      <span class="eyebrow">Economia · referência oficial · v1.0</span>
+      <h1>Economia do Idle Bud</h1>
+      <p class="lead">Constituição econômica, fluxos de valor, Marketplace, Trade, segurança, telemetria e backlog financeiro do Idle Bud — subordinados ao Game Design Document v17.</p>
+      <div class="meta" aria-label="Metadados do documento">
+        <span class="chip">Fonte de verdade: GDD v17</span>
+        <span class="chip">Escopo: Idol Lovers + Idle Bud</span>
+        <span class="chip">Atualizado em 28 jul. 2026</span>
+        <span class="chip">Sem promessa de preço ou liquidez</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell layout">
+    <nav aria-label="Sumário da Economia">
+      <p class="nav-title">Neste documento</p>
+      <ol>
+        <li><a href="#autoridade">Autoridade e leitura</a></li>
+        <li><a href="#arquitetura">Arquitetura econômica</a></li>
+        <li><a href="#saldos">Gold, Cash e Saldo</a></li>
+        <li><a href="#ledger">Ledger e invariantes</a></li>
+        <li><a href="#marketplace">Marketplace</a></li>
+        <li><a href="#trade">Trade entre amigos</a></li>
+        <li><a href="#saque">Conversão e saque</a></li>
+        <li><a href="#ativos">Ativos e bloqueios</a></li>
+        <li><a href="#equilibrio">Fontes, sinks e escassez</a></li>
+        <li><a href="#sistemas">Sistemas conectados</a></li>
+        <li><a href="#testes">Alpha, Beta e crédito</a></li>
+        <li><a href="#integridade">Integridade e transparência</a></li>
+        <li><a href="#governanca">Telemetria e governança</a></li>
+        <li><a href="#risco">Risco regulatório</a></li>
+        <li><a href="#backlog">Backlog financeiro</a></li>
+        <li><a href="#rastreabilidade">Rastreabilidade</a></li>
+        <li><a href="#glossario">Glossário</a></li>
+      </ol>
+    </nav>
+
+    <main id="conteudo">
+      <section id="autoridade">
+        <span class="section-kicker">01 · Como usar</span>
+        <h2>Autoridade, propósito e limites</h2>
+        <div class="statement"><strong>O GDD vence sempre.</strong> Este documento organiza e operacionaliza as decisões econômicas dos Pontos 1–22; não cria mecânica, moeda, rota financeira, promessa de ganho ou ativo negociável que o GDD não tenha aprovado.</div>
+
+        <p>Esta é a referência econômica do Idle Bud. Quando houver conflito, omissão ou diferença de redação, prevalecem o <a href="../gdd/">GDD publicado</a> e sua fonte canônica local. O Founding Doc é histórico: ajudou a identificar riscos e perguntas, mas não concede autoridade a nenhuma regra.</p>
+
+        <div class="legend-grid" aria-label="Estados das decisões">
+          <div class="legend-item">
+            <span class="state defined">Regra do GDD</span>
+            <p>Decisão aceita. Só muda com alteração explícita da fonte de verdade.</p>
+          </div>
+          <div class="legend-item">
+            <span class="state parameter">Parâmetro configurável</span>
+            <p>Número ou limite administrável dentro de uma estrutura já aprovada.</p>
+          </div>
+          <div class="legend-item">
+            <span class="state hypothesis">Hipótese operacional</span>
+            <p>Implementação recomendada para teste; não amplia direitos nem muda regras.</p>
+          </div>
+          <div class="legend-item">
+            <span class="state open">Decisão aberta</span>
+            <p>Falta material que impede configuração final. O fechamento exigido é declarado.</p>
+          </div>
+        </div>
+
+        <h3>Princípios econômicos</h3>
+        <div class="grid three">
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Valor por utilidade</h4>
+            <p>Buds, Plots, sementes, attachments e materiais precisam de função em coleção, progressão, Forja, Cultivo ou competição. Anúncio não prova valor; venda concluída também não garante liquidez futura.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Economias isoladas</h4>
+            <p>Gold, inventário e mercado pertencem ao Idle Bud. Cash e Saldo pertencem à conta Idol Lovers. Ativos e Gold não atravessam jogos.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Autoridade do servidor</h4>
+            <p>Nascimento, produção, drops, cobrança, propriedade, transferência e crédito são resolvidos de forma autoritativa, atômica, idempotente e auditável.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Sem conversão implícita</h4>
+            <p>Gold, Cash e Saldo não se convertem automaticamente. Uma rota só existe quando estiver aprovada, configurada e visível.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Decisão antes do gasto</h4>
+            <p>Preço, moeda, taxa, valor líquido, chances, custos e consequências relevantes aparecem antes da confirmação.</p>
+          </article>
+          <article class="card risk">
+            <span class="state defined">Limite do GDD</span>
+            <h4>Sem promessa econômica</h4>
+            <p>Cash, Saldo, saque ou histórico de vendas não representam promessa de preço, rentabilidade, recompra, liquidez ou disponibilidade permanente.</p>
+          </article>
+        </div>
+
+        <h3>O que este documento não aprova</h3>
+        <ul>
+          <li>token, blockchain, exchange Cash↔Gold, saque por PIX ou transferência direta entre jogadores;</li>
+          <li>prize pool, fórmula de lucro distribuível, renda, yield, recompra ou garantia de valorização;</li>
+          <li>plano, duração, preço ou forma de pagamento final do VIP além do que o GDD já define;</li>
+          <li>liberação automática de toda categoria de ativo no mercado em Cash;</li>
+          <li>conclusão jurídica, tributária, contábil ou regulatória sobre a operação.</li>
+        </ul>
+      </section>
+
+      <section id="arquitetura">
+        <span class="section-kicker">02 · Escopo de conta e jogo</span>
+        <h2>Arquitetura econômica</h2>
+        <p>A separação de escopo evita que emissão, fraude ou balanceamento de um jogo contamine outro. A conta é compartilhada; a economia de gameplay não.</p>
+
+        <div class="grid">
+          <article class="card parameter">
+            <span class="state defined">Camada global Idol Lovers</span>
+            <h3>Identidade e valor global</h3>
+            <ul>
+              <li>conta, amizade, preferências e consentimentos;</li>
+              <li>Cash global e seus buckets de origem;</li>
+              <li>Saldo global e sua proveniência por venda;</li>
+              <li>pagamentos, KYC, saque, antifraude e suporte;</li>
+              <li>ledger financeiro com origem por jogo e ambiente.</li>
+            </ul>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Camada local Idle Bud</span>
+            <h3>Gameplay e mercado local</h3>
+            <ul>
+              <li>Gold, fontes, gastos e taxa em Gold;</li>
+              <li>Buds, sementes, Plots, attachments e materiais;</li>
+              <li>Jardim, Cultivo, Forja, PvE e PvP;</li>
+              <li>catálogo, elegibilidade e histórico do mercado;</li>
+              <li>temporada, regras e parâmetros do Idle Bud.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="flow" aria-label="Fluxo entre camadas">
+          <div class="node"><strong>Pagamento externo</strong><span>PIX ou cripto, quando habilitado</span></div>
+          <div class="node"><strong>Cash global</strong><span>Crédito de consumo da conta</span></div>
+          <div class="node"><strong>Idle Bud</strong><span>Loja, VIP ou mercado autorizado</span></div>
+          <div class="node"><strong>Saldo global</strong><span>Somente venda quitada em Cash</span></div>
+          <div class="node"><strong>Conversão ou saque</strong><span>Somente rotas aprovadas</span></div>
+        </div>
+
+        <div class="callout open">
+          <strong>Fronteira ainda aberta</strong>
+          <p><strong>Por que está aberta:</strong> o GDD não define como receita, custo de pagamento e margem devem ser atribuídos quando Cash adquirido em um contexto é consumido em outro jogo. <strong>Impacto:</strong> margem e passivos podem ser atribuídos ao jogo errado. <strong>Fecha com:</strong> política contábil de aquisição, consumo, fee, passivo e reconhecimento por <code>game_id</code>.</p>
+        </div>
+      </section>
+
+      <section id="saldos">
+        <span class="section-kicker">03 · Unidades de valor</span>
+        <h2>Gold, Cash e Saldo</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Saldo</th>
+                <th>Escopo e função</th>
+                <th>Origens aprovadas</th>
+                <th>Destinos aprovados</th>
+                <th>Restrições</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gold</strong></td>
+                <td>Moeda interna exclusiva do Idle Bud.</td>
+                <td>PvP ranqueado concede Gold na vitória e menos Gold na derrota. Outras fontes exigem especificação.</td>
+                <td>Compra e taxa no Marketplace em Gold. Demais sinks monetários precisam ser definidos.</td>
+                <td>Não é global, não é sacável e não possui conversão automática para Cash ou Saldo.</td>
+              </tr>
+              <tr>
+                <td><strong>Cash</strong></td>
+                <td>Crédito global da conta Idol Lovers.</td>
+                <td>Compra por PIX ou cripto; Crédito de Lançamento promocional; outras concessões apenas se explicitamente aprovadas.</td>
+                <td>Compra em Marketplace/Trade em Cash e ferramentas premium de Calibração. VIP é vendido nos testes, mas sua rota comercial final permanece aberta.</td>
+                <td>Não é transferível diretamente, não é sacável e uma venda em Cash nunca credita Cash ao vendedor.</td>
+              </tr>
+              <tr>
+                <td><strong>Saldo</strong></td>
+                <td>Crédito global originado por venda quitada em Cash.</td>
+                <td>Crédito líquido de 90% após a fee de Marketplace.</td>
+                <td>Conversão opcional para Cash com fee de 5% ou solicitação de saque em cripto/stablecoin.</td>
+                <td>Não é transferível; disponibilidade e saque dependem de regras financeiras, verificação e operação habilitada.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Ciclo de vida operacional</h3>
+        <div class="grid three">
+          <article class="card defined">
+            <span class="state defined">Gold</span>
+            <p><strong>Emitir</strong> por evento de gameplay aprovado → <strong>gastar</strong> em operação local → <strong>reter fee</strong> no mercado → registrar origem, sink, temporada e saldo pós-evento.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Cash</span>
+            <p><strong>Adquirir ou creditar</strong> em bucket próprio → <strong>reservar</strong> no checkout → <strong>debitar</strong> no consumo → nunca circular diretamente entre contas.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Saldo</span>
+            <p><strong>Criar</strong> somente na venda em Cash → <strong>preservar proveniência</strong> → <strong>converter</strong> ou <strong>sacar</strong> pela rota habilitada → nunca enviar a outro jogador.</p>
+          </article>
+        </div>
+
+        <h3>Buckets que o backend deve distinguir</h3>
+        <p>A interface pode exibir um total simples, mas o ledger não pode misturar direitos diferentes.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Bucket mínimo</th><th>Por que existe</th><th>Regra de consumo ou liberação</th></tr></thead>
+            <tbody>
+              <tr><td>Cash comprado</td><td>Reconciliação do pagamento e preservação em resets de teste.</td><td>Consumo conforme produto; chargeback mantém vínculo com a origem.</td></tr>
+              <tr><td>Cash promocional</td><td>Crédito de Lançamento e futuras promoções aprovadas.</td><td>Não sacável; elegibilidade no Marketplace/Trade ainda aberta.</td></tr>
+              <tr><td>Cash administrativo/teste</td><td>QA, suporte e concessão manual.</td><td>Não gera Crédito de Lançamento; precisa de motivo, autor e aprovação.</td></tr>
+              <tr><td>Cash reservado</td><td>Evita gasto concorrente durante checkout.</td><td>Converte em débito ou volta ao bucket original por expiração/erro.</td></tr>
+              <tr><td>Saldo por venda</td><td>Proveniência por pedido, jogo, ativo, comprador e fee.</td><td>Pode ter estados operacionais sem alterar o valor já liquidado.</td></tr>
+              <tr><td>Saldo convertido/sacado</td><td>Impede reutilização da mesma unidade.</td><td>Estado terminal ligado à operação de conversão ou payout.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout hypothesis">
+          <strong>Hipótese operacional: ordem de consumo</strong>
+          <p>A ordem entre Cash comprado e promocional ainda não foi aprovada. A implementação deve preservar buckets e simular impactos antes de escolher FIFO, prioridade promocional, prioridade por expiração ou seleção explícita. <strong>Não</strong> consolidar buckets de forma irreversível.</p>
+        </div>
+      </section>
+
+      <section id="ledger">
+        <span class="section-kicker">04 · Contabilidade de eventos</span>
+        <h2>Ledger, estados e invariantes</h2>
+        <p>O saldo exibido é uma projeção do ledger, não um número mutável sem causa. Todo crédito, débito, reserva, liberação, fee, estorno e ajuste precisa de evento de origem.</p>
+
+        <div class="grid four">
+          <article class="card defined"><div class="metric">1</div><div class="metric-label">liquidação por transação</div></article>
+          <article class="card defined"><div class="metric">1</div><div class="metric-label">proprietário por ativo</div></article>
+          <article class="card defined"><div class="metric">0</div><div class="metric-label">saldo sem origem</div></article>
+          <article class="card defined"><div class="metric">0</div><div class="metric-label">efeito duplicado por retry</div></article>
+        </div>
+
+        <h3>Invariantes obrigatórias</h3>
+        <ul class="checklist">
+          <li>uma chave de idempotência representa um único comando econômico e sempre devolve o mesmo resultado final;</li>
+          <li>débito, crédito, fee, mudança de proprietário e encerramento do anúncio pertencem à mesma unidade atômica;</li>
+          <li>saldo disponível nunca fica negativo; valor reservado não pode ser gasto em paralelo;</li>
+          <li>um ativo bloqueado por Mercado, Germinação, batalha ou processo incompatível não pode ser transferido;</li>
+          <li>reversões usam eventos compensatórios; registros originais não são apagados;</li>
+          <li>ações administrativas exigem ator, motivo, caso, timestamp, valor anterior/posterior e dupla revisão para limites críticos;</li>
+          <li>reconciliação compara ledger interno, provedor de pagamento, payout e rede sem alterar automaticamente evidência divergente.</li>
+        </ul>
+
+        <h3>Envelope mínimo de um evento econômico</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Campo</th><th>Função</th><th>Exemplo conceitual</th></tr></thead>
+            <tbody>
+              <tr><td><code>event_id</code> / <code>idempotency_key</code></td><td>Unicidade e repetição segura.</td><td>Uma confirmação de compra.</td></tr>
+              <tr><td><code>account_id</code> / <code>game_id</code></td><td>Escopo global e local.</td><td>Conta Idol Lovers + Idle Bud.</td></tr>
+              <tr><td><code>environment</code> / <code>season_id</code></td><td>Separa Alpha, Beta e temporada.</td><td>Necessário para resets e crédito.</td></tr>
+              <tr><td><code>currency</code> / <code>bucket</code></td><td>Evita mistura de direitos.</td><td>Cash comprado, Cash promocional, Saldo.</td></tr>
+              <tr><td><code>amount</code> / <code>fee</code></td><td>Valor bruto, taxa e líquido.</td><td>100 / 10 / 90.</td></tr>
+              <tr><td><code>source_type</code> / <code>source_id</code></td><td>Proveniência econômica.</td><td>Pagamento, venda, PvP, conversão.</td></tr>
+              <tr><td><code>asset_id</code> / <code>listing_id</code></td><td>Linha de propriedade e mercado.</td><td>Bud real, não cópia.</td></tr>
+              <tr><td><code>ruleset_version</code></td><td>Reconstrói a regra aplicada.</td><td>Fee e elegibilidade vigentes.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout parameter">
+          <strong>Parâmetros de precisão ainda necessários</strong>
+          <p>Escala decimal de Gold, Cash e Saldo; arredondamento de 5%; unidade mínima de fee; tratamento de resíduos; timeout de reserva e política de reconciliação. A decisão deve conservar valor e produzir o mesmo resultado em cliente, servidor e relatórios.</p>
+        </div>
+      </section>
+
+      <section id="marketplace">
+        <span class="section-kicker">05 · Mercado público</span>
+        <h2>Marketplace</h2>
+        <div class="statement">Todo ativo <strong>elegível e liberado</strong> pode ter preço em Gold, Cash ou nas duas moedas com preços independentes. Um anúncio duplo não cria dois ativos: a primeira liquidação válida encerra o anúncio inteiro.</div>
+
+        <h3>Liquidação por moeda</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Escolha do comprador</th><th>Débito</th><th>Fee da plataforma</th><th>Crédito do vendedor</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Preço em Gold</td>
+                <td class="money">100% do preço em Gold</td>
+                <td class="money">10% em Gold</td>
+                <td class="money">90% em Gold</td>
+              </tr>
+              <tr>
+                <td>Preço em Cash</td>
+                <td class="money">100% do preço em Cash</td>
+                <td class="money">10% em Cash</td>
+                <td class="money">90% em Saldo, nunca Cash</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="formula">Líquido do vendedor = preço anunciado × (1 − 10%)</div>
+
+        <span class="state parameter">Parâmetro configurável</span>
+        <p>A taxa-base de 10% precisa existir como variável de configuração e no painel administrativo. Alterá-la não pode reescrever vendas existentes: cada liquidação armazena a versão e a taxa efetivamente usadas.</p>
+
+        <h3>Fluxo atômico</h3>
+        <div class="flow" aria-label="Fluxo de liquidação do Marketplace">
+          <div class="node"><strong>Validar</strong><span>conta, saldo, anúncio, ativo e bloqueios</span></div>
+          <div class="node"><strong>Reservar</strong><span>preço e anúncio sob lock transacional</span></div>
+          <div class="node"><strong>Liquidar</strong><span>débito, fee, crédito e propriedade</span></div>
+          <div class="node"><strong>Encerrar</strong><span>preço alternativo também deixa de existir</span></div>
+          <div class="node"><strong>Registrar</strong><span>ledger, proveniência e recibo</span></div>
+        </div>
+
+        <p>Se qualquer validação falhar, nada é transferido. Concorrência entre dois compradores, retries, reconexão ou duplo clique não podem gerar segunda venda. O anúncio permanece bloqueado durante a liquidação e termina em um único estado: vendido, cancelado ou ativo.</p>
+
+        <h3>Transparência obrigatória</h3>
+        <div class="grid">
+          <article class="card defined">
+            <span class="state defined">Antes de confirmar</span>
+            <ul>
+              <li>ativo exato, ID e propriedades que acompanham a venda;</li>
+              <li>moeda e preço escolhido;</li>
+              <li>fee de 10% e valor líquido do vendedor;</li>
+              <li>aviso de que Cash pago vira Saldo do vendedor;</li>
+              <li>estado, Stamina e resets gratuitos do Bud;</li>
+              <li>falhas e risco de quebra acumulado de attachment;</li>
+              <li>restrições, vínculo e ausência de liquidez garantida.</li>
+            </ul>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Depois de liquidar</span>
+            <ul>
+              <li>recibo imutável para comprador e vendedor;</li>
+              <li>preço bruto, fee, líquido, moeda e timestamp;</li>
+              <li>ID do anúncio, transação e ativo;</li>
+              <li>proprietário anterior/novo no backend;</li>
+              <li>versão de regras e status da operação;</li>
+              <li>canal de contestação sem apagar o registro original.</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="callout open">
+          <strong>Decisões de mercado que continuam abertas</strong>
+          <p><strong>Por que estão abertas:</strong> o GDD reserva a operação detalhada ao documento financeiro. <strong>Impacto:</strong> sem esses limites, o mercado não pode ser aberto com controle de spam, fraude, concorrência e chargeback. <strong>Fecha com:</strong> política versionada e simulada para slots, duração, cancelamento, eventual fee de listagem, limites, cooldowns, precisão, liberação de Cash e risco, sem mudar a fee-base nem a liquidação definida.</p>
+        </div>
+      </section>
+
+      <section id="trade">
+        <span class="section-kicker">06 · Negociação direcionada</span>
+        <h2>Trade entre amigos</h2>
+        <p>Trade reutiliza o motor de custódia do Marketplace. Ele permite venda direcionada e escambo, mas não presentes, transferência livre de ativos ou envio de Cash/Saldo.</p>
+
+        <div class="grid">
+          <article class="card defined">
+            <span class="state defined">Venda direcionada</span>
+            <h3>Compra por um amigo específico</h3>
+            <p>Pode usar Gold, Cash ou preços independentes em ambos. Aplica fee de 10% e a mesma liquidação pública: pagamento em Cash gera Saldo, nunca Cash, para o vendedor.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Escambo</span>
+            <h3>Ativo por ativo</h3>
+            <p>Exige amizade ativa há pelo menos sete dias. Ambos depositam ativos e contribuições de fee em custódia; o servidor transfere tudo ou nada.</p>
+          </article>
+        </div>
+
+        <h3>Piso da venda direcionada</h3>
+        <div class="formula">Preço mínimo = máx(Piso Administrativo, 50% × Preço de Referência)</div>
+        <div class="formula">Preço de Referência = mediana das últimas 10 vendas públicas válidas concluídas nos últimos 14 dias</div>
+        <ul>
+          <li>vendas direcionadas e escambos não alimentam a referência pública;</li>
+          <li>anúncio ativo não é venda e não entra no cálculo;</li>
+          <li>com dez valores ordenados, a mediana é a média entre o 5º e o 6º;</li>
+          <li>sem histórico público suficiente, vale somente o Piso Administrativo da categoria;</li>
+          <li>comparabilidade, validade, exceções e exclusão de fraude ainda precisam de política objetiva.</li>
+        </ul>
+
+        <h3>Fee do escambo</h3>
+        <div class="formula">Fee total em Cash = máx(Taxa Mínima, 10% × referência em Cash do item mais valioso)</div>
+        <p>As partes dividem a fee livremente: 100%/0%, 50%/50% ou qualquer composição cuja soma cubra o total. O Cash pago é receita da plataforma; não passa de uma conta à outra.</p>
+
+        <div class="flow four" aria-label="Custódia atômica do escambo">
+          <div class="node"><strong>Propor</strong><span>amigos elegíveis, ativos e divisão do fee</span></div>
+          <div class="node"><strong>Depositar</strong><span>ativos e Cash ficam em custódia</span></div>
+          <div class="node"><strong>Confirmar</strong><span>revalidação final dos dois lados</span></div>
+          <div class="node"><strong>Trocar ou devolver</strong><span>tudo é transferido ou nada muda</span></div>
+        </div>
+
+        <div class="grid">
+          <article class="card open">
+            <span class="state open">Decisão aberta</span>
+            <h4>Referência em Cash</h4>
+            <p><strong>Por que está aberta:</strong> um ativo pode ter histórico apenas em Gold ou não ter dez vendas comparáveis. <strong>Impacto:</strong> não há fee de escambo calculável com segurança. <strong>Fecha com:</strong> fonte autorizada de referência Cash e fallback por categoria.</p>
+          </article>
+          <article class="card open">
+            <span class="state open">Decisão aberta</span>
+            <h4>Pisos e taxa mínima</h4>
+            <p><strong>Por que está aberta:</strong> o GDD aprova a fórmula, não os números. <strong>Impacto:</strong> risco de presente disfarçado ou inviabilidade de itens baratos. <strong>Fecha com:</strong> tabela administrativa versionada, precisão e revisão periódica.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="saque">
+        <span class="section-kicker">07 · Saída e reinvestimento</span>
+        <h2>Conversão de Saldo e saque</h2>
+
+        <h3>Conversão aprovada</h3>
+        <div class="formula">Cash convertido = Saldo convertido × (1 − 5%)</div>
+        <div class="formula">Venda de 100 Cash → 90 Saldo → conversão integral → 85,5 Cash</div>
+        <ul>
+          <li>a fee de conversão de 5% é adicional à fee de 10% já aplicada na venda;</li>
+          <li>a conversão é opcional e usa somente Saldo;</li>
+          <li>o Cash resultante continua não sacável e não transferível diretamente;</li>
+          <li>arredondamento, unidade mínima e irreversibilidade operacional precisam aparecer antes da confirmação.</li>
+        </ul>
+
+        <h3>Saque inicial</h3>
+        <div class="grid three">
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Origem</h4>
+            <p>O saque debita Saldo elegível. Cash e Gold não são fontes diretas de payout.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Destino</h4>
+            <p>Somente cripto/stablecoin na operação inicial. Saque por PIX não é oferecido nesta fase.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Regra do GDD</span>
+            <h4>Identidade e custo</h4>
+            <p>O primeiro saque exige verificação de identidade. A taxa de rede é externa e separada da fee do Marketplace.</p>
+          </article>
+        </div>
+
+        <div class="flow" aria-label="Fluxo conceitual de saque">
+          <div class="node"><strong>Solicitar</strong><span>valor, ativo, rede e carteira</span></div>
+          <div class="node"><strong>Verificar</strong><span>identidade, saldo e elegibilidade</span></div>
+          <div class="node"><strong>Analisar</strong><span>risco, origem e restrições</span></div>
+          <div class="node"><strong>Executar</strong><span>provedor/rede autorizados</span></div>
+          <div class="node"><strong>Conciliar</strong><span>tx hash, fee de rede e estado final</span></div>
+        </div>
+        <p class="small">O fluxo acima é uma hipótese operacional mínima para tornar a regra implementável. Prazos, estados, provedores e limites não estão aprovados pelo GDD.</p>
+
+        <div class="callout risk">
+          <strong>Não é parecer jurídico nem promessa de saque</strong>
+          <p>A regra de produto “saque em cripto/stablecoin” não decide, por si, enquadramento regulatório, licença, obrigação fiscal, disponibilidade geográfica, stablecoin/rede aceita ou capacidade operacional. A rota só pode ser ativada depois de validação jurídica, tributária, contábil, de pagamentos e de privacidade na jurisdição aplicável.</p>
+        </div>
+
+        <div class="callout open">
+          <strong>Decisão necessária para ativação</strong>
+          <p><strong>Por que está aberta:</strong> o GDD aprova a rota de produto, não os requisitos legais e operacionais. <strong>Impacto:</strong> ativar sem definição pode expor jogadores e empresa a perda, fraude e operação irregular. <strong>Fecha com:</strong> países elegíveis; idade e documentação; provedor e custódia; stablecoins e redes; valores e limites; precisão; taxa de rede; prazo; estados; Travel Rule quando aplicável; sanções; chargeback; erro de endereço; carteira autocustodiada; suporte e contestação.</p>
+        </div>
+      </section>
+
+      <section id="ativos">
+        <span class="section-kicker">08 · Catálogo econômico</span>
+        <h2>Ativos negociáveis e restrições</h2>
+        <p>“Negociável” descreve uma estrutura possível; “liberado” descreve a operação atual. Uma categoria só circula depois de ter moeda, fase, elegibilidade e controles aprovados.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Categoria</th><th>O que acompanha</th><th>Bloqueios obrigatórios</th><th>Estado de liberação</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Bud</strong></td>
+                <td>ID, nascimento, espécie, raridade, Vigor, níveis, atributos, build atual, proveniência, Stamina e resets consumidos. Apelido privado é removido.</td>
+                <td>Precisa estar Disponível; Cultivo/Recuperação requer cancelamento; PvE exige retorno; attachments vão para a Bag.</td>
+                <td>Estrutura de negociação definida; moeda e cronograma por categoria ainda dependem da liberação financeira.</td>
+              </tr>
+              <tr>
+                <td><strong>Semente</strong></td>
+                <td>Ativo real, elemento e origem. Não contém Bud, raridade, Vigor ou Pontos Inatos pré-gerados.</td>
+                <td>Em Germinação não lista nem transfere. Proteção de Raridade fica com a conta, não acompanha.</td>
+                <td>Circulação futura aprovada quando a categoria for habilitada; moedas e momento permanecem abertos.</td>
+              </tr>
+              <tr>
+                <td><strong>Plot</strong></td>
+                <td>Elemento, qualidade, raridade, modificadores e melhorias locais permanentes.</td>
+                <td>Deve estar removido, vazio, sem processo, Bud, reserva PvE ou bloqueio.</td>
+                <td>Plots não iniciais aprovados por Gold. Três Plots Simples iniciais e vagas são vinculados.</td>
+              </tr>
+              <tr>
+                <td><strong>Núcleo Arcano / Totem</strong></td>
+                <td>Tipo, elemento, raridade, linhas, passivas, níveis, Calibração, Ascensão e falhas acumuladas.</td>
+                <td>Listagem desequipa o item; não pode haver batalha em andamento nem operação concorrente.</td>
+                <td>Estrutura de mercado definida; cronograma e moedas por categoria ainda abertos.</td>
+              </tr>
+              <tr>
+                <td><strong>Ferramentas premium</strong></td>
+                <td>Selante Arcano, Memória Mística e Orbe de Renovação.</td>
+                <td>Máximo de uma por Calibração; nunca substitui material normal nem altera chance-base.</td>
+                <td>Loja de Cash e negociação por Gold aprovadas.</td>
+              </tr>
+              <tr>
+                <td><strong>Materiais, moldes, receitas e componentes</strong></td>
+                <td>Origem regional, tier, qualidade, uso e vínculos definidos pelo conteúdo.</td>
+                <td>Consumo, vinculação, elegibilidade e stack precisam ser transacionais.</td>
+                <td>Geram desejo e alimentam Forja, mas negociabilidade por categoria não foi aprovada.</td>
+              </tr>
+              <tr>
+                <td><strong>Vaga / Infraestrutura</strong></td>
+                <td>Progressão estrutural da conta.</td>
+                <td>Não se aplica.</td>
+                <td>Vinculada e não negociável. Nunca acompanha venda de Plot.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Bloqueio por estado</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Estado do Bud</th><th>Pode listar?</th><th>Ação necessária</th></tr></thead>
+            <tbody>
+              <tr><td>Disponível</td><td>Sim, se a categoria estiver liberada.</td><td>Validar Stamina, attachments, lock e regras de mercado.</td></tr>
+              <tr><td>Em espera</td><td>Não diretamente.</td><td>Liberar o Plot e tornar Disponível.</td></tr>
+              <tr><td>Cultivando</td><td>Não.</td><td>Confirmar cancelamento e entregar somente produção real acumulada.</td></tr>
+              <tr><td>Recuperando</td><td>Não.</td><td>Confirmar cancelamento e preservar somente Stamina/Farm XP validados.</td></tr>
+              <tr><td>PvE ativo</td><td>Não.</td><td>Retornar do PvE antes da listagem.</td></tr>
+              <tr><td>Mercado</td><td>Já está bloqueado.</td><td>Somente liquidar ou cancelar; não produzir, lutar ou modificar.</td></tr>
+              <tr><td>PvP em andamento</td><td>Não.</td><td>Aguardar encerramento e retomada atômica do estado anterior.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="equilibrio">
+        <span class="section-kicker">09 · Saúde econômica</span>
+        <h2>Fontes, sinks, inflação e escassez</h2>
+        <p>O GDD aprova fontes e sinks estruturais, mas não autoriza atribuir uma moeda a todo consumo. Materiais, tempo, Stamina, Gold, Cash e Saldo são recursos diferentes e devem ser medidos separadamente.</p>
+
+        <div class="grid">
+          <article class="card defined">
+            <span class="state defined">Fontes confirmadas</span>
+            <ul>
+              <li>PvP ranqueado: Gold e Battle XP em vitória/derrota; materiais somente na vitória;</li>
+              <li>PvE: XP e drops dos inimigos derrotados; conclusão adiciona baú, estrelas e desbloqueios;</li>
+              <li>Cultivo: materiais e Farm XP por ciclos válidos;</li>
+              <li>recuperação: Stamina e Farm XP menor, apenas sobre restauração real;</li>
+              <li>pagamento externo: Cash, quando o checkout correspondente estiver habilitado;</li>
+              <li>venda em Cash: Saldo líquido do vendedor.</li>
+            </ul>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Sinks confirmados</span>
+            <ul>
+              <li>semente, água e Fertilizantes na Germinação;</li>
+              <li>materiais de Síntese, Calibração, Fusão e Ascensão;</li>
+              <li>três attachments consumidos na Fusão;</li>
+              <li>quebra possível na Ascensão após falhas seguras;</li>
+              <li>Desmontagem retorna parcialmente e nunca 100%;</li>
+              <li>fee de Marketplace, Trade, escambo e conversão Saldo→Cash;</li>
+              <li>Cash das ferramentas premium de Calibração.</li>
+            </ul>
+          </article>
+        </div>
+
+        <h3>Controles estruturais de oferta</h3>
+        <div class="grid three">
+          <article class="card defined"><h4>Cap sem overflow</h4><p>Battle/Farm Level chegam a 100 sem armazenar XP excedente. O cap encerra emissão vertical, não o uso do Bud.</p></article>
+          <article class="card defined"><h4>Alocação exclusiva</h4><p>Bud e Plot não produzem, recuperam, batalham e circulam ao mesmo tempo. Presets não criam duplicação de uso.</p></article>
+          <article class="card defined"><h4>Tempo e capacidade</h4><p>Plots limitam paralelismo. Infraestrutura e VIP aceleram dentro de limites sem gerar item do nada.</p></article>
+          <article class="card defined"><h4>Risco da Forja</h4><p>Reroll consome recursos; Fusão destrói três itens; Ascensão pode quebrar; Desmontagem perde valor.</p></article>
+          <article class="card defined"><h4>RNG transparente</h4><p>Proteções reduzem azar extremo sem garantir Épico/Lendário ou remover o custo das tentativas.</p></article>
+          <article class="card defined"><h4>Categoria liberada por estágio</h4><p>Nem todo ativo entra no mercado real ao mesmo tempo. Liberação gradual limita superfície de fraude e oferta.</p></article>
+        </div>
+
+        <h3>Indicadores de inflação e liquidez</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Indicador</th><th>Leitura</th><th>Ação possível sem mudar o GDD</th></tr></thead>
+            <tbody>
+              <tr><td>Gold emitido / Gold destruído</td><td>Pressão monetária local por coorte e temporada.</td><td>Calibrar valores de reward, custos e limites ainda abertos.</td></tr>
+              <tr><td>Estoque e idade por categoria</td><td>Oferta acumulada, encalhe e concentração.</td><td>Ajustar drop/craft, nunca apagar ativo sem regra publicada.</td></tr>
+              <tr><td>Sell-through e tempo de venda</td><td>Liquidez real, não preço pedido.</td><td>Rever liberação, UX, demanda e slots.</td></tr>
+              <tr><td>Preço mediano e dispersão</td><td>Formação de preço, choque e manipulação.</td><td>Alertar, revisar vendas inválidas e calibrar pisos.</td></tr>
+              <tr><td>Top 1% de emissão/volume</td><td>Concentração por whale, bot, trader ou multiaccount.</td><td>Limites de risco e revisão sem alterar propriedade arbitrariamente.</td></tr>
+              <tr><td>Taxa de criação/destruição</td><td>Se Forja e consumo absorvem a oferta.</td><td>Calibrar custos, retorno parcial e probabilidades configuráveis.</td></tr>
+              <tr><td>Compradores e vendedores únicos</td><td>Mercado saudável versus volume circular.</td><td>Investigar wash trading, não confundir GMV com demanda.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout open">
+          <strong>Curvas que faltam</strong>
+          <p><strong>Por que estão abertas:</strong> o GDD fixa responsabilidades, não os volumes finais. <strong>Impacto:</strong> não é possível estimar inflação, estoque, ritmo de progressão ou preço sem os números. <strong>Fecha com:</strong> tabelas de Gold, custos, drops, Desmontagem, loja e limites, mais simulação econômica versionada por pelo menos uma temporada.</p>
+        </div>
+      </section>
+
+      <section id="sistemas">
+        <span class="section-kicker">10 · Economia no jogo</span>
+        <h2>Relação com Cultivo, Forja, PvE, PvP, temporada e VIP</h2>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Sistema</th><th>Produz</th><th>Consome ou limita</th><th>Invariante econômica</th></tr></thead>
+            <tbody>
+              <tr><td>Cultivo</td><td>Materiais, Farm XP e novos Buds via Germinação.</td><td>Plot, tempo, sementes, água e Fertilizantes.</td><td>Um processo por Plot; cancelamento entrega apenas valor real acumulado.</td></tr>
+              <tr><td>Forja</td><td>Núcleos e Totens por Síntese; transformação por Calibração, Fusão e Ascensão.</td><td>Materiais, Conhecimento, itens e risco de quebra.</td><td>Attachment completo não cai pronto; ferramenta premium não substitui gameplay.</td></tr>
+              <tr><td>PvE</td><td>Battle XP, materiais, sementes, componentes e progresso.</td><td>Stamina individual na entrada; tempo e formação.</td><td>Drop/XP por inimigo derrotado; encerramento idempotente; 2× VIP é só visual.</td></tr>
+              <tr><td>PvP</td><td>Gold e Battle XP; material apenas na vitória ranqueada.</td><td>Risco competitivo e AR; zero Stamina.</td><td>Amistoso emite zero; VIP não altera resultado; replays auditáveis.</td></tr>
+              <tr><td>Temporada</td><td>Reconhecimento, cosméticos e materiais de Forja por liga.</td><td>AR reinicia em ciclo de 90 dias.</td><td>Alpha/Beta não persistem AR ou rewards para S1; nenhum prêmio financeiro foi aprovado.</td></tr>
+              <tr><td>VIP</td><td>Eficiência, automação, paralelismo e conforto.</td><td>Produto vendido nos ambientes de teste; preço/duração/rota comercial finais abertos.</td><td>Não concede levels/atributos, espécies, regiões ou receitas essenciais; exceção econômica explícita: Desmontagem 40% versus 20%.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Benefícios VIP com efeito econômico aprovados</h3>
+        <ul>
+          <li>mais filas e automações de Germinação, Cultivo e Recuperação dentro de recursos pré-autorizados;</li>
+          <li>50% do tempo-base de Germinação após Infraestrutura; +10% operacional fora da Germinação;</li>
+          <li>PvE offline por até 8 horas e rotação PvE→Recuperação→PvE;</li>
+          <li>mais slots de venda no Marketplace;</li>
+          <li>Desmontagem provisória de aproximadamente 40%, contra 20% normal, nunca 100%;</li>
+          <li>resets adicionais de atributos, filtros, organização e sete presets contra três;</li>
+          <li>2× no PvE apenas para apresentação; resultado, drops, consumo e ticks permanecem iguais.</li>
+        </ul>
+        <div class="callout parameter">
+          <strong>Parâmetros VIP não fechados</strong>
+          <p>Quantidade de filas e slots de mercado, percentuais finais de aceleração, duração offline, retorno definitivo de Desmontagem, preço, duração, renovação e rota de compra. O teto comercial de R$ 9,99 aparece no GDD como direção desejada do balanceamento, não como preço final publicado.</p>
+        </div>
+      </section>
+
+      <section id="testes">
+        <span class="section-kicker">11 · Operação pré-lançamento</span>
+        <h2>Alpha fechado, Beta aberto e Crédito de Lançamento</h2>
+        <p>Alpha e Beta validam os sistemas aprovados; não criam uma economia alternativa. Balanceamento pode mudar agressivamente, e cada transição limpa o estado de jogo.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Transição</th><th>Resetado</th><th>Preservado</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Alpha → Beta</td>
+                <td>Progressão, Buds, itens, Gold, inventário, Jardim, mapas, rankings e demais estado de jogo.</td>
+                <td>Conta, amizade, preferências, consentimentos, participação, Cash global e ledger de Cash gasto válido.</td>
+              </tr>
+              <tr>
+                <td>Beta → Temporada 1</td>
+                <td>Progressão, Buds, itens, Gold, inventário, Jardim, mapas, rankings e demais estado de jogo.</td>
+                <td>Conta, amizade, preferências, consentimentos, Cash global e ledger elegível ao Crédito de Lançamento.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Fórmulas aprovadas</h3>
+        <div class="grid">
+          <article class="card defined">
+            <span class="state defined">Alpha fechado</span>
+            <div class="formula">Crédito Alpha = Cash gasto válido no Alpha × 1,30</div>
+            <p>Exemplo: 100 Cash válidos gastos geram 130 Cash promocionais na abertura da Temporada 1.</p>
+          </article>
+          <article class="card defined">
+            <span class="state defined">Beta aberto</span>
+            <div class="formula">Crédito Beta = Cash gasto válido no Beta × 1,20</div>
+            <p>Exemplo: 100 Cash válidos gastos geram 120 Cash promocionais na abertura da Temporada 1.</p>
+          </article>
+        </div>
+
+        <h3>Elegibilidade e proteção contra duplicação</h3>
+        <ul class="checklist">
+          <li>Cash comprado e não gasto permanece Cash global normal; não entra na fórmula e não recebe crédito duplicado;</li>
+          <li>estornos, chargebacks, concessões administrativas, Cash de teste e fraude não geram crédito;</li>
+          <li>o crédito é Cash promocional: não é Saldo, saque ou transferência direta;</li>
+          <li>cada gasto elegível é contado uma vez no ambiente em que ocorreu;</li>
+          <li>reembolso ou invalidação posterior precisa compensar a base elegível antes da emissão final;</li>
+          <li>o snapshot de elegibilidade guarda evento, bucket de origem, produto, ambiente, valor e motivo de exclusão;</li>
+          <li>Alpha e Beta mantêm ledgers separados para impedir soma cruzada ou reaproveitamento do mesmo evento.</li>
+        </ul>
+
+        <div class="callout open">
+          <strong>Elegibilidade detalhada ainda aberta</strong>
+          <p><strong>Por que está aberta:</strong> o GDD define multiplicadores e exclusões, mas reserva o uso do crédito ao financeiro. <strong>Impacto:</strong> ambiguidade pode duplicar crédito ou tratar jogadores iguais de forma diferente. <strong>Fecha com:</strong> política de Cash promocional, ordem de buckets, estorno parcial, produto não entregue, códigos, expiração, arredondamento, snapshot e contestação, publicada antes do primeiro gasto elegível e testada por replay integral do ledger.</p>
+        </div>
+      </section>
+
+      <section id="integridade">
+        <span class="section-kicker">12 · Confiança operacional</span>
+        <h2>Auditoria, prevenção de abuso e transparência</h2>
+
+        <h3>Controles por ameaça</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Ameaça</th><th>Prevenção</th><th>Detecção</th><th>Resposta segura</th></tr></thead>
+            <tbody>
+              <tr><td>Duplicação de saldo/item</td><td>Transação atômica, lock, idempotência e propriedade única.</td><td>Reconciliação, invariant checks e divergência de contagem.</td><td>Pausar rota, preservar evidência e compensar por evento.</td></tr>
+              <tr><td>Multiaccount industrial</td><td>Limites configuráveis, custo real, vínculos e alocação exclusiva.</td><td>Clusters por pagamento, dispositivo, rede, comportamento e fluxo.</td><td>Revisão proporcional; limitar mercado/saque sem apagar prova.</td></tr>
+              <tr><td>Wash trading</td><td>Fee, pisos no Trade e exclusão de venda direcionada da referência.</td><td>Ciclos, contas relacionadas, repetição de ativo, concentração e preço anômalo.</td><td>Excluir venda inválida da referência; investigar e registrar decisão.</td></tr>
+              <tr><td>Manipulação de preço</td><td>Referência por venda pública concluída; mínimo de 10 em 14 dias.</td><td>Desvio de mediana, baixa diversidade, ida-e-volta e outliers.</td><td>Fallback no Piso Administrativo e revisão dos critérios de validade.</td></tr>
+              <tr><td>Exploração de liquidez</td><td>Liberação gradual, limites e ausência de promessa de conversão.</td><td>Saque/reinvestimento, sell-through, concentração e corrida por saída.</td><td>Kill switch de rota futura, fila de revisão e comunicação transparente.</td></tr>
+              <tr><td>Chargeback</td><td>Vínculo entre compra de Cash, consumo e origem do Saldo.</td><td>Webhook, reconciliação e risco do meio de pagamento.</td><td>Evento compensatório, bloqueio proporcional e revisão; sem apagar venda.</td></tr>
+              <tr><td>Abuso administrativo</td><td>RBAC, dupla aprovação, limites e segregação de função.</td><td>Log imutável, alertas e relatório de exceções.</td><td>Revogar acesso, preservar trilha e compensar com justificativa.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">Multiaccount, wash trading e controles específicos acima são hipóteses operacionais exigidas pelo risco do produto e pela missão deste documento. Elas não autorizam coleta excessiva nem punição automática sem política e revisão.</p>
+
+        <h3>Logs que precisam reconstruir um caso</h3>
+        <ul>
+          <li>saldo anterior, delta, saldo posterior, bucket e origem;</li>
+          <li>estado e proprietário do ativo antes/depois;</li>
+          <li>preço, fee, líquido, moeda, piso e referência aplicada;</li>
+          <li>versão do ruleset, configuração, feature flag e cálculo;</li>
+          <li>ator de sistema, conta ou administrador e credencial de autorização;</li>
+          <li>tentativas repetidas, chave de idempotência e resposta devolvida;</li>
+          <li>sinais de risco usados, decisão, revisor e resultado de apelação;</li>
+          <li>para payout: ativo/rede, carteira mascarada, tx hash, fee de rede e reconciliação.</li>
+        </ul>
+
+        <h3>Promessa de interface</h3>
+        <div class="grid three">
+          <article class="card defined"><h4>Sem preço ambíguo</h4><p>Moeda e preço independentes; não mostrar “equivalência” entre Gold e Cash sem rota aprovada.</p></article>
+          <article class="card defined"><h4>Sem fee escondida</h4><p>Preço bruto, taxa, líquido e destino aparecem antes do aceite e no recibo.</p></article>
+          <article class="card defined"><h4>Sem chance escondida</h4><p>Germinação, Forja e risco de Ascensão exibem probabilidades e consequências vigentes.</p></article>
+          <article class="card defined"><h4>Sem liquidez implícita</h4><p>Preço anunciado, última venda e referência não são promessa de comprador.</p></article>
+          <article class="card defined"><h4>Sem estado opaco</h4><p>Jogador vê por que ativo/saldo está bloqueado e qual ação ou revisão o libera.</p></article>
+          <article class="card defined"><h4>Sem reescrita silenciosa</h4><p>Patch e configuração são versionados; operações antigas preservam a regra aplicada.</p></article>
+        </div>
+      </section>
+
+      <section id="governanca">
+        <span class="section-kicker">13 · Operar com evidência</span>
+        <h2>Telemetria, parâmetros e governança</h2>
+        <p>Eventos de servidor são a verdade de progressão, economia e fraude. Eventos de cliente explicam navegação e compreensão, sem substituir o ledger.</p>
+
+        <h3>Eventos econômicos mínimos</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Domínio</th><th>Eventos</th><th>Dimensões essenciais</th></tr></thead>
+            <tbody>
+              <tr><td>Moedas</td><td>emitir, reservar, debitar, liberar, converter, compensar</td><td>saldo, bucket, fonte, sink, ambiente, temporada</td></tr>
+              <tr><td>Mercado</td><td>listar, editar, cancelar, comprar, liquidar, falhar</td><td>categoria, ativo, moeda, preço, fee, líquido, latência</td></tr>
+              <tr><td>Trade</td><td>propor, custodiar, confirmar, expirar, trocar, devolver</td><td>amizade, piso, referência, divisão da fee, motivo de falha</td></tr>
+              <tr><td>Forja/Cultivo</td><td>iniciar, consumir, concluir, cancelar, quebrar, desmontar</td><td>insumos, resultado, probabilidade, proteção, ruleset</td></tr>
+              <tr><td>Crédito</td><td>gastar, tornar elegível, excluir, calcular, emitir</td><td>Alpha/Beta, bucket, multiplicador, exceção</td></tr>
+              <tr><td>Saque</td><td>solicitar, analisar, aprovar, rejeitar, transmitir, conciliar</td><td>KYC, risco, rede, ativo, fee, tx hash, SLA</td></tr>
+              <tr><td>Risco</td><td>sinalizar, revisar, decidir, apelar, reverter</td><td>regra, evidência, revisor, prazo e proporcionalidade</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Painel de saúde</h3>
+        <div class="grid four">
+          <article class="card parameter"><div class="metric">F/S</div><div class="metric-label">fontes por sink, por recurso</div></article>
+          <article class="card parameter"><div class="metric">GMV</div><div class="metric-label">com compradores únicos e wash removido</div></article>
+          <article class="card parameter"><div class="metric">P50</div><div class="metric-label">preço e tempo de venda por categoria</div></article>
+          <article class="card parameter"><div class="metric">R%</div><div class="metric-label">reversão, fraude, chargeback e erro</div></article>
+        </div>
+        <p>GMV, preço e conversão nunca devem ser lidos sozinhos. Sempre segmentar por coorte, pagadores únicos, categoria, origem de saldo, concentração, ambiente, temporada e sinais de contas relacionadas.</p>
+
+        <h3>Mudança de parâmetros</h3>
+        <ol>
+          <li>proposta com hipótese, métrica-alvo, faixa segura e impacto esperado;</li>
+          <li>simulação/replay sobre dados históricos sem publicar mudança;</li>
+          <li>revisão por produto, economia, engenharia e risco quando tocar valor;</li>
+          <li>validação automática de faixa, compatibilidade e soma de probabilidades;</li>
+          <li>publicação versionada por ambiente, jogo e temporada;</li>
+          <li>monitoramento, comparação com baseline e rollback disponível;</li>
+          <li>nota pública quando a mudança afetar custo, chance, fee ou elegibilidade.</li>
+        </ol>
+
+        <div class="callout risk">
+          <strong>Privacidade por desenho</strong>
+          <p>Cada evento precisa de finalidade, versão, retenção e campos estritamente necessários. Não coletar senha, conteúdo digitado, área de transferência ou dado sensível sem necessidade explícita. Telemetria não essencial respeita consentimento e recusa real, sem bloquear o jogo.</p>
+        </div>
+      </section>
+
+      <section id="risco">
+        <span class="section-kicker">14 · Perímetro externo</span>
+        <h2>Pagamentos, KYC, cripto, privacidade e legislação</h2>
+        <div class="statement">Estas referências externas são <strong>sensores de risco</strong>. Elas não concluem que a Idol Lovers é ou não é instituição regulada, VASP/PSAV, instituição de pagamento, promotora de concurso ou qualquer outra categoria.</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fonte oficial atual</th><th>Por que importa ao desenho</th><th>Decisão interna exigida</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><a href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2022/lei/l14478.htm">Lei nº 14.478/2022</a> e <a href="https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2023/decreto/d11563.htm">Decreto nº 11.563/2023</a></td>
+                <td>Estabelecem o marco brasileiro de serviços de ativos virtuais e competência regulatória do Banco Central, com aplicação do CDC no que couber.</td>
+                <td>Mapear atividades reais, partes, custódia e jurisdições antes de escolher arquitetura de payout.</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?numero=520&amp;tipo=Resolu%C3%A7%C3%A3o+BCB">Resolução BCB nº 520/2025</a></td>
+                <td>Em vigor desde 2 fev. 2026; disciplina prestadoras de serviços de ativos virtuais, autorização, funcionamento, controles e transição.</td>
+                <td>Definir se a operação usa parceiro autorizado e quais obrigações recaem sobre cada parte.</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.bcb.gov.br/estabilidadefinanceira/exibenormativo?numero=521&amp;tipo=Resolu%C3%A7%C3%A3o+BCB">Resolução BCB nº 521/2025</a></td>
+                <td>Trata operações de câmbio e informações de transferências, inclusive carteira autocustodiada, no contexto regulado.</td>
+                <td>Definir dados, comprovantes, Travel Rule quando aplicável e limites de rede/carteira.</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/declaracoes-e-demonstrativos/criptoativos/decripto">IN RFB nº 2.291/2025 · DeCripto</a></td>
+                <td>Atualiza a prestação de informações sobre operações com criptoativos a partir de 2026.</td>
+                <td>Validar obrigações de reporte, leiaute, retenção e reconciliação com assessoria tributária.</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.fatf-gafi.org/en/publications/Fatfrecommendations/targeted-update-virtual-assets-vasps-2025.html">FATF · atualização 2025 sobre VA/VASPs</a></td>
+                <td>Reforça abordagem baseada em risco, licenciamento, Travel Rule e riscos crescentes envolvendo stablecoins.</td>
+                <td>Desenhar KYC, monitoramento, sanções e parceiros conforme risco e jurisdição.</td>
+              </tr>
+              <tr>
+                <td><a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm">LGPD</a> e <a href="https://www.gov.br/anpd/pt-br/centrais-de-conteudo/materiais-educativos-e-publicacoes">guias da ANPD</a></td>
+                <td>Exigem finalidade, necessidade, transparência, segurança, prevenção e prestação de contas no tratamento de dados.</td>
+                <td>Definir base legal, retenção, agentes, direitos, transferências e avaliação de risco de KYC/antifraude.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Gate de lançamento financeiro</h3>
+        <ul class="checklist">
+          <li>parecer jurídico por jurisdição e fluxo real, não apenas pela nomenclatura do produto;</li>
+          <li>análise tributária e contábil de Cash, Saldo, fees, passivos, conversões e payout;</li>
+          <li>contratos e due diligence de pagamento, KYC, cripto, custódia, screening e dados;</li>
+          <li>termos, política de privacidade, disclosures de preço/risco e fluxo de contestação;</li>
+          <li>testes de fraude, segurança, reconciliação, desastre, chave comprometida e insolvência de parceiro;</li>
+          <li>aprovação de países, idade, ativos, redes, limites e procedimentos de suporte;</li>
+          <li>kill switches por rota que preservem o jogo e a evidência sem prometer disponibilidade.</li>
+        </ul>
+      </section>
+
+      <section id="backlog">
+        <span class="section-kicker">15 · O que falta decidir</span>
+        <h2>Backlog financeiro real</h2>
+        <p>Uma pendência existe somente quando o GDD reservou o detalhe. Nenhum item abaixo reabre fee, moedas, crédito, fórmula de Trade ou regra de gameplay já aprovada.</p>
+
+        <div class="decision-list" role="list">
+          <div class="decision-row" role="listitem">
+            <h4>Cotação e checkout</h4>
+            <p><span class="label">Por que aberto:</span> o GDD permite PIX/cripto, mas não define preço, paridade, janela, ativo ou provedor. <span class="label">Impacto:</span> Cash não pode ser precificado, reconciliado ou reembolsado de modo consistente.</p>
+            <p><span class="label">Fecha com:</span> moeda de referência, fontes de cotação, validade, spread, falha, reembolso, rede e recibo.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Rotas entre saldos</h4>
+            <p><span class="label">Por que aberto:</span> só Saldo→Cash (5%) está aprovado; nenhuma ponte com Gold existe. <span class="label">Impacto:</span> uma rota implícita criaria arbitragem e direitos não aprovados.</p>
+            <p><span class="label">Fecha com:</span> confirmar inexistência das demais rotas ou aprovar explicitamente uma rota futura com limites.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Precisão e arredondamento</h4>
+            <p><span class="label">Por que aberto:</span> 90% e 5% podem produzir frações. <span class="label">Impacto:</span> clientes e relatórios podem divergir ou criar resíduos exploráveis.</p>
+            <p><span class="label">Fecha com:</span> escala por moeda, regra de arredondamento, unidade mínima, resíduos e testes de conservação.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Pisos administrativos</h4>
+            <p><span class="label">Por que aberto:</span> a fórmula da venda direcionada exige um piso por categoria. <span class="label">Impacto:</span> sem piso, presentes disfarçados e evasão de fee ficam possíveis.</p>
+            <p><span class="label">Fecha com:</span> valores, moedas, vigência, revisão, exceções e autoridade de mudança.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Preço de referência</h4>
+            <p><span class="label">Por que aberto:</span> “venda pública válida” e comparabilidade precisam de critérios. <span class="label">Impacto:</span> vendas anômalas podem distorcer pisos e fees.</p>
+            <p><span class="label">Fecha com:</span> identidade/categoria comparável, exclusões, fraude, outlier, timestamp e fallback.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Fee mínima de escambo</h4>
+            <p><span class="label">Por que aberto:</span> o GDD aprova o máximo entre mínimo e 10%, mas não o mínimo. <span class="label">Impacto:</span> itens baratos podem escapar da proteção econômica ou ficar inviáveis.</p>
+            <p><span class="label">Fecha com:</span> valor, precisão, referência Cash e fallback para ativo sem histórico.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Limites e cooldowns</h4>
+            <p><span class="label">Por que aberto:</span> slots, frequência e risco influenciam spam, fraude e liquidez. <span class="label">Impacto:</span> ausência de limites amplia abuso; excesso sufoca o mercado.</p>
+            <p><span class="label">Fecha com:</span> limites por conta/categoria, reputação, alteração de segurança e política de revisão.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Ativos e cronograma</h4>
+            <p><span class="label">Por que aberto:</span> somente Plots não iniciais por Gold e ferramentas premium Cash→Gold têm liberação explícita. <span class="label">Impacto:</span> liberar tudo de uma vez amplia oferta, fraude e risco financeiro.</p>
+            <p><span class="label">Fecha com:</span> matriz categoria × moeda × ambiente × temporada × elegibilidade.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Fontes e sinks de Gold</h4>
+            <p><span class="label">Por que aberto:</span> PvP confirma emissão, mas valores e restante da economia local não estão definidos. <span class="label">Impacto:</span> inflação e ritmo de acesso ao mercado não podem ser balanceados.</p>
+            <p><span class="label">Fecha com:</span> tabelas de faucet/sink, curva de progressão e metas de inflação simuladas.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>VIP</h4>
+            <p><span class="label">Por que aberto:</span> benefícios e venda em testes estão aprovados; preço, duração e checkout final não. <span class="label">Impacto:</span> monetização e vantagem econômica não podem ser avaliadas de ponta a ponta.</p>
+            <p><span class="label">Fecha com:</span> SKU, duração, renovação, Cash/checkout, reembolso e expiração operacional.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Crédito de Lançamento</h4>
+            <p><span class="label">Por que aberto:</span> multiplicadores e exceções estão definidos; uso e ordem de bucket não. <span class="label">Impacto:</span> Cash promocional pode gerar dupla vantagem ou UX inconsistente.</p>
+            <p><span class="label">Fecha com:</span> política de gasto elegível, Marketplace/Trade, expiração, estorno e contestação.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Saque</h4>
+            <p><span class="label">Por que aberto:</span> GDD define Saldo, cripto/stablecoin e KYC inicial, não a operação completa. <span class="label">Impacto:</span> payout não pode ser ativado com segurança, previsibilidade ou validação legal.</p>
+            <p><span class="label">Fecha com:</span> jurisdição, parceiro, redes, stablecoins, limites, SLA, fees, screening, custódia e suporte.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Contabilidade multi-game</h4>
+            <p><span class="label">Por que aberto:</span> Cash é global, mas consumo e margem precisam de atribuição por jogo. <span class="label">Impacto:</span> resultado e passivo por título ficam incorretos.</p>
+            <p><span class="label">Fecha com:</span> política de receita, passivo, fee, custo de pagamento, impostos e transferência interna.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Temporadas pós-lançamento</h4>
+            <p><span class="label">Por que aberto:</span> AR reseta em 90 dias; persistência econômica entre temporadas não foi definida. <span class="label">Impacto:</span> jogador não sabe quais ativos ou progressos mantêm valor.</p>
+            <p><span class="label">Fecha com:</span> carryover, resets, ativos sazonais, arquivamento e comunicação — sem importar regras do Alpha/Beta.</p>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Privacidade e retenção</h4>
+            <p><span class="label">Por que aberto:</span> o GDD exige finalidade/retenção, mas não o dicionário técnico. <span class="label">Impacto:</span> coleta pode exceder necessidade ou perder evidência cedo demais.</p>
+            <p><span class="label">Fecha com:</span> evento/campo/finalidade/base/retenção/acesso/destino e política de direitos.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="rastreabilidade">
+        <span class="section-kicker">16 · Auditoria editorial</span>
+        <h2>Mapa de autoridade</h2>
+        <p>Esta tabela permite voltar da regra econômica à decisão original. A matriz interna completa também registra propostas históricas descartadas.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tema nesta página</th><th>Pontos do GDD</th><th>Conteúdo controlado</th></tr></thead>
+            <tbody>
+              <tr><td>Princípios e ativo persistente</td><td>1–5</td><td>Autoridade, identidade, proveniência, resets e transferência.</td></tr>
+              <tr><td>Caps e limites de progressão</td><td>5–7</td><td>Cap 100, sem XP excedente, raridade/Vigor sem boost econômico no Farm.</td></tr>
+              <tr><td>Cultivo e nascimento</td><td>7; 13–14; 18</td><td>Processos, insumos, Plots, atomicidade, cancelamento e bloqueios.</td></tr>
+              <tr><td>PvE e recompensas</td><td>9–11</td><td>Stamina, drops, XP, encerramento e resultados reais por hora.</td></tr>
+              <tr><td>Attachments e Forja</td><td>15–16</td><td>Origem, consumo, Fusão, Ascensão, Desmontagem e Calibração.</td></tr>
+              <tr><td>PvP e temporada</td><td>19</td><td>Gold/XP, materiais, amistosos, AR, rewards e auditoria.</td></tr>
+              <tr><td>Transparência</td><td>20; 21.8</td><td>Custos, chances, fontes, wiki e leitura honesta da expedição.</td></tr>
+              <tr><td>Saldos e Marketplace</td><td>21.1–21.3</td><td>Gold, Cash, Saldo, fee, liquidação, conversão e saque.</td></tr>
+              <tr><td>Trade</td><td>21.4</td><td>Amizade, pisos, mediana, regra de 50%, custódia e fee Cash.</td></tr>
+              <tr><td>Categorias de ativo</td><td>13.4; 14.7; 15.5; 18.5; 21.5–21.7</td><td>Plots, sementes, Buds, attachments e ferramentas premium.</td></tr>
+              <tr><td>Alpha, Beta e crédito</td><td>22.1–22.2</td><td>Resets, preservação, 130%/120% e exceções.</td></tr>
+              <tr><td>Telemetria e privacidade</td><td>22.3–22.4</td><td>Eventos, anomalias, finalidade, retenção e consentimento.</td></tr>
+              <tr><td>Backlog financeiro</td><td>24.5 e referências nos Pontos 5–22</td><td>Cotação, rotas, pisos, limites, saque, ativos e cronograma.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <details>
+          <summary>Propostas do Founding Doc que não são regras</summary>
+          <div>
+            <ul>
+              <li>“Ganhos” como saldo separado: substituído pelo Saldo definido no GDD;</li>
+              <li>fee agregada de 8%–15%: superada pela taxa-base de 10%;</li>
+              <li>stablecoin como preço-base e PIX 10% mais caro: não aprovado;</li>
+              <li>prize pool como percentual do lucro: não aprovado;</li>
+              <li>VIP 7/30 dias por 30/100 Cash: não aprovado;</li>
+              <li>guildas, referral e creators pagos em Cash: não aprovados;</li>
+              <li>“FOMO como principal arma” e produto orientado a especulação: não são princípios deste documento;</li>
+              <li>mercado real apenas na Season 1 e VIP gratuito no Alpha: superados pelo Ponto 22;</li>
+              <li>Market Balance ou ponte Cash↔Gold: não existem no GDD.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section id="glossario">
+        <span class="section-kicker">17 · Vocabulário</span>
+        <h2>Glossário</h2>
+        <dl class="glossary">
+          <div class="term"><dt>Atômico</dt><dd>Conjunto de efeitos que acontece por inteiro ou não acontece; não existe venda “pela metade”.</dd></div>
+          <div class="term"><dt>Bucket</dt><dd>Classificação interna de saldo por origem e restrição, sem criar nova moeda visível.</dd></div>
+          <div class="term"><dt>Cash</dt><dd>Crédito global Idol Lovers, não sacável e não transferível diretamente.</dd></div>
+          <div class="term"><dt>Custódia</dt><dd>Bloqueio temporário de ativos/fee enquanto uma operação atômica é confirmada.</dd></div>
+          <div class="term"><dt>Fee</dt><dd>Taxa explícita da plataforma, registrada separadamente do preço e do líquido.</dd></div>
+          <div class="term"><dt>Faucet / fonte</dt><dd>Evento autorizado que cria ou distribui moeda, item ou recurso.</dd></div>
+          <div class="term"><dt>Gold</dt><dd>Moeda interna exclusiva do Idle Bud.</dd></div>
+          <div class="term"><dt>Idempotência</dt><dd>Repetir a mesma solicitação não repete o efeito econômico.</dd></div>
+          <div class="term"><dt>KYC</dt><dd>Verificação de identidade; o primeiro saque exige essa etapa, sem definir aqui o procedimento jurídico final.</dd></div>
+          <div class="term"><dt>Ledger</dt><dd>Registro de eventos que explica todo saldo e permite reconstruir sua origem.</dd></div>
+          <div class="term"><dt>Liquidação</dt><dd>Momento em que débito, fee, crédito, propriedade e encerramento se tornam definitivos juntos.</dd></div>
+          <div class="term"><dt>Preço de Referência</dt><dd>Mediana das últimas dez vendas públicas válidas concluídas em 14 dias.</dd></div>
+          <div class="term"><dt>Saldo</dt><dd>Crédito global de venda em Cash, não transferível, conversível em Cash ou elegível a saque quando habilitado.</dd></div>
+          <div class="term"><dt>Sink</dt><dd>Mecanismo que consome ou destrói moeda, item ou recurso de modo legítimo.</dd></div>
+          <div class="term"><dt>Trade</dt><dd>Venda direcionada ou escambo entre amigos pelo mesmo motor de custódia do Marketplace.</dd></div>
+          <div class="term"><dt>Wash trading</dt><dd>Volume artificial por negociações coordenadas ou circulares, sem demanda econômica independente.</dd></div>
+        </dl>
+      </section>
+    </main>
+  </div>
+
+  <footer class="shell footer">
+    Idle Bud — Economia v1.0 · alinhado ao Game Design Document v17 · 28 de julho de 2026
+  </footer>
+</body>
+</html>

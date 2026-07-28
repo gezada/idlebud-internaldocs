@@ -102,10 +102,10 @@ DOCS = [
     {
         "title": "Economy",
         "label": "Economy",
-        "description": "Currencies, sinks, faucets, RMT rules, marketplace logic and seasonal economic controls.",
+        "description": "Official economy reference: balances, Marketplace, Trade, sinks, controls, testing and financial backlog.",
         "href": "./economy/",
-        "status": "TBD",
-        "live": False,
+        "status": "Available · v1.0",
+        "live": True,
         "icon": "$",
     },
     {
@@ -348,10 +348,6 @@ def main() -> None:
     (site / "index.html").write_text(build_home(), encoding="utf-8")
 
     placeholders = {
-        "economy": (
-            "Economy",
-            "This document will define currencies, sinks, faucets, marketplace rules, RMT controls and seasonal economic balance.",
-        ),
         "enemies-drops-craft": (
             "Enemies, Drops, Itemization & Forge",
             "This document will define enemies, encounters, itemization, attachments, passives, drops, materials, recipes and Forge progression.",
@@ -387,6 +383,15 @@ def main() -> None:
     assert '<section id="pve-training">' in gdd
     assert re.search(r'(?:href|data-target|data-section)=[\"\']#?pve-training[\"\']', gdd)
     assert '<!-- gdd-navigation-validated -->' in gdd
+
+    economy = (site / "economy" / "index.html").read_text(encoding="utf-8")
+    for phrase in [
+        "<title>Idle Bud — Economia v1.0</title>",
+        "Gold, Cash e Saldo",
+        "Trade entre amigos",
+        "Backlog financeiro real",
+    ]:
+        assert phrase in economy, f"Missing Economy content: {phrase}"
 
     print(f"Built internal docs portal in {site}")
 
