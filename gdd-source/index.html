@@ -352,7 +352,7 @@
 <a href="#pvp" title="Definido">19. PvP síncrono<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#wiki" title="Definido">20. Codex e wiki<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#economia" title="Definido">21. Economia, mercado e Trade<span class="nav-status" aria-hidden="true">✅</span></a>
-<a href="#mvp" title="Provisório">22. Protótipo e escopo<span class="nav-status" aria-hidden="true">⌛</span></a>
+<a href="#mvp" title="Definido">22. Validação de Alpha e Beta<span class="nav-status" aria-hidden="true">✅</span></a>
 <a href="#decisoes" title="Provisório">23. Decisões consolidadas<span class="nav-status" aria-hidden="true">⌛</span></a>
 <a href="#aberto" title="Provisório">24. Questões em aberto<span class="nav-status" aria-hidden="true">⌛</span></a>
 </nav>
@@ -2637,27 +2637,48 @@
 </ul>
 </section>
 <section id="mvp">
-<span class="tag">Primeira prova jogável</span>
-<span class="review-state rs-provisional">Provisório</span>
-<h2>22. O que o protótipo precisa provar</h2>
-<p>O protótipo não precisa conter toda a profundidade do Codex. Ele precisa comprovar que as decisões principais são divertidas antes de multiplicarmos conteúdo.</p>
+<span class="tag">Operação, validação e telemetria</span>
+<span class="review-state rs-defined">Definido</span>
+<h2>22. Validação de Alpha e Beta</h2>
+<p>Os Pontos 1–21 são a única fonte de verdade sobre o jogo e entram tão cedo quanto for tecnicamente viável. Alpha e Beta não cortam nem reclassificam mecânicas aprovadas: são ambientes para validar diversão, estabilidade, economia, operação e escala antes da Temporada 1.</p>
 <div class="grid">
-<div class="card good"><h3>Entrar cedo</h3><ul><li>formação de sete em 1–2–1–2–1;</li><li>combate automático determinístico;</li><li>Battle Level e Farm Level estruturados para cap 100;</li><li>Battle Level com seis atributos;</li><li>Farm Level com seis atributos;</li><li>separação entre atributos distribuíveis e status derivados;</li><li>raridade e Vigor fixos de 50 a 500;</li><li>um Jardim 7×7, começando com três Plots e preparado para 49;</li><li>Plots elementais;</li><li>Bud, Núcleo e Totem;</li><li>nove espécies no Alpha, uma por elemento;</li><li>Basic Attack e Power Move fixos por espécie;</li><li>RNG controlado de Power Move e Desvio Perfeito;</li><li>nove tipos e matriz completa;</li><li>três presets PvE e três presets PvP no Free, escaláveis para sete com VIP;</li><li>PvP síncrono de teste: aceite, resolução autoritativa, AR temporário, replay e pausa segura de atividades;</li><li>seis estados claros de Bud, cancelamento proporcional e swap entre Plot e PvE fora de batalha;</li><li>reserva de um Plot por Bud somente pelo time PvE ativo;</li><li>políticas PvE Estável, Avançar, Recuar e Adaptativo;</li><li>sessão online gratuita, expedição offline VIP e rotação PvE → Recuperação → PvE;</li><li>três sementes tutoriais escalonadas, de elementos distintos;</li><li>Germinação em três etapas de 20 min, sem falha total;</li><li>pool congelada no plantio, roll autoritativo no fim da etapa 3 e Proteção de Raridade;</li><li>plantio em Plots comuns e elementais, com Água obrigatória;</li><li>três perfis de Fertilizante para raridade e Vigor;</li><li>criação do Bud autoritativa e idempotente no servidor durante o nascimento;</li></ul></div>
-<div class="card danger"><h3>Entrar depois</h3><ul><li>marketplace entre jogadores, incluindo Plots, e mercado RMT aberto;</li><li>breeding ou genética;</li><li>guildas complexas;</li><li>torneios competitivos avançados, chaves, calendário e prêmios externos;</li><li>dezenas de mapas;</li><li>múltiplos sistemas de vizinhança;</li><li>cadeia completa de Síntese, Calibração, Fusão e Ascensão;</li><li>toda a ferramenta premium de Calibração;</li><li>todos os assets finais.</li></ul></div>
+<div class="card good"><h3>Alpha fechado</h3><p>Acesso por convite. O objetivo é validar os sistemas aprovados com uma comunidade controlada, corrigir fluxos críticos e observar comportamento real antes da escala pública.</p><ul><li>VIP é vendido e todos os fluxos Free/VIP são testados em produção controlada;</li><li>telemetria, logs autoritativos e ferramentas de suporte acompanham cada sistema;</li><li>alterações de balanceamento, UX, economia e estabilidade podem ser agressivas durante o ciclo.</li></ul></div>
+<div class="card blue"><h3>Beta aberto</h3><p>Acesso público. O objetivo é validar escala, retenção, infraestrutura, pagamentos, matchmaking, abuso e compreensão do jogo com volume real de jogadores.</p><ul><li>VIP continua disponível para compra;</li><li>o jogo usa os sistemas aprovados até este ponto, sem criar uma versão reduzida que contradiga o GDD;</li><li>correções continuam possíveis, mas priorizam estabilidade e preparação para a Temporada 1.</li></ul></div>
 </div>
-<h3>22.1 Métricas de verdade</h3>
+<h3>22.1 Reset entre ambientes</h3>
+<p>Alpha e Beta são testes de produto, não temporadas permanentes. Cada transição começa com progressão de jogo limpa para preservar a liberdade de ajuste e a justiça competitiva.</p>
+<table>
+<thead><tr><th>Transição</th><th>É resetado</th><th>É preservado</th></tr></thead>
+<tbody>
+<tr><td><strong>Alpha → Beta</strong></td><td>Progressão, Buds, itens, Gold, inventário, Jardim, mapas, rankings e demais estado de jogo.</td><td>Conta, amizade, preferências, consentimentos, registro de participação, Cash global e ledger de Cash gasto válido.</td></tr>
+<tr><td><strong>Beta → Temporada 1</strong></td><td>Progressão, Buds, itens, Gold, inventário, Jardim, mapas, rankings e demais estado de jogo.</td><td>Conta, amizade, preferências, consentimentos, Cash global e ledger de Cash gasto válido para o Crédito de Lançamento.</td></tr>
+</tbody>
+</table>
+<h3>22.2 Crédito de Lançamento</h3>
+<p>O jogador que gastar Cash válido durante os testes recebe de volta todo o valor gasto na abertura da Temporada 1, acrescido de um bônus por ter participado cedo. É crédito promocional em Cash; não é saque, transferência direta ou substituto das regras financeiras do Ponto 21.</p>
+<div class="formula">Crédito Alpha = Cash gasto válido no Alpha × 1,30 · Crédito Beta = Cash gasto válido no Beta × 1,20</div>
 <ul>
-<li>o jogador troca de time entre regiões sem sentir coerção artificial;</li>
-<li>carry torna um Bud novo utilizável sem apagar o valor dos veteranos;</li>
-<li>Battle e Farm Level produzem especializações compreensíveis;</li>
-<li>raridade e Vigor importam sem substituir build e counter;</li>
-<li>sete Buds continuam visualmente legíveis;</li>
-<li>a alocação entre time e jardim gera decisão, não irritação;</li>
-<li>o sistema de tipos é aprendido sem depender de decorar uma planilha.</li>
-<li>o jogador entende os quatro modos PvE sem tutorial longo e reconhece quando encontrou uma fase sustentável;</li>
-<li>presets permitem trocar composições sem bloquear coleção, Farm ou PvP indevidamente;</li>
-<li>o relatório de expedição explica ganhos reais por hora sem esconder multiplicadores de recompensa;</li>
-<li>o plantio cria decisão real sobre plot e insumos sem transformar a melhor receita em escolha automática;</li><li>a revelação do Bud gera expectativa sem parecer manipulada ou opaca;</li><li>jogadores compreendem que bônus alteram probabilidades, mas não garantem resultados;</li></ul>
+<li>100 Cash gastos no Alpha geram 130 Cash no lançamento; 100 Cash gastos no Beta geram 120 Cash;</li>
+<li>Cash comprado e não gasto permanece como saldo global normal e não recebe crédito duplicado;</li>
+<li>estornos, chargebacks, concessões administrativas, Cash de teste e transações invalidadas por fraude não geram crédito;</li>
+<li>elegibilidade detalhada do crédito promocional, inclusive seu uso no Marketplace e Trade, pertence ao documento financeiro.</li>
+</ul>
+<h3>22.3 Telemetria de produto</h3>
+<p>O jogo mede profundamente o comportamento para orientar decisões com evidência, não impressão. Eventos de servidor são a verdade para progressão, economia, combate e fraude; eventos de cliente explicam navegação, cliques e experiência de interface.</p>
+<ul>
+<li><strong>Funil e UX:</strong> cadastro, consentimento, tutorial, primeira semente, primeiro Bud, primeira formação, tela, botão, contexto, tempo até ação, abandono e erro de fluxo;</li>
+<li><strong>Gameplay:</strong> Germinação, Cultivo, Recuperação, Stamina, presets, swaps, composição, elementos, PvE, políticas, vitória, derrota, drops, XP, Forja e Codex;</li>
+<li><strong>PvP:</strong> fila, aceite, duração, desconexão, resultado, AR, revanche, replay e espectador;</li>
+<li><strong>Economia:</strong> fontes e gastos de Gold, Cash e Saldo, loja, VIP, Marketplace, Trade, taxas, crédito promocional e anomalias de fluxo;</li>
+<li><strong>Retenção e operação:</strong> sessão, retorno por coorte, notificações, latência, crash, falha de transação, suporte, exploit e sinais de abuso.</li>
+</ul>
+<h3>22.4 Limites de privacidade e uso dos dados</h3>
+<ul>
+<li>cada evento possui finalidade, versão, retenção definida e apenas os campos necessários para sua análise;</li>
+<li>cliques e navegação podem ser instrumentados, mas não são coletados senhas, conteúdo digitado em campos, área de transferência ou dados sensíveis sem necessidade explícita;</li>
+<li>telemetria não essencial, pixels e tecnologias equivalentes respeitam consentimento claro, opção real de recusa e controles de privacidade; recusar não bloqueia o jogo;</li>
+<li>métricas numéricas de aprovação são definidas após a linha de base inicial, por fase e coorte, sem apagar os sistemas já aprovados por este GDD.</li>
+</ul>
 </section>
 <section id="decisoes">
 <span class="tag">Estado atual</span>
@@ -2750,6 +2771,9 @@
 <div class="decision"><div><strong>Gold, Cash e Saldo</strong><p>Gold é exclusivo do Idle Bud; Cash é global Idol Lovers; venda em Cash credita Saldo, não Cash. Saldo não é transferível, pode virar Cash com taxa de 5% e pode ser sacado inicialmente apenas em cripto/stablecoin após verificação de identidade.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Marketplace</strong><p>Ativo elegível pode ter preço em Gold, Cash ou ambos. A taxa é 10%, configurável; venda em Gold entrega 90% em Gold e venda em Cash entrega 90% em Saldo. A primeira liquidação de anúncio duplo fecha o anúncio inteiro de forma atômica.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Trade</strong><p>Amigos podem fazer venda direcionada com a mesma taxa do Marketplace ou escambo após sete dias de amizade. O escambo usa custódia atômica e taxa em Cash, que ambos podem dividir livremente ou um deles pagar por inteiro; não há presentes nem transferência direta de Cash/Saldo.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Alpha e Beta</strong><p>Alpha é fechado por convite; Beta é aberto. Ambos validam os sistemas dos Pontos 1–21 sem reduzir ou redefinir seu escopo. VIP é vendido nas duas fases.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Resets e Crédito de Lançamento</strong><p>Alpha → Beta e Beta → Temporada 1 resetam todo o estado de jogo, preservando conta, Cash global e o ledger de gasto válido. No lançamento, gasto válido retorna como 130% para Alpha e 120% para Beta.</p></div><span class="status s-defined">Definido</span></div>
+<div class="decision"><div><strong>Telemetria</strong><p>Eventos de servidor e cliente medem funil, UX, gameplay, PvP, economia, retenção e operação. Instrumentação é ampla, mas limitada por finalidade, necessidade, retenção e consentimento para tecnologias não essenciais.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Estados e alocação</strong><p>Bud usa exatamente um dos seis estados: Disponível, Em espera, Cultivando, Recuperando, PvE ativo ou Mercado. O time PvE reserva um Plot por Bud; presets não criam alocação e swaps Plot ↔ PvE preservam resultados proporcionais de processos cancelados. Uma partida PvP aceita pausa e depois retoma a atividade anterior.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>PvP síncrono</strong><p>Ranqueada global e amistosos entre amigos usam o estado vivo atual congelado na sala pronta, resolução autoritativa e 0 Stamina. AR é visível, sem MMR oculto; temporadas de 90 dias, Mestre Top 100, replays determinísticos, espectadores públicos e auditoria integral sustentam a competição.</p></div><span class="status s-defined">Definido</span></div>
 <div class="decision"><div><strong>Tipos</strong><p>Nove afinidades com matriz rigorosamente simétrica.</p></div><span class="status s-rule">Proposta-base</span></div>
@@ -2784,6 +2808,7 @@
 <li><strong>Calibração competitiva:</strong> valores finais de Gold, Battle XP e materiais por resultado, cadência de expansão do matchmaking e telemetria de fila, Morte Súbita e ligas.</li>
 <li><strong>Budmaster:</strong> critérios, pesos por sistema, quantidade de classificados, desempates e recompensas sazonais.</li>
 <li><strong>Mercado e finanças:</strong> cotação e rotas de conversão ainda não aprovadas entre Gold, Cash e Saldo; pisos administrativos, taxa mínima de escambo, critérios finais de preço de referência, limites, cooldowns, ativos elegíveis, operação de saque e cronograma de liberação por categoria.</li>
+<li><strong>Telemetria:</strong> dicionário técnico de eventos, destinos de dados, retenção, painel operacional, critérios de alerta e metas numéricas por coorte após a primeira linha de base.</li>
 </ol>
 <div class="statement">A revisão seguirá ponto a ponto. Identidade, apelidos, proveniência, transferência e resets por grupo já possuem regras definidas; nomes provisórios, interface, fórmulas e conteúdo detalhado serão fechados nos capítulos correspondentes.</div>
 </section>
