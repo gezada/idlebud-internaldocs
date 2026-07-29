@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "gdd-source" / "index.html"
 ECONOMY_SOURCE = ROOT / "economy-source" / "index.html"
 TECHNOLOGY_SOURCE = ROOT / "technology-source" / "index.html"
+ENEMIES_SOURCE = ROOT / "enemies-drops-craft-source" / "index.html"
 
 
 def main() -> None:
@@ -22,6 +23,7 @@ def main() -> None:
     gdd = site / "gdd" / "index.html"
     economy = site / "economy" / "index.html"
     technology = site / "technology-guidelines" / "index.html"
+    enemies = site / "enemies-drops-craft" / "index.html"
     html = SOURCE.read_text(encoding="utf-8")
     for expected in [
         "Game Design Document · v17",
@@ -61,6 +63,20 @@ def main() -> None:
 
     technology.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(TECHNOLOGY_SOURCE, technology)
+
+    enemies_html = ENEMIES_SOURCE.read_text(encoding="utf-8")
+    for expected in [
+        "<title>Idle Bud — Inimigos, Drops, Itemização e Forja v1.0</title>",
+        "Inimigos, Drops, Itemização e Forja",
+        "Composição completa das 139 fases",
+        "Pools de passivas por tipo e elemento",
+        "Idle Bud — Inimigos, Drops, Itemização e Forja v1.0",
+    ]:
+        if expected not in enemies_html:
+            raise RuntimeError(f"Fonte canônica de Inimigos/Forja inválida: {expected}")
+
+    enemies.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(ENEMIES_SOURCE, enemies)
 
     from build_docs_portal import main as build_portal
 

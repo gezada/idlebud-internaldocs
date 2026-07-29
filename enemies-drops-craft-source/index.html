@@ -1,0 +1,1047 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Catálogo oficial de inimigos, encontros, drops, itens, attachments e Forja da Temporada 1 de Idle Bud.">
+  <title>Idle Bud — Inimigos, Drops, Itemização e Forja v1.0</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #07110c;
+      --panel: #0d1c14;
+      --panel-2: #11261a;
+      --line: rgba(172,255,196,.16);
+      --line-strong: rgba(172,255,196,.32);
+      --text: #f4fff7;
+      --muted: #aac8b2;
+      --accent: #f1bd67;
+      --accent-2: #ffdba0;
+      --green: #8df0aa;
+      --blue: #83c9ff;
+      --violet: #c8a7ff;
+      --danger: #ff9c96;
+      --shadow: 0 24px 74px rgba(0,0,0,.3);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; background: var(--bg); }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 10% 3%, rgba(241,189,103,.10), transparent 30rem),
+        radial-gradient(circle at 92% 30%, rgba(141,240,170,.07), transparent 30rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.62;
+    }
+    a { color: var(--accent-2); }
+    a:hover { color: #fff2d5; }
+    code { color: #d9f7e1; font: .92em ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .skip-link {
+      position: fixed; z-index: 10000; left: 14px; top: -80px;
+      padding: 10px 14px; border-radius: 10px; color: #07110c;
+      background: var(--accent-2); font-weight: 800;
+    }
+    .skip-link:focus { top: 14px; }
+    .shell { width: min(1500px, calc(100% - 44px)); margin: 0 auto; }
+    .topbar-wrap { border-bottom: 1px solid var(--line); }
+    .topbar {
+      min-height: 52px; display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; color: var(--muted); font-size: .8rem; letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .topbar strong { color: var(--accent-2); }
+    .hero-wrap { border-bottom: 1px solid var(--line); }
+    .hero { padding: 64px 0 46px; }
+    .eyebrow, .section-kicker {
+      color: var(--accent); font-size: .76rem; font-weight: 850;
+      letter-spacing: .15em; text-transform: uppercase;
+    }
+    .hero h1 {
+      max-width: 1020px; margin: 13px 0 16px;
+      font-size: clamp(2.6rem, 7vw, 6rem); line-height: .96; letter-spacing: -.06em;
+    }
+    .lead { max-width: 890px; margin: 0; color: var(--muted); font-size: clamp(1rem, 2vw, 1.23rem); }
+    .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chip, .state {
+      display: inline-flex; align-items: center; padding: 6px 9px; border: 1px solid var(--line);
+      border-radius: 999px; color: var(--muted); font-size: .7rem; font-weight: 850;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .state.defined { color: var(--green); border-color: rgba(141,240,170,.38); }
+    .state.parameter { color: var(--blue); border-color: rgba(131,201,255,.38); }
+    .state.open { color: var(--danger); border-color: rgba(255,156,150,.38); }
+    .layout {
+      display: grid; grid-template-columns: 270px minmax(0,1fr); gap: 44px;
+      align-items: start; padding: 38px 0 84px;
+    }
+    .toc {
+      position: sticky; top: 18px; max-height: calc(100vh - 36px); overflow: auto;
+      padding: 18px; border: 1px solid var(--line); border-radius: 20px;
+      background: rgba(10,24,16,.9); box-shadow: var(--shadow);
+      scrollbar-width: thin;
+    }
+    .toc strong {
+      display: block; margin-bottom: 12px; color: var(--muted);
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    }
+    .toc ol { margin: 0; padding: 0; list-style: none; counter-reset: doc-nav; }
+    .toc li { counter-increment: doc-nav; }
+    .toc a {
+      display: grid; grid-template-columns: 31px 1fr; gap: 8px; align-items: baseline;
+      padding: 7px 6px; border-radius: 9px; color: var(--muted);
+      font-size: .79rem; line-height: 1.25; text-decoration: none;
+    }
+    .toc a::before {
+      content: counter(doc-nav, decimal-leading-zero); color: var(--accent);
+      font: 800 .68rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    .toc a:hover, .toc a:focus-visible { color: var(--text); background: rgba(241,189,103,.08); }
+    main { min-width: 0; }
+    section { scroll-margin-top: 22px; padding: 6px 0 52px; }
+    section + section { border-top: 1px solid var(--line); padding-top: 48px; }
+    h2 { margin: 7px 0 16px; font-size: clamp(1.8rem, 4vw, 3.2rem); line-height: 1.06; letter-spacing: -.045em; }
+    h3 { margin: 28px 0 10px; font-size: 1.22rem; letter-spacing: -.02em; }
+    h4 { margin: 0 0 6px; font-size: .98rem; }
+    p { margin: 0 0 14px; }
+    ul, ol { padding-left: 22px; }
+    li + li { margin-top: 5px; }
+    .statement, .callout {
+      margin: 18px 0; padding: 18px 20px; border: 1px solid rgba(241,189,103,.3);
+      border-left: 4px solid var(--accent); border-radius: 15px;
+      background: rgba(241,189,103,.07);
+    }
+    .callout.defined { border-color: rgba(141,240,170,.28); border-left-color: var(--green); background: rgba(141,240,170,.055); }
+    .callout.open { border-color: rgba(255,156,150,.28); border-left-color: var(--danger); background: rgba(255,156,150,.055); }
+    .callout p:last-child { margin-bottom: 0; }
+    .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin: 18px 0; }
+    .grid.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
+    .card {
+      padding: 18px; border: 1px solid var(--line); border-radius: 17px;
+      background: linear-gradient(145deg, rgba(17,38,26,.92), rgba(10,24,16,.92));
+    }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .metric { color: var(--accent-2); font-size: 2rem; font-weight: 900; letter-spacing: -.04em; }
+    .metric-label { color: var(--muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+    .table-wrap {
+      width: 100%; margin: 16px 0 24px; overflow-x: auto;
+      border: 1px solid var(--line); border-radius: 15px;
+    }
+    table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: .82rem; background: rgba(7,17,12,.38); }
+    th, td { padding: 11px 12px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    th { color: var(--accent-2); background: rgba(241,189,103,.07); font-size: .68rem; letter-spacing: .075em; text-transform: uppercase; }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: rgba(255,255,255,.022); }
+    .compact td { padding-top: 8px; padding-bottom: 8px; }
+    .formula {
+      margin: 14px 0; padding: 14px 16px; border: 1px solid rgba(131,201,255,.28);
+      border-radius: 12px; color: #d7edff; background: rgba(131,201,255,.06);
+      font: 700 .88rem/1.55 ui-monospace, SFMono-Regular, Consolas, monospace;
+    }
+    .flow {
+      display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 9px; margin: 18px 0;
+    }
+    .node { padding: 13px; border: 1px solid var(--line); border-radius: 13px; background: var(--panel); }
+    .node strong { display: block; color: var(--accent-2); font-size: .83rem; }
+    .node span { display: block; margin-top: 4px; color: var(--muted); font-size: .74rem; }
+    .decision-list { display: grid; gap: 10px; margin-top: 18px; }
+    .decision-row {
+      display: grid; grid-template-columns: minmax(170px,.36fr) 1fr; gap: 18px;
+      padding: 15px 16px; border: 1px solid var(--line); border-radius: 13px; background: rgba(13,28,20,.75);
+    }
+    .decision-row p { margin: 0; font-size: .82rem; }
+    .decision-row p + p { margin-top: 6px; }
+    .label { color: var(--accent-2); font-weight: 800; }
+    .tag { white-space: nowrap; color: var(--muted); font-size: .7rem; }
+    .internal-docs-home {
+      position: fixed; z-index: 9999; left: 18px; bottom: 18px;
+      display: inline-flex; align-items: center; padding: 10px 13px;
+      border: 1px solid rgba(241,189,103,.4); border-radius: 999px;
+      color: var(--accent-2)!important; background: rgba(7,17,12,.9);
+      backdrop-filter: blur(10px); box-shadow: 0 12px 30px rgba(0,0,0,.28);
+      font: 750 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif; text-decoration: none;
+    }
+    .internal-docs-home:hover { transform: translateY(-1px); }
+    footer { padding: 28px 0 70px; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; }
+    :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; }
+    @media (max-width: 1040px) {
+      .layout { grid-template-columns: 1fr; }
+      .toc { position: relative; top: 0; max-height: none; overflow: hidden; }
+      .toc ol { display: flex; overflow-x: auto; gap: 4px; padding-bottom: 6px; }
+      .toc li { flex: 0 0 190px; }
+      .grid.three { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 680px) {
+      .shell { width: min(100% - 24px,1500px); }
+      .topbar { align-items: flex-start; flex-direction: column; justify-content: center; padding: 10px 0; }
+      .hero { padding: 44px 0 34px; }
+      .layout { padding-top: 24px; gap: 28px; }
+      .grid, .grid.three, .flow, .decision-row { grid-template-columns: 1fr; }
+      section { padding-bottom: 38px; }
+      section + section { padding-top: 36px; }
+      th, td { padding: 10px; }
+      .internal-docs-home { left: 12px; bottom: 12px; }
+    }
+    @media print {
+      body { color: #172018; background: white; }
+      .toc, .internal-docs-home, .skip-link { display: none; }
+      .layout { display: block; }
+      section { break-inside: avoid; }
+      .table-wrap { overflow: visible; }
+      table { min-width: 0; font-size: 7pt; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <a class="internal-docs-home" href="../" aria-label="Voltar para Idle Bud Internal Docs">← Internal Docs</a>
+
+  <div class="topbar-wrap">
+    <div class="shell topbar">
+      <strong>Idle Bud · Referência oficial</strong>
+      <span>Inimigos · Drops · Itemização · Forja · v1.0</span>
+    </div>
+  </div>
+
+  <header class="hero-wrap">
+    <div class="shell hero">
+      <span class="eyebrow">Temporada 1 · catálogo implementável</span>
+      <h1>Inimigos, Drops, Itemização e Forja</h1>
+      <p class="lead">A Bíblia de conteúdo que transforma as regras do GDD em 14 mapas, 139 fases, 72 entradas de inimigo, pools auditáveis, materiais com função e uma Forja completa — sem criar sistemas paralelos ou reescrever a Economia.</p>
+      <div class="hero-meta" aria-label="Metadados do documento">
+        <span class="chip">Fonte de verdade: GDD v17</span>
+        <span class="chip">Escopo: lançamento / Temporada 1</span>
+        <span class="chip">Versão de conteúdo: S1.0.0</span>
+        <span class="chip">Parâmetros públicos e versionados</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell layout">
+    <aside class="toc" aria-label="Sumário do documento">
+      <strong>Neste documento</strong>
+      <ol>
+        <li><a href="#autoridade">Autoridade e glossário</a></li>
+        <li><a href="#invariantes">Invariantes de conteúdo</a></li>
+        <li><a href="#campanha">Arquitetura da campanha</a></li>
+        <li><a href="#fases">Composição das 139 fases</a></li>
+        <li><a href="#mapas">Matriz dos mapas</a></li>
+        <li><a href="#inicial">Vale inicial</a></li>
+        <li><a href="#elementais-a">Fogo, Gelo, Ar e Areia</a></li>
+        <li><a href="#elementais-b">Metal, Veneno, Terra, Raio e Água</a></li>
+        <li><a href="#mistos">Mistos e Convergência</a></li>
+        <li><a href="#drops-regra">Regras de drops</a></li>
+        <li><a href="#drops-tabelas">Tabelas e proteções</a></li>
+        <li><a href="#itens-base">Itens universais e Cultivo</a></li>
+        <li><a href="#itens-regionais">Materiais regionais</a></li>
+        <li><a href="#sementes">Seeds, Água e Fertilizantes</a></li>
+        <li><a href="#componentes">Pesquisa e componentes</a></li>
+        <li><a href="#attachments">Núcleo e Totem</a></li>
+        <li><a href="#linhas">Linhas e orçamento</a></li>
+        <li><a href="#passivas">Pools de passivas</a></li>
+        <li><a href="#pesquisa">Pesquisa e refinamento</a></li>
+        <li><a href="#sintese">Síntese e proteção</a></li>
+        <li><a href="#calibracao">Calibração</a></li>
+        <li><a href="#fusao">Fusão</a></li>
+        <li><a href="#ascensao">Ascensão</a></li>
+        <li><a href="#desmontagem">Desmontagem</a></li>
+        <li><a href="#integridade">Economia e integridade</a></li>
+        <li><a href="#codex">Codex e UX</a></li>
+        <li><a href="#backlog">Backlog e referências</a></li>
+      </ol>
+    </aside>
+
+    <main id="conteudo">
+      <section id="autoridade">
+        <span class="section-kicker">01 · Como ler</span>
+        <h2>Autoridade, escopo e glossário</h2>
+        <div class="statement"><strong>O GDD vence sempre.</strong> O GDD define regras, categorias, estados e invariantes. Este documento define o conteúdo de lançamento que o GDD reservou ao Bestiário, às tabelas de loot, à itemização e à Forja.</div>
+        <p>Quando houver divergência, prevalecem o <a href="../gdd/">GDD v17</a> e sua fonte local canônica. Valores marcados como parâmetros de Temporada 1 podem ser recalibrados por patch público; categorias, moedas, slots, estados e rituais não podem ser alterados por esse mecanismo. Regras financeiras permanecem no documento de <a href="../economy/">Economia</a>.</p>
+        <div class="grid three">
+          <article class="card"><span class="state defined">Regra do GDD</span><h3>Estrutural</h3><p>Comum–Elite–Boss, nove elementos, P1–P7, dois attachments, quatro rituais e estados do Bud.</p></article>
+          <article class="card"><span class="state parameter">Conteúdo S1</span><h3>Configurável</h3><p>Nomes, encontros, pesos, quantidades, receitas, custos materiais e pools versionados.</p></article>
+          <article class="card"><span class="state open">Decisão aberta</span><h3>Não inventada</h3><p>Coeficientes que dependem do simulador, gates do Jardineiro e liberação financeira por categoria.</p></article>
+        </div>
+        <h3>Glossário operacional</h3>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Termo</th><th>Definição neste documento</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Bud</strong></td><td>Personagem persistente. Não é item, invocação nem material de Forja.</td></tr>
+              <tr><td><strong>Comum</strong></td><td>Inimigo com Basic Attack, um papel e drops normais por derrota definitiva.</td></tr>
+              <tr><td><strong>Elite</strong></td><td>Inimigo com exatamente dois papéis; pode ter um Power Move declarado e concede componente próprio somente quando o encontro é vencido.</td></tr>
+              <tr><td><strong>Boss</strong></td><td>Ameaça única com Basic Attack, Power Move e dois ou três papéis; pode trocar de fase de forma roteirizada.</td></tr>
+              <tr><td><strong>Drop</strong></td><td>Item registrado quando um inimigo elegível é derrotado definitivamente. Não é recompensa de conclusão.</td></tr>
+              <tr><td><strong>Material / receita</strong></td><td>Input fungível / definição pesquisada que transforma inputs em output.</td></tr>
+              <tr><td><strong>Attachment</strong></td><td>Núcleo Arcano ou Totem individual, único e não empilhável.</td></tr>
+              <tr><td><strong>Passiva</strong></td><td>Efeito do pool de tipo+elemento; não cria nova skill ou ataque.</td></tr>
+              <tr><td><strong>Forja</strong></td><td>Interface instantânea de Pesquisa, refinamento, Síntese, Calibração, Fusão, Ascensão e Desmontagem.</td></tr>
+              <tr><td><strong>Calibração</strong></td><td>Rerroll permitido que preserva categoria, elemento e Raridade.</td></tr>
+              <tr><td><strong>Fusão</strong></td><td>Três itens de mesma Raridade, tipo e elemento viram um novo da Raridade acima.</td></tr>
+              <tr><td><strong>Ascensão</strong></td><td>Tentativa Raro→Épico ou Épico→Lendário que preserva o item no sucesso e pode quebrá-lo após três falhas seguras.</td></tr>
+              <tr><td><strong>Desmontagem</strong></td><td>Conversão voluntária de attachment em retorno parcial elegível; quebra de Ascensão não desmonta.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="invariantes">
+        <span class="section-kicker">02 · Limites invioláveis</span>
+        <h2>Invariantes de conteúdo</h2>
+        <div class="grid">
+          <article class="card"><h3>Combate</h3><ul><li>Basic Attacks usam o targeting canônico do GDD.</li><li>Comuns não possuem Power Move.</li><li>Power Moves de Elite/Boss usam somente dano, cura, escudo, buff, debuff, controle e alvo.</li><li>Gatilhos nunca são RNG: tempo, HP, morte, reforço ou fase.</li></ul></article>
+          <article class="card"><h3>Elementos</h3><ul><li>Fogo → Gelo → Ar → Areia → Metal → Veneno → Terra → Raio → Água → Fogo.</li><li>Muito Forte 1,60×; Forte 1,25×; Neutro 1×; Fraco 0,80×; Muito Fraco 0,625×.</li><li>Neutro não é elemento e não recebe Ressonância.</li><li>Cada inimigo possui um elemento fixo ou é Neutro.</li></ul></article>
+          <article class="card"><h3>Itemização</h3><ul><li>Somente Núcleo Arcano e Totem equipam um Bud.</li><li>Attachments completos nunca caem; todos nascem por Síntese.</li><li>Item não concede skill, Basic Attack ou Power Move.</li><li>Não existem armas, armaduras, acessórios ou afixos aleatórios.</li></ul></article>
+          <article class="card"><h3>Recompensa</h3><ul><li>Drop de inimigo e recompensa de conclusão são ledgers separados.</li><li>Reforços roteirizados dão 0 XP e 0 drop.</li><li>VIP, QLD, elemento, velocidade 2× e política PvE não alteram drops.</li><li>Todo peso e toda proteção são públicos.</li></ul></article>
+        </div>
+        <div class="callout defined"><strong>Leitura da matriz.</strong> Para defender-se de um elemento, o counter Muito Forte é: Fogo←Água, Gelo←Fogo, Ar←Gelo, Areia←Ar, Metal←Areia, Veneno←Metal, Terra←Veneno, Raio←Terra e Água←Raio.</div>
+      </section>
+
+      <section id="campanha">
+        <span class="section-kicker">03 · 14 mapas / 139 fases</span>
+        <h2>Arquitetura da campanha de lançamento</h2>
+        <div class="grid three">
+          <article class="card"><div class="metric">10</div><div class="metric-label">mapas regulares iniciais/específicos</div><p>Vale inicial + nove regiões elementais.</p></article>
+          <article class="card"><div class="metric">3</div><div class="metric-label">mapas mistos</div><p>Cada um reúne três elementos e três Bosses associados.</p></article>
+          <article class="card"><div class="metric">9</div><div class="metric-label">fases finais</div><p>Um Boss elemental fortalecido por fase na Convergência.</p></article>
+        </div>
+        <div class="flow" aria-label="Fluxo da campanha">
+          <div class="node"><strong>Vale do Primeiro Broto</strong><span>10 fases · níveis 1–10</span></div>
+          <div class="node"><strong>9 específicos</strong><span>90 fases · níveis 11–20</span></div>
+          <div class="node"><strong>3 mistos</strong><span>30 fases · níveis 21–30</span></div>
+          <div class="node"><strong>Convergência</strong><span>9 fases · níveis 31–39</span></div>
+          <div class="node"><strong>Otimização</strong><span>repetição, carry, Forja e PvP</span></div>
+        </div>
+        <p>Os nove mapas específicos possuem a mesma faixa de nível para preservar a escolha livre após o mapa inicial. A progressão pede elencos e counters diferentes, não uma ordem elemental obrigatória. Mapas mistos exigem os três específicos associados; a Convergência exige os três mistos.</p>
+        <div class="formula">139 = 10 (inicial) + 9 × 10 (específicos) + 3 × 10 (mistos) + 9 (Convergência)</div>
+      </section>
+
+      <section id="fases">
+        <span class="section-kicker">04 · Dados de encontro</span>
+        <h2>Composição completa das 139 fases</h2>
+        <p>Cada mapa regular nomeia seus cinco Comuns como A–E na ordem da tabela regional. O template abaixo é materializado no pacote de conteúdo: posições, níveis, categoria, Frenesi, limite, XP e pools ficam fixos por versão.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fase</th><th>Formação inimiga</th><th>Objetivo de leitura</th><th>Nível</th><th>Stamina / teto</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>A em P1</td><td>Basic Attack, posição frontal e primeiro drop.</td><td>base</td><td>Normal 10 / 240→360 ticks</td></tr>
+              <tr><td>2</td><td>A P1 · B P2</td><td>Peso lateral e dois papéis.</td><td>base+1</td><td>Normal</td></tr>
+              <tr><td>3</td><td>A P1 · B P3 · C P5</td><td>Corredor, retaguarda e exposição.</td><td>base+2</td><td>Normal</td></tr>
+              <tr><td>4</td><td>A P1 · B P2 · C P4 · D P6</td><td>Primeira composição de quatro.</td><td>base+3</td><td>Normal</td></tr>
+              <tr><td>5</td><td>A–E em P1/P2/P3/P5/P6</td><td>Família completa e baú de marco.</td><td>base+4</td><td>Normal</td></tr>
+              <tr><td>6</td><td>A×2 · B · C · D · E</td><td>Pressão assimétrica em seis slots.</td><td>base+5</td><td>Normal</td></tr>
+              <tr><td>7</td><td>A · B×2 · C · D · E×2</td><td>Sete unidades e escolha de counter.</td><td>base+6</td><td>Normal</td></tr>
+              <tr><td>8</td><td>A×2 · B · C×2 · D · E</td><td>Formação final do roster comum.</td><td>base+7</td><td>Normal</td></tr>
+              <tr><td>9</td><td>Elite P4 + B P2 + D P6</td><td>Dois papéis, gatilho explícito e componente.</td><td>base+8</td><td>Elite 15 / 360→480 ticks</td></tr>
+              <tr><td>10</td><td>Boss + lacaios declarados</td><td>Domínio do mapa; Pesquisa/componente.</td><td>base+9</td><td>Boss 25 / 480→600 ticks</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>O Vale inicial não possui Elite: sua fase 9 usa A–E, com A e B repetidos, nível 9 e categoria normal.</li>
+          <li>Específicos usam base 11; mistos usam base 21. A Convergência define níveis 31–39, um por fase.</li>
+          <li>Mistos mapeiam A–F para dois Comuns de cada específico associado; a fase 10 traz os três Bosses iniciais em P1, P4 e P7.</li>
+          <li>Reforços declarados entram apenas em posições reservadas e sempre possuem <code>xp=0</code> e <code>drop_pool=null</code>.</li>
+        </ul>
+        <h3>Composição fixa das fases 10</h3>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Mapa</th><th>Formação inicial do Boss</th></tr></thead>
+            <tbody>
+              <tr><td>Vale do Primeiro Broto</td><td>Guardião do Marco em P1, sem lacaio.</td></tr>
+              <tr><td>Cratera Rubra</td><td>Carapaça de Lava P2 · Coração Vulcânico P4 · Orbe de Fumaça P6.</td></tr>
+              <tr><td>Galerias de Geada</td><td>Carapaça Glacial P2 · Monólito Invernal P4 · Olho de Neve P6.</td></tr>
+              <tr><td>Jardins Suspensos</td><td>Vigia de Brisa P2 · Olho do Vendaval P4 · Turbina Selvagem P6.</td></tr>
+              <tr><td>Dunas de Vidro</td><td>Concha Móvel P2 · Titã das Dunas P4 · Miragem Densa P6.</td></tr>
+              <tr><td>Oficinas Abandonadas</td><td>Autômato de Placa P2 · Máquina Regente P4 · Olho Magnético P6.</td></tr>
+              <tr><td>Pântano Ácido</td><td>Caracol Cáustico P2 · Hidra de Esporos P4 · Aranha de Névoa P6.</td></tr>
+              <tr><td>Raízes Profundas</td><td>Golem de Barro P2 · Colosso Raiz P4 · Guardião Raiz P6.</td></tr>
+              <tr><td>Planície da Tempestade</td><td>Besouro Condutor P2 · Serpe da Tempestade P4 · Torre Estática P6.</td></tr>
+              <tr><td>Recifes Profundos</td><td>Caranguejo de Maré P2 · Leviatã das Marés P4 · Coral Guardião P6.</td></tr>
+              <tr><td>Três mapas mistos</td><td>Os três Bosses associados em P1, P4 e P7, sem Comum inicial.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>XP fixa publicada</h3>
+        <div class="formula">Comum: XP = 12 + 4 × nível · Elite: XP = 70 + 10 × nível · Boss: XP = 180 + 20 × nível · Reforço: 0</div>
+        <p>A fórmula é ferramenta editorial. O build de conteúdo grava o inteiro resultante em cada instância; não existe scaling por conta, time, duração ou vitória. A divisão posterior segue integralmente o Ponto 9 do GDD.</p>
+      </section>
+
+      <section id="mapas">
+        <span class="section-kicker">05 · Cadeia de progressão</span>
+        <h2>Mapa → material → receita → próximo objetivo</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>Mapa / destaque</th><th>Roster e material</th><th>Uso principal</th><th>Próximo objetivo</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td>Vale do Primeiro Broto · Neutro</td><td>5 Comuns · Marca do Guardião</td><td>Base Arcana, moldes, Forja Básica</td><td>Nove específicos</td></tr>
+              <tr><td>2</td><td>Cratera Rubra · Fogo</td><td>Escama de Brasa</td><td>Essência/attachments de Fogo</td><td>Fronteira da Bruma</td></tr>
+              <tr><td>3</td><td>Galerias de Geada · Gelo</td><td>Cristal de Geada</td><td>Essência/attachments de Gelo</td><td>Fronteira da Bruma</td></tr>
+              <tr><td>4</td><td>Jardins Suspensos · Ar</td><td>Pluma de Corrente</td><td>Essência/attachments de Ar</td><td>Fronteira da Bruma</td></tr>
+              <tr><td>5</td><td>Dunas de Vidro · Areia</td><td>Grão de Sílica</td><td>Essência/attachments de Areia</td><td>Fossa da Ferrugem</td></tr>
+              <tr><td>6</td><td>Oficinas Abandonadas · Metal</td><td>Limalha Viva</td><td>Essência/attachments de Metal</td><td>Fossa da Ferrugem</td></tr>
+              <tr><td>7</td><td>Pântano Ácido · Veneno</td><td>Esporo Cáustico</td><td>Essência/attachments de Veneno</td><td>Fossa da Ferrugem</td></tr>
+              <tr><td>8</td><td>Raízes Profundas · Terra</td><td>Argila Rúnica</td><td>Essência/attachments de Terra</td><td>Vale da Tempestade</td></tr>
+              <tr><td>9</td><td>Planície da Tempestade · Raio</td><td>Filamento Voltaico</td><td>Essência/attachments de Raio</td><td>Vale da Tempestade</td></tr>
+              <tr><td>10</td><td>Recifes Profundos · Água</td><td>Gota Abissal</td><td>Essência/attachments de Água</td><td>Vale da Tempestade</td></tr>
+              <tr><td>11</td><td>Fronteira da Bruma · Fogo/Gelo/Ar</td><td>Condensado de Bruma</td><td>Lacre Superior e Fusão do trio</td><td>Convergência</td></tr>
+              <tr><td>12</td><td>Fossa da Ferrugem · Areia/Metal/Veneno</td><td>Liga Corrosiva</td><td>Lacre Superior e Fusão do trio</td><td>Convergência</td></tr>
+              <tr><td>13</td><td>Vale da Tempestade · Terra/Raio/Água</td><td>Coração da Monção</td><td>Lacre Superior e Fusão do trio</td><td>Convergência</td></tr>
+              <tr><td>14</td><td>Convergência Elemental · nove elementos</td><td>Selo da Convergência</td><td>Receita Máxima e Ascensão endgame</td><td>Otimização/PvP</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Famílias principais e secundárias</h3>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Mapa</th><th>Família principal — A/B/C</th><th>Família secundária — D/E</th></tr></thead>
+            <tbody>
+              <tr><td>Vale</td><td>Vida rasteira: Musgo, Besouro, Vigia</td><td>Visitantes elementais: Fagulha, Gota</td></tr>
+              <tr><td>Fogo</td><td>Fauna de brasa: Salamandra, Corredor, Vespa</td><td>Formas vulcânicas: Carapaça, Orbe</td></tr>
+              <tr><td>Gelo</td><td>Fauna cristalina: Lobo, Fragmento, Aranha</td><td>Formas glaciais: Carapaça, Olho</td></tr>
+              <tr><td>Ar</td><td>Fauna de corrente: Falcão, Manta, Esporo</td><td>Formas de vento: Vigia, Turbina</td></tr>
+              <tr><td>Areia</td><td>Fauna do ermo: Escorpião, Lagarto, Vespa</td><td>Formas de sílica: Concha, Miragem</td></tr>
+              <tr><td>Metal</td><td>Máquinas móveis: Drone, Cão, Autômato</td><td>Ferramentas vivas: Olho, Serra</td></tr>
+              <tr><td>Veneno</td><td>Fauna do brejo: Sapo, Mosca, Cipó</td><td>Formas cáusticas: Caracol, Aranha</td></tr>
+              <tr><td>Terra</td><td>Fauna mineral: Tatu, Golem, Toupeira</td><td>Guardiões vegetais: Espinho, Guardião</td></tr>
+              <tr><td>Raio</td><td>Fauna voltaica: Lebre, Besouro, Arraia</td><td>Condutores: Torre, Caçador</td></tr>
+              <tr><td>Água</td><td>Fauna de maré: Caranguejo, Enguia, Medusa</td><td>Formas abissais: Coral, Arraia</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="inicial">
+        <span class="section-kicker">06 · Mapa inicial</span>
+        <h2>Vale do Primeiro Broto</h2>
+        <p>Pradaria úmida com ruínas de pedra clara. Três Neutros ensinam papéis e posições; Fogo e Água introduzem o counter recíproco. As fases 1–9 liberam, em ordem, as nove linhas da matriz completa no Codex, mesmo quando o elemento ainda não aparece como inimigo.</p>
+        <div class="table-wrap">
+          <table class="enemy-table">
+            <thead><tr><th>Inimigo e visual</th><th>Elemento / categoria / papel</th><th>Basic, Power Move e traço</th><th>Drops possíveis / matriz</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Musgo Rasteiro</strong><br><span class="tag">tufo baixo com olhos minerais</span></td><td>Neutro · Comum · Brutamontes</td><td><strong>Batida de Musgo:</strong> impacto físico canônico. <strong>Casca Úmida:</strong> +DEF acima de 50% HP. Sem Power Move.</td><td>Fibra Rústica, Seiva Clara · sem counter elemental.</td></tr>
+              <tr><td><strong>Besouro de Casca</strong><br><span class="tag">besouro largo de placas vegetais</span></td><td>Neutro · Comum · Brutamontes</td><td><strong>Choque de Casco:</strong> impacto físico. <strong>Placa Frontal:</strong> +DEF enquanto P1 estiver ocupada. Sem Power Move.</td><td>Pó Mineral, Fibra Rústica · sem counter.</td></tr>
+              <tr><td><strong>Vigia Oco</strong><br><span class="tag">pequena sentinela de madeira vazada</span></td><td>Neutro · Comum · Controlador</td><td><strong>Pulso Seco:</strong> dano mágico. <strong>Olhar Fixo:</strong> +Potência de Controle própria. Sem Power Move.</td><td>Seiva Clara, Pó Mineral · sem counter.</td></tr>
+              <tr><td><strong>Fagulha Selvagem</strong><br><span class="tag">lagarto curto com dorso incandescente</span></td><td>Fogo · Comum · Executor</td><td><strong>Mordida Quente:</strong> dano físico. <strong>Calor de Caça:</strong> +dano contra alvo abaixo de 40% HP. Sem Power Move.</td><td>Fibra Rústica, Seiva Clara · counter: Água.</td></tr>
+              <tr><td><strong>Gota Errante</strong><br><span class="tag">massa translúcida em forma de gota</span></td><td>Água · Comum · Suporte</td><td><strong>Jato Curto:</strong> dano mágico. <strong>Corpo Fluido:</strong> +MDEF. Sem Power Move.</td><td>Água Clara, Seiva Clara · counter: Raio.</td></tr>
+              <tr><td><strong>Guardião do Marco</strong><br><span class="tag">constructo de pedra coberto por raízes</span></td><td>Neutro · Boss · Brutamontes/Controlador</td><td><strong>Martelo de Pedra:</strong> dano físico. <strong>Power — Onda do Marco:</strong> em 70% e 35% HP, dano a P1/P2/P3 e redução visível de Precisão por 2 ações. Sem reforço.</td><td>Primeira vitória: 8 Conhecimento. Repetições: Marca do Guardião ×1. Sem counter.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="elementais-a">
+        <span class="section-kicker">07 · Quatro regiões específicas</span>
+        <h2>Fogo, Gelo, Ar e Areia</h2>
+        <h3>Cratera Rubra — Fogo</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Salamandra de Brasa</strong> · corpo baixo rachado</td><td>Comum · Brutamontes</td><td><strong>Cauda Incandescente</strong>; +DEF acima de 50% HP. Sem Power.</td><td>Escama de Brasa + Pó Mineral</td></tr>
+          <tr><td><strong>Corredor de Cinza</strong> · ave sem penas e pernas longas</td><td>Comum · Executor</td><td><strong>Bico Ardente</strong>; +dano abaixo de 40% HP. Sem Power.</td><td>Escama de Brasa + Fibra Rústica</td></tr>
+          <tr><td><strong>Vespa Cálida</strong> · asas de fumaça</td><td>Comum · Atirador</td><td><strong>Ferrão Rubro</strong>; +DEX. Sem Power; targeting canônico.</td><td>Escama de Brasa + Seiva Clara</td></tr>
+          <tr><td><strong>Carapaça de Lava</strong> · tartaruga mineral</td><td>Comum · Brutamontes</td><td><strong>Investida de Placa</strong>; +MDEF. Sem Power.</td><td>Escama de Brasa + Pó Mineral</td></tr>
+          <tr><td><strong>Orbe de Fumaça</strong> · esfera escura com núcleo vermelho</td><td>Comum · Controlador</td><td><strong>Pulso de Fuligem</strong>; +Potência de Controle. Sem Power.</td><td>Escama de Brasa + Seiva Clara</td></tr>
+          <tr><td><strong>Forjador Rubro</strong> · bípede de pedra e metal</td><td>Elite · Brutamontes/Controlador</td><td><strong>Malho Térmico</strong>. <strong>Power — Pressão Magmática:</strong> no tick 90, escudo próprio e debuff de DEF em P1 por 2 ações.</td><td>Cerne Vulcânico ×1 por vitória + 2 Escamas</td></tr>
+          <tr><td><strong>Coração Vulcânico</strong> · núcleo colossal suspenso</td><td>Boss · Brutamontes/Controlador/Executor</td><td><strong>Pulso de Magma</strong>. <strong>Power — Erupção:</strong> em 66%/33% HP, dano simultâneo a todos; fase final ganha Penetração visível.</td><td>1ª: 12 Conhecimento · repetição: Coração de Magma ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Galerias de Geada — Gelo</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Lobo de Geada</strong> · quadrúpede de cristal opaco</td><td>Comum · Executor</td><td><strong>Mordida Fria</strong>; +dano contra HP baixo. Sem Power.</td><td>Cristal de Geada + Fibra</td></tr>
+          <tr><td><strong>Fragmento Saltante</strong> · lasca de gelo com pernas finas</td><td>Comum · Atirador</td><td><strong>Estilhaço</strong>; +Precisão. Sem Power.</td><td>Cristal de Geada + Pó</td></tr>
+          <tr><td><strong>Aranha de Cristal</strong> · oito pernas transparentes</td><td>Comum · Controlador</td><td><strong>Fio Frio</strong>; +Potência de Controle. Sem Power.</td><td>Cristal de Geada + Seiva</td></tr>
+          <tr><td><strong>Carapaça Glacial</strong> · casco facetado azul</td><td>Comum · Brutamontes</td><td><strong>Ombro de Gelo</strong>; +DEF/MDEF. Sem Power.</td><td>Cristal de Geada + Pó</td></tr>
+          <tr><td><strong>Olho de Neve</strong> · olho flutuante envolto em névoa</td><td>Comum · Suporte</td><td><strong>Raio Pálido</strong>; escudos recebidos são 10% mais fortes. Sem Power.</td><td>Cristal de Geada + Seiva</td></tr>
+          <tr><td><strong>Custódio Glacial</strong> · cavaleiro de gelo sem rosto</td><td>Elite · Brutamontes/Suporte</td><td><strong>Lança Fria</strong>. Sem Power; <strong>Manto Glacial:</strong> em 50% HP concede escudo único aos aliados vivos.</td><td>Nó Glacial ×1 + 2 Cristais</td></tr>
+          <tr><td><strong>Monólito Invernal</strong> · torre viva de gelo</td><td>Boss · Brutamontes/Suporte/Controlador</td><td><strong>Queda de Cristal</strong>. <strong>Power — Inverno Fechado:</strong> ticks 120/240, escudo e Silence por 1 ação nos dois alvos com maior prontidão.</td><td>1ª: 12 Conhecimento · repetição: Olho Invernal ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Jardins Suspensos — Ar</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Falcão de Corrente</strong> · ave com cauda de fitas</td><td>Comum · Atirador</td><td><strong>Corte de Asa</strong>; +DEX. Sem Power.</td><td>Pluma de Corrente + Fibra</td></tr>
+          <tr><td><strong>Manta Aérea</strong> · criatura plana que ondula no ar</td><td>Comum · Suporte</td><td><strong>Rajada Suave</strong>; +MDEF dos escudos recebidos. Sem Power.</td><td>Pluma + Seiva</td></tr>
+          <tr><td><strong>Esporo Viajante</strong> · esfera vegetal com hélices</td><td>Comum · Controlador</td><td><strong>Sopro Turvo</strong>; +Potência de Controle. Sem Power.</td><td>Pluma + Seiva</td></tr>
+          <tr><td><strong>Vigia de Brisa</strong> · máscara leve suspensa</td><td>Comum · Executor</td><td><strong>Lâmina de Ar</strong>; +Crítico contra alvo abaixo de 40%. Sem Power.</td><td>Pluma + Pó</td></tr>
+          <tr><td><strong>Turbina Selvagem</strong> · rotor natural de três pás</td><td>Comum · Brutamontes</td><td><strong>Impacto Giratório</strong>; +Esquiva enquanto acima de 50% HP. Sem Power.</td><td>Pluma + Pó</td></tr>
+          <tr><td><strong>Arconte dos Ventos</strong> · figura alta envolta em faixas</td><td>Elite · Atirador/Controlador</td><td><strong>Seta de Pressão</strong>. <strong>Power — Corredor Vazio:</strong> tick 100, dano no corredor central e debuff de Precisão por 2 ações.</td><td>Vórtice Preso ×1 + 2 Plumas</td></tr>
+          <tr><td><strong>Olho do Vendaval</strong> · anel de nuvens com pupila luminosa</td><td>Boss · Atirador/Controlador/Executor</td><td><strong>Lança de Vento</strong>. <strong>Power — Parede de Rajada:</strong> a cada 120 ticks, dano aos dois corredores laterais; em 35% HP prioriza baixa vida.</td><td>1ª: 12 Conhecimento · repetição: Íris do Vendaval ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Dunas de Vidro — Areia</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Escorpião Dourado</strong> · pinças largas e cauda vítrea</td><td>Comum · Executor</td><td><strong>Pinça de Sílica</strong>; +dano abaixo de 40% HP. Sem Power.</td><td>Grão de Sílica + Pó</td></tr>
+          <tr><td><strong>Lagarto de Sílica</strong> · placas transparentes</td><td>Comum · Brutamontes</td><td><strong>Cabeçada de Duna</strong>; +DEF. Sem Power.</td><td>Grão + Fibra</td></tr>
+          <tr><td><strong>Vespa do Ermo</strong> · corpo fino cor de cobre</td><td>Comum · Atirador</td><td><strong>Ferrão Seco</strong>; +Precisão. Sem Power.</td><td>Grão + Seiva</td></tr>
+          <tr><td><strong>Concha Móvel</strong> · espiral rochosa com pernas</td><td>Comum · Brutamontes</td><td><strong>Rolamento</strong>; +MDEF. Sem Power.</td><td>Grão + Pó</td></tr>
+          <tr><td><strong>Miragem Densa</strong> · silhueta tremeluzente</td><td>Comum · Controlador</td><td><strong>Reflexo Cortante</strong>; +Esquiva. Sem Power.</td><td>Grão + Seiva</td></tr>
+          <tr><td><strong>Colosso de Sílica</strong> · gigante facetado</td><td>Elite · Brutamontes/Executor</td><td><strong>Punho de Vidro</strong>. Sem Power; <strong>Ruptura:</strong> abaixo de 35% HP ganha Penetração visível.</td><td>Placa Vítrea ×1 + 2 Grãos</td></tr>
+          <tr><td><strong>Titã das Dunas</strong> · verme blindado de areia</td><td>Boss · Brutamontes/Executor/Controlador</td><td><strong>Mandíbula Mineral</strong>. <strong>Power — Maré de Areia:</strong> 70%/40% HP, dano a P1/P2/P3 e debuff de Velocidade por 2 ações.</td><td>1ª: 12 Conhecimento · repetição: Coroa das Dunas ×1</td></tr>
+        </tbody></table></div>
+        <p class="tag">Todos os inimigos desta seção têm o elemento do mapa. Counters Muito Fortes: Fogo←Água, Gelo←Fogo, Ar←Gelo, Areia←Ar.</p>
+      </section>
+
+      <section id="elementais-b">
+        <span class="section-kicker">08 · Cinco regiões específicas</span>
+        <h2>Metal, Veneno, Terra, Raio e Água</h2>
+        <h3>Oficinas Abandonadas — Metal</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Drone Rebitado</strong> · disco com três lentes</td><td>Comum · Atirador</td><td><strong>Rebite</strong>; +Precisão. Sem Power.</td><td>Limalha Viva + Pó</td></tr>
+          <tr><td><strong>Cão de Liga</strong> · quadrúpede mecânico</td><td>Comum · Executor</td><td><strong>Mordida Serrada</strong>; +dano em baixa vida. Sem Power.</td><td>Limalha + Fibra</td></tr>
+          <tr><td><strong>Autômato de Placa</strong> · torso pesado sobre duas pernas</td><td>Comum · Brutamontes</td><td><strong>Prensa</strong>; +DEF. Sem Power.</td><td>Limalha + Pó</td></tr>
+          <tr><td><strong>Olho Magnético</strong> · esfera com aro móvel</td><td>Comum · Controlador</td><td><strong>Pulso Magnético</strong>; +Potência de Controle. Sem Power.</td><td>Limalha + Seiva</td></tr>
+          <tr><td><strong>Serra Andante</strong> · lâmina circular com patas</td><td>Comum · Executor</td><td><strong>Corte Dentado</strong>; +Penetração. Sem Power.</td><td>Limalha + Fibra</td></tr>
+          <tr><td><strong>Guarda de Cobalto</strong> · sentinela azul de escudo largo</td><td>Elite · Brutamontes/Suporte</td><td><strong>Escudo de Liga</strong>. <strong>Power — Placa Comum:</strong> tick 100, escudo nos aliados adjacentes.</td><td>Bobina de Cobalto ×1 + 2 Limalhas</td></tr>
+          <tr><td><strong>Máquina Regente</strong> · torre móvel com braços articulados</td><td>Boss · Brutamontes/Suporte/Atirador</td><td><strong>Canhão de Rebite</strong>. <strong>Power — Protocolo Regente:</strong> em 66%/33% HP alterna escudo de equipe e dano a P5/P6/P7.</td><td>1ª: 12 Conhecimento · repetição: Núcleo Regente ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Pântano Ácido — Veneno</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Sapo Ácido</strong> · anfíbio de pele brilhante</td><td>Comum · Brutamontes</td><td><strong>Língua Cáustica</strong>; +HP. Sem Power.</td><td>Esporo Cáustico + Seiva</td></tr>
+          <tr><td><strong>Mosca de Esporo</strong> · inseto de asas manchadas</td><td>Comum · Atirador</td><td><strong>Agulha de Esporo</strong>; +DEX. Sem Power.</td><td>Esporo + Fibra</td></tr>
+          <tr><td><strong>Cipó Tóxico</strong> · haste com mandíbula foliar</td><td>Comum · Controlador</td><td><strong>Laço Verde</strong>; +Potência de Controle. Sem Power.</td><td>Esporo + Fibra</td></tr>
+          <tr><td><strong>Caracol Cáustico</strong> · concha verde opaca</td><td>Comum · Brutamontes</td><td><strong>Choque de Concha</strong>; +MDEF. Sem Power.</td><td>Esporo + Pó</td></tr>
+          <tr><td><strong>Aranha de Névoa</strong> · pernas finas sob vapor violeta</td><td>Comum · Executor</td><td><strong>Picada Turva</strong>; +dano contra alvo com debuff. Sem Power.</td><td>Esporo + Seiva</td></tr>
+          <tr><td><strong>Matriarca do Brejo</strong> · aranha larga com bolsa luminosa</td><td>Elite · Controlador/Executor</td><td><strong>Presas Ácidas</strong>. <strong>Power — Nuvem Baixa:</strong> quando um aliado morre, debuff de DEF/MDEF em P1/P2/P3 por 2 ações.</td><td>Glândula Ácida ×1 + 2 Esporos</td></tr>
+          <tr><td><strong>Hidra de Esporos</strong> · três hastes sobre um corpo único</td><td>Boss · Controlador/Executor/Suporte</td><td><strong>Mordida Tripla</strong> é uma ação multi-hit no mesmo alvo. <strong>Power — Flor Tóxica:</strong> a cada 120 ticks, debuff e cura própria proporcional aos alvos afetados.</td><td>1ª: 12 Conhecimento · repetição: Medula da Hidra ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Raízes Profundas — Terra</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Tatu de Rocha</strong> · placas de basalto arredondadas</td><td>Comum · Brutamontes</td><td><strong>Rolo de Pedra</strong>; +DEF. Sem Power.</td><td>Argila Rúnica + Pó</td></tr>
+          <tr><td><strong>Golem de Barro</strong> · figura curta com runas simples</td><td>Comum · Brutamontes</td><td><strong>Punho de Argila</strong>; +HP. Sem Power.</td><td>Argila + Seiva</td></tr>
+          <tr><td><strong>Toupeira Basáltica</strong> · focinho de pedra escura</td><td>Comum · Executor</td><td><strong>Garra de Basalto</strong>; +Penetração. Sem Power.</td><td>Argila + Fibra</td></tr>
+          <tr><td><strong>Espinho Andante</strong> · raiz alta coberta de pontas</td><td>Comum · Atirador</td><td><strong>Espinho Solto</strong>; +Precisão. Sem Power.</td><td>Argila + Fibra</td></tr>
+          <tr><td><strong>Guardião Raiz</strong> · máscara de madeira sobre raízes</td><td>Comum · Suporte</td><td><strong>Golpe de Raiz</strong>; +escudo recebido. Sem Power.</td><td>Argila + Seiva</td></tr>
+          <tr><td><strong>Bastião de Granito</strong> · bloco alto com braços de laje</td><td>Elite · Brutamontes/Suporte</td><td><strong>Queda de Laje</strong>. Sem Power; em 50% HP concede escudo único aos adjacentes.</td><td>Cerne de Granito ×1 + 2 Argilas</td></tr>
+          <tr><td><strong>Colosso Raiz</strong> · árvore mineral de copa baixa</td><td>Boss · Brutamontes/Suporte/Controlador</td><td><strong>Braço de Pedra</strong>. <strong>Power — Abalo Profundo:</strong> 70%/40% HP, dano à frente e Stun de 1 ação em P1 se aplicável.</td><td>1ª: 12 Conhecimento · repetição: Raiz Colossal ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Planície da Tempestade — Raio</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Lebre Voltaica</strong> · orelhas longas e linhas luminosas</td><td>Comum · Executor</td><td><strong>Salto de Faísca</strong>; +AGI. Sem Power.</td><td>Filamento Voltaico + Fibra</td></tr>
+          <tr><td><strong>Besouro Condutor</strong> · carapaça de cobre</td><td>Comum · Brutamontes</td><td><strong>Choque de Casco</strong>; +MDEF. Sem Power.</td><td>Filamento + Pó</td></tr>
+          <tr><td><strong>Arraia de Nuvem</strong> · manta escura com bordas elétricas</td><td>Comum · Atirador</td><td><strong>Arco Curto</strong>; +Precisão. Sem Power.</td><td>Filamento + Seiva</td></tr>
+          <tr><td><strong>Torre Estática</strong> · pilar fino sobre patas</td><td>Comum · Controlador</td><td><strong>Pulso Estático</strong>; +Potência de Controle. Sem Power.</td><td>Filamento + Pó</td></tr>
+          <tr><td><strong>Caçador de Faísca</strong> · felino de traço azul</td><td>Comum · Executor</td><td><strong>Garra Elétrica</strong>; +Crítico em baixa vida. Sem Power.</td><td>Filamento + Fibra</td></tr>
+          <tr><td><strong>Condutor Alfa</strong> · antílope com chifres metálicos</td><td>Elite · Atirador/Executor</td><td><strong>Lança Voltaica</strong>. <strong>Power — Descarga Marcada:</strong> tick 90, maior dano no alvo vivo de menor HP.</td><td>Condutor Alfa ×1 + 2 Filamentos</td></tr>
+          <tr><td><strong>Serpe da Tempestade</strong> · serpente aérea envolta em raios</td><td>Boss · Atirador/Executor/Controlador</td><td><strong>Presa Elétrica</strong>. <strong>Power — Frente de Tempestade:</strong> a cada 100 ticks, dano simultâneo a três alvos e Silence de 1 ação no de maior prontidão.</td><td>1ª: 12 Conhecimento · repetição: Presa da Tempestade ×1</td></tr>
+        </tbody></table></div>
+
+        <h3>Recifes Profundos — Água</h3>
+        <div class="table-wrap"><table class="enemy-table"><thead><tr><th>Inimigo e visual</th><th>Categoria / papel</th><th>Kit e comportamento</th><th>Drops</th></tr></thead><tbody>
+          <tr><td><strong>Caranguejo de Maré</strong> · pinças largas e casco azul</td><td>Comum · Brutamontes</td><td><strong>Pinça de Maré</strong>; +DEF. Sem Power.</td><td>Gota Abissal + Pó</td></tr>
+          <tr><td><strong>Enguia Azul</strong> · corpo fino bioluminescente</td><td>Comum · Executor</td><td><strong>Mordida de Corrente</strong>; +AGI. Sem Power.</td><td>Gota + Fibra</td></tr>
+          <tr><td><strong>Medusa de Véu</strong> · sino translúcido de tentáculos curtos</td><td>Comum · Controlador</td><td><strong>Toque Frio</strong>; +Potência de Controle. Sem Power.</td><td>Gota + Seiva</td></tr>
+          <tr><td><strong>Coral Guardião</strong> · colônia móvel de ramos</td><td>Comum · Suporte</td><td><strong>Ramo de Coral</strong>; +cura/escudo recebido. Sem Power.</td><td>Gota + Seiva</td></tr>
+          <tr><td><strong>Arraia Abissal</strong> · manta escura de olhos claros</td><td>Comum · Atirador</td><td><strong>Jato Abissal</strong>; +Precisão. Sem Power.</td><td>Gota + Fibra</td></tr>
+          <tr><td><strong>Sentinela Coralina</strong> · cavaleiro de coral branco</td><td>Elite · Suporte/Controlador</td><td><strong>Lança Coralina</strong>. <strong>Power — Maré Protetora:</strong> ao primeiro aliado abaixo de 35% HP, escudo e remoção de um debuff.</td><td>Pérola Coralina ×1 + 2 Gotas</td></tr>
+          <tr><td><strong>Leviatã das Marés</strong> · criatura longa de placas oceânicas</td><td>Boss · Brutamontes/Suporte/Controlador</td><td><strong>Cauda de Maré</strong>. <strong>Power — Onda Abissal:</strong> 66%/33% HP, dano à frente e cura própria; fase final aumenta MDEF.</td><td>1ª: 12 Conhecimento · repetição: Escama Leviatã ×1</td></tr>
+        </tbody></table></div>
+        <p class="tag">Counters Muito Fortes: Metal←Areia, Veneno←Metal, Terra←Veneno, Raio←Terra e Água←Raio.</p>
+      </section>
+
+      <section id="mistos">
+        <span class="section-kicker">09 · Domínio combinado</span>
+        <h2>Mapas mistos e Convergência Elemental</h2>
+        <div class="table-wrap">
+          <table class="enemy-table">
+            <thead><tr><th>Mapa</th><th>Seis Comuns reutilizados</th><th>Elite própria</th><th>Fase 10</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Fronteira da Bruma</strong><br>Fogo/Gelo/Ar · +10% Ressonância</td><td>Salamandra, Vespa Cálida, Lobo, Aranha de Cristal, Falcão, Esporo Viajante</td><td><strong>Quimera de Vapor</strong> · ave quadrúpede envolta em vapor · Ar · Controlador/Suporte. Basic: Sopro de Bruma. Power no tick 100: escudo nos Bosses/aliados vivos e debuff de Precisão na frente. Drop: Condensado de Bruma ×1.</td><td>Coração Vulcânico P1 · Monólito Invernal P4 · Olho do Vendaval P7.</td></tr>
+              <tr><td><strong>Fossa da Ferrugem</strong><br>Areia/Metal/Veneno · +10%</td><td>Escorpião, Miragem, Drone, Autômato, Sapo, Aranha de Névoa</td><td><strong>Devorador de Liga</strong> · verme blindado de placas corroídas · Metal · Brutamontes/Executor. Basic: Mordida de Liga. Sem Power; ganha Penetração quando um aliado morre. Drop: Liga Corrosiva ×1.</td><td>Titã das Dunas P1 · Máquina Regente P4 · Hidra de Esporos P7.</td></tr>
+              <tr><td><strong>Vale da Tempestade</strong><br>Terra/Raio/Água · +10%</td><td>Tatu, Espinho, Lebre, Torre, Caranguejo, Medusa</td><td><strong>Guardião da Monção</strong> · cervo de pedra coberto por chuva elétrica · Água · Suporte/Controlador. Basic: Lança de Chuva. Power em 50% HP: cura aliados e Silence no inimigo de maior prontidão. Drop: Coração da Monção ×1.</td><td>Colosso Raiz P1 · Serpe da Tempestade P4 · Leviatã P7.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Convergência — nove encontros finais</h3>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Fase / nível</th><th>Boss fortalecido</th><th>Lacaios de Elite no início</th><th>Regra pública</th></tr></thead>
+            <tbody>
+              <tr><td>1 / 31</td><td>Coração Vulcânico</td><td>Forjador Rubro P2 · Custódio Glacial P6</td><td>Fogo +15% Ressonância; Boss P4.</td></tr>
+              <tr><td>2 / 32</td><td>Monólito Invernal</td><td>Custódio P2 · Arconte P6</td><td>Gelo +15%; escudos declarados.</td></tr>
+              <tr><td>3 / 33</td><td>Olho do Vendaval</td><td>Arconte P2 · Colosso de Sílica P6</td><td>Ar +15%; corredores laterais.</td></tr>
+              <tr><td>4 / 34</td><td>Titã das Dunas</td><td>Colosso de Sílica P2 · Guarda de Cobalto P6</td><td>Areia +15%; debuff de velocidade.</td></tr>
+              <tr><td>5 / 35</td><td>Máquina Regente</td><td>Guarda P2 · Matriarca P6</td><td>Metal +15%; suporte/retaguarda.</td></tr>
+              <tr><td>6 / 36</td><td>Hidra de Esporos</td><td>Matriarca P2 · Bastião P6</td><td>Veneno +15%; debuffs visíveis.</td></tr>
+              <tr><td>7 / 37</td><td>Colosso Raiz</td><td>Bastião P2 · Condutor P6</td><td>Terra +15%; pressão frontal.</td></tr>
+              <tr><td>8 / 38</td><td>Serpe da Tempestade</td><td>Condutor P2 · Sentinela P6</td><td>Raio +15%; maior prontidão.</td></tr>
+              <tr><td>9 / 39</td><td>Leviatã das Marés</td><td>Sentinela P2 · Forjador P6</td><td>Água +15%; fecha o ciclo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>Elites iniciais são inimigos reais: concedem seu componente apenas se o encontro inteiro for vencido.</li>
+          <li>Reforços adicionais, quando acionados por HP do Boss, usam posições reservadas P3/P5, uma entrada por fase, sem XP ou drops.</li>
+          <li>Cada vitória concede Selo da Convergência ×1 e o componente de repetição do Boss correspondente ×1; não existe décimo Boss.</li>
+        </ul>
+      </section>
+
+      <section id="drops-regra">
+        <span class="section-kicker">10 · Ledger de recompensa</span>
+        <h2>Filosofia e resolução de drops</h2>
+        <div class="flow" aria-label="Resolução de drops">
+          <div class="node"><strong>Derrotar</strong><span>enemy_instance_id definitivo</span></div>
+          <div class="node"><strong>Registrar</strong><span>XP e drop normal no ledger</span></div>
+          <div class="node"><strong>Encerrar</strong><span>vitória, derrota, timeout ou abandono</span></div>
+          <div class="node"><strong>Conceder</strong><span>sempre o conquistado</span></div>
+          <div class="node"><strong>Completar</strong><span>baú/marco apenas na vitória</span></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Origem</th><th>Momento de direito</th><th>Resultado</th><th>Se a fase não for vencida</th></tr></thead>
+            <tbody>
+              <tr><td>Comum</td><td>Derrota definitiva.</td><td>XP fixa + pool normal individual.</td><td>Preservado.</td></tr>
+              <tr><td>Elite</td><td>Vitória do encontro com Elite derrotada.</td><td>XP, drops normais e componente próprio.</td><td>Sem componente especial; drops de Comuns derrotados permanecem.</td></tr>
+              <tr><td>Boss</td><td>Vitória do encontro com Boss derrotado.</td><td>Primeira vitória: Conhecimento. Repetição: componente próprio.</td><td>Sem recompensa de Boss; drops de Comuns já derrotados permanecem.</td></tr>
+              <tr><td>Conclusão de fase</td><td>Vitória.</td><td>Água, baú, seed roll, primeira conclusão e desbloqueio.</td><td>Não concedido.</td></tr>
+              <tr><td>Reforço</td><td>Nunca.</td><td>0 XP, 0 drop, 0 progresso de proteção.</td><td>Não se aplica.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Invariantes antiabuso</h3>
+        <ul>
+          <li>cada <code>attempt_id + enemy_instance_id</code> liquida no máximo uma vez;</li>
+          <li>drop é rolado no servidor com versão da pool e RNG auditável; reconexão apenas relê o resultado;</li>
+          <li>QLD, FP, raridade/Vigor do Bud, VIP, 1×/2×, política PvE, dano e último golpe não alteram pesos;</li>
+          <li>carry pode farmar materiais antigos; o desconto de Stamina e a ausência de XP para overlevel já controlam a eficiência;</li>
+          <li>mudança de tabela cria nova versão; não reabre tentativas encerradas.</li>
+        </ul>
+      </section>
+
+      <section id="drops-tabelas">
+        <span class="section-kicker">11 · Pesos públicos</span>
+        <h2>Tabelas de loot, garantias e proteção</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pool</th><th>Garantido</th><th>Roll adicional</th><th>Observação</th></tr></thead>
+            <tbody>
+              <tr><td>Comum Neutro</td><td>1 material universal indicado na ficha.</td><td>25% de um segundo universal, uniforme entre os outros dois.</td><td>Um roll por inimigo definitivo.</td></tr>
+              <tr><td>Comum elemental</td><td>1 material universal indicado.</td><td>35%: 1 material regional do mapa.</td><td>Sem pity; volume vem da repetição.</td></tr>
+              <tr><td>Elite vencida</td><td>1 componente de Elite + 2 materiais regionais.</td><td>Sem roll oculto.</td><td>Uma vez por vitória válida.</td></tr>
+              <tr><td>Boss — primeira vitória</td><td>Vale 8 / específico 12 / misto 24 Conhecimento.</td><td>Sem componente de repetição nessa primeira vitória.</td><td>Flag por conta+encontro.</td></tr>
+              <tr><td>Boss — repetição</td><td>1 componente por Boss derrotado.</td><td>Sem roll oculto.</td><td>Misto entrega os três; Convergência entrega o Boss da fase.</td></tr>
+              <tr><td>Conclusão normal</td><td>Água Clara ×2 + 1 universal em rotação visível.</td><td>Seed conforme tabela abaixo.</td><td>Somente vitória.</td></tr>
+              <tr><td>Conclusão Elite</td><td>Água ×4.</td><td>Seed 8%.</td><td>Componente já vem da Elite.</td></tr>
+              <tr><td>Conclusão Boss</td><td>Água ×6; Convergência ×8 + Selo ×1.</td><td>Seed 15%; Convergência 20% do elemento do Boss.</td><td>Independente de Conhecimento/componente.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Proteção de Seed</h3>
+        <div class="formula">contador por conta + mapa específico + elemento · 20 vitórias elegíveis sem Seed → próxima vitória elegível garante 1 Seed do mapa</div>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Conteúdo</th><th>Chance de Seed</th><th>Progresso da proteção</th></tr></thead>
+            <tbody>
+              <tr><td>Fases 1–8 de mapa específico</td><td>3%</td><td>+1 na vitória sem Seed.</td></tr>
+              <tr><td>Elite específica</td><td>8%</td><td>+1.</td></tr>
+              <tr><td>Boss específico</td><td>15%</td><td>+1.</td></tr>
+              <tr><td>Mapa misto</td><td>6% de uma das três Seeds, cada uma com 1/3 do peso</td><td>Não altera contadores específicos.</td></tr>
+              <tr><td>Convergência</td><td>20% da Seed do Boss</td><td>Não altera contadores.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Ao obter a Seed do mapa, o contador correspondente zera. O jogador vê <em>Proteção de Seed — Fogo: 12/20</em> antes da entrada. Essa proteção é separada da Proteção de Raridade do nascimento e nunca altera o futuro Bud.</p>
+      </section>
+
+      <section id="itens-base">
+        <span class="section-kicker">12 · Catálogo universal</span>
+        <h2>Itens universais e de Cultivo</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Categoria / raridade</th><th>Origem</th><th>Uso</th><th>Stack / vínculo / mercado</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Fibra Rústica</strong><br>Feixe vegetal resistente.</td><td>Material universal · Comum</td><td>Comuns; Cultivo Básico.</td><td>Base Arcana, Molde de Totem, Fertilizantes.</td><td>9.999 · não vinculado · categoria de materiais ainda não liberada.</td></tr>
+              <tr><td><strong>Pó Mineral</strong><br>Pó estável para moldagem.</td><td>Material universal · Comum</td><td>Comuns; baú normal.</td><td>Base Arcana, Molde de Núcleo, Pó de Calibração.</td><td>9.999 · não vinculado · mercado não aprovado.</td></tr>
+              <tr><td><strong>Seiva Clara</strong><br>Ligante natural translúcido.</td><td>Material de Cultivo · Comum</td><td>Comuns; Cultivo Básico.</td><td>Essências, Fertilizantes e refinamento.</td><td>9.999 · não vinculado · mercado não aprovado.</td></tr>
+              <tr><td><strong>Água Clara</strong><br>Água de processo, sem bônus de RNG.</td><td>Consumível de Cultivo · Comum</td><td>Conclusão de fases; Cultivo Básico.</td><td>Avançar Germinação e Recuperação.</td><td>9.999 · vinculada à conta · não negociável nesta versão.</td></tr>
+              <tr><td><strong>Base Arcana</strong><br>Componente neutro refinado.</td><td>Componente de Forja · Incomum</td><td>Refinamento universal.</td><td>Moldes e todas as Sínteses.</td><td>999 · não vinculada · mercado não aprovado.</td></tr>
+              <tr><td><strong>Resíduo Arcano</strong><br>Valor padronizado recuperado de itens.</td><td>Material de Desmontagem · Incomum</td><td>Desmontagem.</td><td>Pó de Calibração e Vínculo de Fusão.</td><td>9.999 · vinculado à conta · não negociável.</td></tr>
+              <tr><td><strong>Pó de Calibração</strong><br>Reagente de rerroll.</td><td>Reagente · Raro</td><td>Refinar Resíduo Arcano.</td><td>Toda Calibração.</td><td>999 · vinculado · não negociável.</td></tr>
+              <tr><td><strong>Vínculo de Fusão</strong><br>Lacre que estabiliza três peças.</td><td>Reagente · Raro</td><td>Refinamento com Resíduo + componente de Elite.</td><td>Fusão garantida.</td><td>999 · vinculado · não negociável.</td></tr>
+              <tr><td><strong>Catalisador de Ascensão</strong><br>Reagente de alta pressão.</td><td>Reagente · Épico</td><td>Refinamento com componente de Boss.</td><td>Ascensão Raro/Épico.</td><td>99 · vinculado · não negociável.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Planos de Cultivo</h3>
+        <div class="table-wrap"><table class="compact"><thead><tr><th>Plano</th><th>Pool-base por ciclo</th><th>Qualidade</th><th>Finalidade</th></tr></thead><tbody>
+          <tr><td>Cultivo Básico · 1h30</td><td>Fibra 4–6 · Seiva 3–5 · Água 2–4</td><td>QLD desloca quantidade para o topo da faixa; não cria item novo.</td><td>Sustentar água, moldes e Fertilizantes.</td></tr>
+          <tr><td>Cultivo Elemental · 6h</td><td>Universais 6–9 · material do elemento do Bud 2–4</td><td>Chance de +1 regional: base 10% + bônus de QLD, dentro do cap.</td><td>Essências e attachment elemental.</td></tr>
+          <tr><td>Cultivo Regional · 12h</td><td>Universais 8–12 · regional liberado 5–8 · 10% de Essência</td><td>Exige região/boss correspondente; QLD só desloca resultados válidos.</td><td>Receitas Superior/Máxima e endgame.</td></tr>
+        </tbody></table></div>
+      </section>
+
+      <section id="itens-regionais">
+        <span class="section-kicker">13 · Nove cadeias elementais</span>
+        <h2>Materiais regionais, Elite e Boss</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Elemento</th><th>Regional / Essência refinada</th><th>Elite</th><th>Boss</th><th>Uso</th></tr></thead>
+            <tbody>
+              <tr><td>Fogo</td><td>Escama de Brasa / Essência Ígnea</td><td>Cerne Vulcânico</td><td>Coração de Magma</td><td>Família de Fogo; Bruma; Ascensão.</td></tr>
+              <tr><td>Gelo</td><td>Cristal de Geada / Essência Glacial</td><td>Nó Glacial</td><td>Olho Invernal</td><td>Família de Gelo; Bruma.</td></tr>
+              <tr><td>Ar</td><td>Pluma de Corrente / Essência Eólica</td><td>Vórtice Preso</td><td>Íris do Vendaval</td><td>Família de Ar; Bruma.</td></tr>
+              <tr><td>Areia</td><td>Grão de Sílica / Essência de Duna</td><td>Placa Vítrea</td><td>Coroa das Dunas</td><td>Família de Areia; Ferrugem.</td></tr>
+              <tr><td>Metal</td><td>Limalha Viva / Essência Metálica</td><td>Bobina de Cobalto</td><td>Núcleo Regente</td><td>Família de Metal; Ferrugem.</td></tr>
+              <tr><td>Veneno</td><td>Esporo Cáustico / Essência Tóxica</td><td>Glândula Ácida</td><td>Medula da Hidra</td><td>Família de Veneno; Ferrugem.</td></tr>
+              <tr><td>Terra</td><td>Argila Rúnica / Essência Telúrica</td><td>Cerne de Granito</td><td>Raiz Colossal</td><td>Família de Terra; Monção.</td></tr>
+              <tr><td>Raio</td><td>Filamento Voltaico / Essência Elétrica</td><td>Condutor Alfa</td><td>Presa da Tempestade</td><td>Família de Raio; Monção.</td></tr>
+              <tr><td>Água</td><td>Gota Abissal / Essência Aquática</td><td>Pérola Coralina</td><td>Escama Leviatã</td><td>Família de Água; Monção.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Todos os regionais e componentes são itens não vinculados no inventário, mas isso <strong>não</strong> os libera para negociação. Materiais, moldes, receitas e componentes permanecem com mercado desabilitado até decisão da Economia.</p>
+      </section>
+
+      <section id="sementes">
+        <span class="section-kicker">14 · Nascimento</span>
+        <h2>Seeds, Água e Fertilizantes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Origem</th><th>Efeito</th><th>Stack e vínculo</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Seed de Fogo</strong></td><td>Cratera, Bruma, Convergência/Fogo.</td><td>Pool de espécies de Fogo vigente no plantio.</td><td>999 por origem+pool versionada · não vinculada · mercado somente quando habilitado.</td></tr>
+              <tr><td><strong>Seed de Gelo</strong></td><td>Galerias, Bruma, Convergência/Gelo.</td><td>Pool de Gelo.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Ar</strong></td><td>Jardins, Bruma, Convergência/Ar.</td><td>Pool de Ar.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Areia</strong></td><td>Dunas, Ferrugem, Convergência/Areia.</td><td>Pool de Areia.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Metal</strong></td><td>Oficinas, Ferrugem, Convergência/Metal.</td><td>Pool de Metal.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Veneno</strong></td><td>Pântano, Ferrugem, Convergência/Veneno.</td><td>Pool de Veneno.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Terra</strong></td><td>Raízes, Monção, Convergência/Terra.</td><td>Pool de Terra.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Raio</strong></td><td>Planície, Monção, Convergência/Raio.</td><td>Pool de Raio.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Seed de Água</strong></td><td>Recifes, Monção, Convergência/Água.</td><td>Pool de Água.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Água Clara</strong></td><td>Baús e Cultivo Básico.</td><td>Requisito; 0 bônus de RNG.</td><td>9.999 · vinculada.</td></tr>
+              <tr><td><strong>Fertilizante de Raridade</strong></td><td>2 Fibra + 2 Seiva + 1 Essência de qualquer elemento.</td><td>80% do orçamento em Raridade; 20% em Vigor.</td><td>999 · não vinculado; mercado não aprovado.</td></tr>
+              <tr><td><strong>Fertilizante de Vigor</strong></td><td>2 Pó + 2 Seiva + 1 Essência.</td><td>20% Raridade; 80% Vigor.</td><td>999 · não vinculado; mercado não aprovado.</td></tr>
+              <tr><td><strong>Fertilizante Equilibrado</strong></td><td>1 Fibra + 1 Pó + 2 Seiva + 1 Essência.</td><td>50% Raridade; 50% Vigor.</td><td>999 · não vinculado; mercado não aprovado.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>um Fertilizante por checkpoint; dois por Germinação;</li>
+          <li>dois iguais: segunda aplicação usa 50% do efeito; dois perfis diferentes usam 100% cada;</li>
+          <li>nenhum Fertilizante altera espécie, Pontos Inatos, tempo, falha ou Proteção de Seed;</li>
+          <li>as probabilidades finais de raridade/Vigor e a Proteção de Raridade aparecem antes de confirmar.</li>
+        </ul>
+      </section>
+
+      <section id="componentes">
+        <span class="section-kicker">15 · Conhecimento e moldes</span>
+        <h2>Pesquisa, componentes e ferramentas</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Item</th><th>Fonte / receita</th><th>Uso</th><th>Vínculo e mercado</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Conhecimento</strong></td><td>Primeira vitória de Boss: 8/12/24 conforme encontro.</td><td>Pesquisa permanente.</td><td>Contador de conta · não inventariável · não negociável.</td></tr>
+              <tr><td><strong>Marca do Guardião</strong></td><td>Repetições do Guardião do Marco.</td><td>Estabilizador da Síntese Básica de qualquer elemento.</td><td>Stack 99 · vinculada à conta · não negociável.</td></tr>
+              <tr><td><strong>Molde de Núcleo</strong></td><td>3 Base Arcana + 4 Pó Mineral.</td><td>Consumido em Síntese de Núcleo.</td><td>Stack 99 · mercado não aprovado.</td></tr>
+              <tr><td><strong>Molde de Totem</strong></td><td>3 Base Arcana + 4 Fibra Rústica.</td><td>Consumido em Síntese de Totem.</td><td>Stack 99 · mercado não aprovado.</td></tr>
+              <tr><td><strong>Condensado de Bruma</strong></td><td>Elite da Fronteira.</td><td>Receita Superior/Máxima de Fogo, Gelo e Ar.</td><td>Stack 99 · não vinculado · mercado desabilitado.</td></tr>
+              <tr><td><strong>Liga Corrosiva</strong></td><td>Elite da Fossa.</td><td>Receitas de Areia, Metal e Veneno.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Coração da Monção</strong></td><td>Elite do Vale.</td><td>Receitas de Terra, Raio e Água.</td><td>Mesma regra.</td></tr>
+              <tr><td><strong>Selo da Convergência</strong></td><td>Uma unidade por vitória final.</td><td>Síntese Máxima e Catalisador avançado.</td><td>Stack 99 · vinculado · não negociável.</td></tr>
+              <tr><td><strong>Selante Arcano</strong></td><td>Loja de Cash; Marketplace por Gold aprovado.</td><td>Preserva uma propriedade em Calibração Completa.</td><td>Stack 99 · negociável somente por Gold.</td></tr>
+              <tr><td><strong>Memória Mística</strong></td><td>Loja de Cash; Marketplace por Gold.</td><td>Escolha entre resultado anterior e novo.</td><td>Stack 99 · negociável por Gold.</td></tr>
+              <tr><td><strong>Orbe de Renovação</strong></td><td>Loja de Cash; Marketplace por Gold.</td><td>Executa escopo Completo com a mesma regra e custo normal.</td><td>Stack 99 · negociável por Gold.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout"><strong>Fronteira econômica.</strong> Este documento não define preço em Cash, cotação, taxa, Saldo, KYC ou liberação de outras categorias. Para esses assuntos, vale exclusivamente a <a href="../economy/">Economia v1.0</a>.</div>
+      </section>
+
+      <section id="attachments">
+        <span class="section-kicker">16 · Dois slots, muita profundidade</span>
+        <h2>Núcleo Arcano e Totem</h2>
+        <div class="grid">
+          <article class="card"><h3>Núcleo Arcano</h3><p>Família voltada a impacto próprio: ataque, precisão, Penetração, ritmo, cura/escudo produzido e condicionais do usuário. Pode ter linhas de Combate e Cultivo.</p></article>
+          <article class="card"><h3>Totem</h3><p>Família voltada a sustentação e formação: HP, defesa, resistência, proteção, suporte e no máximo uma aura. Auras do mesmo grupo não acumulam.</p></article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Raridade</th><th>Orçamento</th><th>Linhas</th><th>Passivas</th><th>Nível possível</th><th>Peso da quantidade</th></tr></thead>
+            <tbody>
+              <tr><td>Comum</td><td>40</td><td>1</td><td>1</td><td>1–3</td><td>fixo</td></tr>
+              <tr><td>Incomum</td><td>60</td><td>1–2</td><td>1–2</td><td>2–5</td><td>1: 30% / 2: 70%</td></tr>
+              <tr><td>Raro</td><td>90</td><td>2–3</td><td>2–3</td><td>3–6</td><td>2: 35% / 3: 65%</td></tr>
+              <tr><td>Épico</td><td>130</td><td>3–4</td><td>3–4</td><td>4–7</td><td>3: 30% / 4: 70%</td></tr>
+              <tr><td>Lendário</td><td>180</td><td>5</td><td>4</td><td>5–8</td><td>fixo</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>tipo, elemento e Raridade são fixos durante Calibração;</li>
+          <li>qualquer Bud equipa qualquer elemento; não existe bônus global de combinação;</li>
+          <li>uma combinação ajuda ou atrapalha apenas pelos valores, passivas e eventuais linhas negativas explicitamente mostradas;</li>
+          <li>Fusão cria item novo; Ascensão preserva o item e deixa novos espaços latentes até Calibração.</li>
+        </ul>
+      </section>
+
+      <section id="linhas">
+        <span class="section-kicker">17 · Orçamento implementável</span>
+        <h2>Linhas de atributo, pesos e débito</h2>
+        <p>O orçamento-base é dividido entre as linhas sorteadas. Até 80% pode alimentar Combate e até 20% Cultivo; orçamento não utilizado não migra para uma categoria proibida. O mesmo modificador exato não repete, mas uma versão fixa e uma percentual podem coexistir.</p>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Pool de linha</th><th>Peso Núcleo</th><th>Peso Totem</th><th>Conversão por ponto de orçamento</th></tr></thead>
+            <tbody>
+              <tr><td>ATK / MATK plano</td><td>16% / 16%</td><td>5% / 5%</td><td>+1 por ponto.</td></tr>
+              <tr><td>HP plano</td><td>5%</td><td>18%</td><td>+8 por ponto.</td></tr>
+              <tr><td>DEF / MDEF plano</td><td>5% / 5%</td><td>12% / 12%</td><td>+0,8 por ponto, arredondado no final.</td></tr>
+              <tr><td>FOR/AGI/VIT/INT/DEX/SOR</td><td>24% total</td><td>20% total</td><td>+0,25 por ponto.</td></tr>
+              <tr><td>Precisão / Penetração / Potência de Controle</td><td>14% total</td><td>3% total</td><td>+0,5 score por ponto.</td></tr>
+              <tr><td>Esquiva / Resistência a Controle</td><td>5% total</td><td>15% total</td><td>+0,5 score por ponto.</td></tr>
+              <tr><td>REC/COL/QLD/EFI/ADA/SUS</td><td>10% total</td><td>10% total</td><td>+0,25 por ponto; respeita o teto de 20% do item.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Linhas percentuais</h3>
+        <p>Quando o roll escolhe versão percentual, cada 5 pontos de orçamento geram +1% no status elegível. Percentuais de attachments somam na camada já definida pelo GDD e nunca contornam hard caps. Não existe linha direta de Chance de Power Move na Temporada 1; SOR é a rota permitida.</p>
+        <h3>Linhas negativas e bônus de orçamento</h3>
+        <div class="formula">bônus extra = menor entre 25% do orçamento-base e 50% do peso normalizado da linha negativa</div>
+        <ul>
+          <li>chance de nascer com linha negativa: 0% Comum, 5% Incomum, 10% Raro, 15% Épico, 20% Lendário;</li>
+          <li>no máximo uma linha negativa por item;</li>
+          <li>valores negativos usam 50% da magnitude positiva equivalente;</li>
+          <li>a ficha mostra ganho, perda e orçamento extra antes de equipar ou comprar.</li>
+        </ul>
+      </section>
+
+      <section id="passivas">
+        <span class="section-kicker">18 · 18 pools separados</span>
+        <h2>Pools de passivas por tipo e elemento</h2>
+        <div class="formula">magnitude no nível = magnitude-base × multiplicador · I 1,00 · II 1,15 · III 1,30 · IV 1,50 · V 1,70 · VI 1,95 · VII 2,20 · VIII 2,50</div>
+        <p>Dentro da faixa permitida pela Raridade, o peso do nível é <code>10, 8, 6, 4, 2...</code> do menor ao maior e depois normalizado. Cada pool usa pesos 35/30/20/15; uma passiva não repete no mesmo item. Valores percentuais finais são arredondados a duas casas somente para exibição.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Elemento</th><th>Pool de Núcleo — peso / efeito-base</th><th>Pool de Totem — peso / efeito-base</th></tr></thead>
+            <tbody>
+              <tr><td>Fogo</td><td><strong>Pulso Ígneo 35:</strong> +2% dano acima de 70% HP.<br><strong>Pressão Rubra 30:</strong> +3% dano abaixo de 40% HP do alvo.<br><strong>Foco de Brasa 20:</strong> +4 SOR.<br><strong>Ruptura Térmica 15:</strong> +3 Penetração.</td><td><strong>Casca Térmica 35:</strong> +2% DEF/MDEF.<br><strong>Brasa Protetora 30:</strong> primeiro HP&lt;50%, escudo de 3% HP máximo.<br><strong>Aura Rubra 20:</strong> adjacentes +1% dano; grupo Ataque.<br><strong>Rebrota Quente 15:</strong> −3% Tempo de Retorno PvE; inativa no PvP.</td></tr>
+              <tr><td>Gelo</td><td><strong>Fio Glacial 35:</strong> +2% MATK/ATK.<br><strong>Precisão Fria 30:</strong> +4 DEX.<br><strong>Quebra de Gelo 20:</strong> +3 Penetração.<br><strong>Ritmo Invernal 15:</strong> +3% dano contra alvo controlado.</td><td><strong>Muralha Glacial 35:</strong> +2% DEF/MDEF.<br><strong>Véu Frio 30:</strong> +4 Resistência a Controle.<br><strong>Aura Invernal 20:</strong> adjacentes +1% DEF/MDEF; grupo Defesa.<br><strong>Cristal de Reserva 15:</strong> escudos recebidos +2%.</td></tr>
+              <tr><td>Ar</td><td><strong>Impulso Eólico 35:</strong> +4 AGI.<br><strong>Corte Limpo 30:</strong> +3 Precisão.<br><strong>Corrente Alta 20:</strong> +2% dano acima de 70% HP.<br><strong>Fôlego Longo 15:</strong> +2% cura/escudo produzido.</td><td><strong>Passo de Brisa 35:</strong> +3 Esquiva.<br><strong>Véu de Corrente 30:</strong> +2% MDEF.<br><strong>Aura de Ritmo 20:</strong> adjacentes +1% Velocidade de Ação; grupo Ritmo.<br><strong>Rebrota Leve 15:</strong> −3% Retorno PvE.</td></tr>
+              <tr><td>Areia</td><td><strong>Fio de Sílica 35:</strong> +3 Penetração.<br><strong>Mira do Ermo 30:</strong> +3 Precisão.<br><strong>Golpe de Duna 20:</strong> +3% dano contra HP baixo.<br><strong>Sorte de Miragem 15:</strong> +4 SOR.</td><td><strong>Placa de Duna 35:</strong> +2% DEF.<br><strong>Miragem Protetora 30:</strong> +3 Esquiva.<br><strong>Aura de Pedra 20:</strong> adjacentes +1% HP; grupo Vitalidade.<br><strong>Reserva de Sílica 15:</strong> primeiro HP&lt;50%, escudo 3%.</td></tr>
+              <tr><td>Metal</td><td><strong>Fio de Liga 35:</strong> +2% ATK/MATK.<br><strong>Ponto de Pressão 30:</strong> +3 Penetração.<br><strong>Cálculo Preciso 20:</strong> +4 DEX.<br><strong>Motor Estável 15:</strong> +3 AGI.</td><td><strong>Placa Rebitada 35:</strong> +2% DEF/MDEF.<br><strong>Núcleo Estável 30:</strong> +2% HP.<br><strong>Aura de Liga 20:</strong> adjacentes +1% DEF; grupo Defesa.<br><strong>Trava de Controle 15:</strong> +4 Resistência a Controle.</td></tr>
+              <tr><td>Veneno</td><td><strong>Pressão Tóxica 35:</strong> +3% dano contra alvo com debuff.<br><strong>Agulha Precisa 30:</strong> +4 DEX.<br><strong>Esporo Reativo 20:</strong> 4% de aplicar −2% DEF por 1 ação; proc elegível a SOR.<br><strong>Extração 15:</strong> +2% cura própria produzida.</td><td><strong>Casca Cáustica 35:</strong> +2% MDEF.<br><strong>Filtro Natural 30:</strong> +4 Resistência a Controle.<br><strong>Aura de Névoa 20:</strong> adjacentes +1% Esquiva; grupo Evasão.<br><strong>Reserva Ácida 15:</strong> +2% HP.</td></tr>
+              <tr><td>Terra</td><td><strong>Força Telúrica 35:</strong> +4 FOR/INT conforme maior valor.<br><strong>Ruptura de Rocha 30:</strong> +3 Penetração.<br><strong>Peso Profundo 20:</strong> +2% dano quando HP&gt;70%.<br><strong>Raiz Precisa 15:</strong> +3 Precisão.</td><td><strong>Fundação de Pedra 35:</strong> +2% HP.<br><strong>Placa Telúrica 30:</strong> +2% DEF/MDEF.<br><strong>Aura de Raiz 20:</strong> adjacentes +1% HP; grupo Vitalidade.<br><strong>Rebrota Profunda 15:</strong> −3% Retorno PvE.</td></tr>
+              <tr><td>Raio</td><td><strong>Carga Rápida 35:</strong> +4 AGI.<br><strong>Arco Preciso 30:</strong> +4 DEX.<br><strong>Pulso Voltaico 20:</strong> +2% ATK/MATK.<br><strong>Faísca de Sorte 15:</strong> +4 SOR.</td><td><strong>Malha Condutora 35:</strong> +2% MDEF.<br><strong>Descarga de Reserva 30:</strong> primeiro HP&lt;50%, escudo 3%.<br><strong>Aura Voltaica 20:</strong> adjacentes +1% Velocidade; grupo Ritmo.<br><strong>Isolamento 15:</strong> +4 Resistência a Controle.</td></tr>
+              <tr><td>Água</td><td><strong>Fluxo Profundo 35:</strong> +2% MATK/ATK.<br><strong>Maré Restauradora 30:</strong> +2% cura/escudo produzido.<br><strong>Pressão Abissal 20:</strong> +3 Penetração.<br><strong>Leitura de Corrente 15:</strong> +4 DEX.</td><td><strong>Véu de Maré 35:</strong> +2% MDEF.<br><strong>Coral Protetor 30:</strong> escudos recebidos +2%.<br><strong>Aura de Maré 20:</strong> adjacentes +1% cura/escudo recebido; grupo Suporte.<br><strong>Rebrota Aquática 15:</strong> −3% Retorno PvE.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Procs indicados como elegíveis usam SOR dentro das curvas e caps existentes. A seleção final de um Totem nunca contém mais de uma aura: qualquer segunda aura sorteada é refeita no mesmo pool. Reduções acumuladas do Tempo de Rebrota continuam limitadas a 50% pelo teto do GDD. Nenhuma passiva concede porcentagem direta de Power Move, muda targeting de Basic Attack ou funciona como nova ação.</p>
+      </section>
+
+      <section id="pesquisa">
+        <span class="section-kicker">19 · Progresso intencional</span>
+        <h2>Pesquisa e refinamento</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Pesquisa</th><th>Custo</th><th>Pré-requisito territorial</th><th>Libera</th></tr></thead>
+            <tbody>
+              <tr><td>Fundamentos da Forja</td><td>5 Conhecimento</td><td>Guardião do Marco vencido</td><td>Base Arcana, moldes, Fertilizantes, Síntese Básica.</td></tr>
+              <tr><td>Família elemental</td><td>8 Conhecimento por elemento</td><td>Boss específico correspondente</td><td>Essência, Núcleo/Totem Básico do elemento e pool visível.</td></tr>
+              <tr><td>Calibração</td><td>12 Conhecimento</td><td>Três Bosses específicos quaisquer</td><td>Pó de Calibração e operações de rerroll.</td></tr>
+              <tr><td>Fusão</td><td>15 Conhecimento</td><td>Primeiro mapa misto liberado</td><td>Vínculo de Fusão e Fusão.</td></tr>
+              <tr><td>Síntese Superior</td><td>18 Conhecimento por trio</td><td>Misto correspondente vencido</td><td>Tier Superior dos três elementos.</td></tr>
+              <tr><td>Ascensão</td><td>25 Conhecimento</td><td>Três mistos vencidos</td><td>Catalisador e Ascensão.</td></tr>
+              <tr><td>Síntese Máxima</td><td>30 Conhecimento</td><td>Convergência concluída</td><td>Tier Máximo de todos os elementos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Receitas de refinamento</h3>
+        <div class="table-wrap"><table class="compact"><thead><tr><th>Output</th><th>Inputs</th><th>Quantidade</th></tr></thead><tbody>
+          <tr><td>Base Arcana</td><td>6 Fibra + 4 Pó + 3 Seiva</td><td>1</td></tr>
+          <tr><td>Essência elemental</td><td>5 materiais regionais do elemento + 2 Seiva</td><td>1</td></tr>
+          <tr><td>Pó de Calibração</td><td>3 Resíduos Arcanos + 1 Pó Mineral</td><td>1</td></tr>
+          <tr><td>Vínculo de Fusão</td><td>4 Resíduos + 1 componente de Elite do elemento/trio</td><td>1</td></tr>
+          <tr><td>Catalisador de Ascensão</td><td>2 componentes de Boss do elemento + 2 Essências + 4 Resíduos</td><td>1</td></tr>
+        </tbody></table></div>
+        <p>Pesquisa e refinamento são instantâneos, sem fila, tempo, estação física ou chance de falha. Requisitos numéricos do Nível do Jardineiro continuam abertos no GDD e podem se somar a esses marcos sem substituí-los.</p>
+      </section>
+
+      <section id="sintese">
+        <span class="section-kicker">20 · Origem dos attachments</span>
+        <h2>Síntese e Proteção de Forja</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tier</th><th>Receita por attachment</th><th>Comum</th><th>Incomum</th><th>Raro</th><th>Épico</th><th>Lendário</th></tr></thead>
+            <tbody>
+              <tr><td>Básica</td><td>1 molde do tipo + 4 Base + 2 Essências + 1 Marca do Guardião</td><td>55%</td><td>30%</td><td>12%</td><td>2,5%</td><td>0,5%</td></tr>
+              <tr><td>Superior</td><td>1 molde + 8 Base + 4 Essências + 1 componente de Elite + 1 de Boss</td><td>15%</td><td>30%</td><td>35%</td><td>17%</td><td>3%</td></tr>
+              <tr><td>Máxima</td><td>1 molde + 12 Base + 8 Essências + 1 componente misto + 2 de Boss + 1 Selo</td><td>2%</td><td>8%</td><td>25%</td><td>40%</td><td>25%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ol>
+          <li>jogador escolhe Núcleo ou Totem e um elemento;</li>
+          <li>servidor valida Pesquisa, materiais, Bag e idempotency key;</li>
+          <li>aplica Proteção de Forja à distribuição exibida;</li>
+          <li>rola Raridade, quantidades de linhas/passivas, propriedades e níveis;</li>
+          <li>consome inputs e cria um attachment único na Bag na mesma transação.</li>
+        </ol>
+        <div class="formula">F=min(7, sínteses seguidas abaixo de Raro) · S=(F÷7)⁴ · Δ=(PComum+PIncomum)×S · Δ migra somente para Raro</div>
+        <ul>
+          <li>contador separado por conta + tipo + elemento + tier;</li>
+          <li>Raro/Épico/Lendário zeram o contador; no sétimo resultado baixo, a próxima garante Raro+;</li>
+          <li>Épico e Lendário nunca recebem aumento da proteção;</li>
+          <li>toda Raridade pode nascer na primeira Síntese, inclusive Lendária Básica;</li>
+          <li>Fusão, Ascensão e Calibração não alteram a Proteção.</li>
+        </ul>
+      </section>
+
+      <section id="calibracao">
+        <span class="section-kicker">21 · Rerroll controlado</span>
+        <h2>Calibração</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Escopo</th><th>O que muda</th><th>Custo-base em Pó por Raridade C/I/R/E/L</th><th>Ferramenta aplicável</th></tr></thead>
+            <tbody>
+              <tr><td>Linha</td><td>Tipo e valor de uma linha escolhida.</td><td>2 / 3 / 5 / 8 / 13</td><td>Memória Mística.</td></tr>
+              <tr><td>Passiva</td><td>Uma passiva e seu nível, no mesmo pool.</td><td>3 / 5 / 8 / 13 / 21</td><td>Memória Mística.</td></tr>
+              <tr><td>Nível</td><td>Somente o nível de uma passiva preservada.</td><td>2 / 3 / 5 / 8 / 13</td><td>Memória Mística.</td></tr>
+              <tr><td>Bloco de linhas</td><td>Todas as linhas e valores; mantém passivas.</td><td>5 / 8 / 13 / 21 / 34</td><td>Memória Mística.</td></tr>
+              <tr><td>Bloco de passivas</td><td>Todas as passivas e níveis; mantém linhas.</td><td>8 / 13 / 21 / 34 / 55</td><td>Memória Mística.</td></tr>
+              <tr><td>Completa</td><td>Todas as linhas, passivas e níveis.</td><td>13 / 21 / 34 / 55 / 89</td><td>Selante, Memória ou Orbe; máximo uma.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="formula">custo efetivo = teto(custo-base × min(2,50; 1 + 0,15 × calibrações anteriores do item))</div>
+        <ul>
+          <li>contador e próximo custo pertencem ao attachment, são visíveis e acompanham eventual venda;</li>
+          <li>Calibração nunca muda tipo, elemento ou Raridade;</li>
+          <li>Selante preserva exatamente uma propriedade na Completa; Memória oferece anterior ou nova; Orbe repete um template Completo em uma confirmação, sem vantagem numérica;</li>
+          <li>materiais regulares e ferramenta são consumidos mesmo ao escolher a versão anterior com Memória;</li>
+          <li>no máximo uma ferramenta premium; nenhuma substitui Pó ou altera pesos;</li>
+          <li>item equipado pode calibrar fora de batalha; a alteração vale na próxima luta.</li>
+        </ul>
+      </section>
+
+      <section id="fusao">
+        <span class="section-kicker">22 · Conversão garantida</span>
+        <h2>Fusão</h2>
+        <div class="table-wrap">
+          <table class="compact">
+            <thead><tr><th>Inputs</th><th>Reagente</th><th>Output</th><th>Resultado</th></tr></thead>
+            <tbody>
+              <tr><td>3 Comuns · mesmo tipo+elemento</td><td>Vínculo ×1</td><td>1 Incomum</td><td>Novos rolls completos.</td></tr>
+              <tr><td>3 Incomuns</td><td>Vínculo ×2</td><td>1 Raro</td><td>Novos rolls.</td></tr>
+              <tr><td>3 Raros</td><td>Vínculo ×4</td><td>1 Épico</td><td>Novos rolls.</td></tr>
+              <tr><td>3 Épicos</td><td>Vínculo ×8</td><td>1 Lendário</td><td>Novos rolls.</td></tr>
+              <tr><td>3 Lendários</td><td>—</td><td>—</td><td>Operação proibida.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>“Idênticos” significa mesma Raridade, tipo e elemento; linhas e passivas podem ser diferentes. Os três itens e reagentes precisam estar na Bag ou ser desequipados na confirmação. Fusão é garantida, atômica, não afeta Proteção de Forja e cria novo ID sem herdar Calibrações, falhas de Ascensão ou histórico de mercado.</p>
+      </section>
+
+      <section id="ascensao">
+        <span class="section-kicker">23 · Risco real</span>
+        <h2>Ascensão</h2>
+        <div class="table-wrap">
+          <table><thead><tr><th>Etapa</th><th>Chance de sucesso S1</th><th>Custo</th><th>No sucesso</th></tr></thead><tbody>
+            <tr><td>Raro → Épico</td><td>45%</td><td>Catalisador ×2</td><td>Preserva linhas, passivas e níveis; novo espaço/orçamento fica latente.</td></tr>
+            <tr><td>Épico → Lendário</td><td>25%</td><td>Catalisador ×5 + Selo da Convergência ×1</td><td>Mesma preservação; espaços Lendários liberam em Calibração posterior.</td></tr>
+          </tbody></table>
+        </div>
+        <div class="table-wrap">
+          <table class="compact"><thead><tr><th>Falha acumulada antes da tentativa</th><th>Se a tentativa falhar</th><th>Quebra</th></tr></thead><tbody>
+            <tr><td>0–2</td><td>Consome materiais; item permanece.</td><td>0%</td></tr>
+            <tr><td>3</td><td>Quarta falha possível.</td><td>20%</td></tr>
+            <tr><td>4</td><td>Quinta falha.</td><td>40%</td></tr>
+            <tr><td>5</td><td>Sexta falha.</td><td>60%</td></tr>
+            <tr><td>6</td><td>Sétima falha.</td><td>80%</td></tr>
+            <tr><td>7+</td><td>Oitava ou posterior.</td><td>95%</td></tr>
+          </tbody></table>
+        </div>
+        <div class="callout open"><strong>Consequência explícita.</strong> Se quebrar, o attachment, suas linhas, passivas, níveis, Calibrações, falhas e todo investimento são destruídos. Não há Desmontagem, seguro, resíduo, ferramenta premium ou restauração administrativa normal. As três primeiras falhas são seguras; o risco começa na quarta falha.</div>
+      </section>
+
+      <section id="desmontagem">
+        <span class="section-kicker">24 · Retorno parcial</span>
+        <h2>Desmontagem</h2>
+        <div class="formula">pontos elegíveis = soma do ledger de materiais recuperáveis · retorno = piso(pontos × 20% Free ou 40% VIP) · Resíduo Arcano = piso(retorno ÷ 5)</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Entra no valor elegível</th><th>Não retorna</th><th>Regra</th></tr></thead>
+            <tbody>
+              <tr><td>Base Arcana, Essências, moldes e componentes comuns consumidos na criação/fusão.</td><td>Conhecimento, Gold/Cash/Saldo, ferramentas premium, componentes de Boss, Selo e Catalisadores.</td><td>Cada input possui valor de pontos versionado no ledger do item.</td></tr>
+              <tr><td>Valor agregado dos três itens consumidos por Fusão.</td><td>Calibrações, falhas de Ascensão e valor de mercado.</td><td>Evita criar valor ao fundir e desmontar.</td></tr>
+              <tr><td>Resíduo Arcano padronizado.</td><td>Qualquer material extra por rounding.</td><td>Resto abaixo de 5 pontos é perdido; nunca há 100% de retorno.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>O servidor mostra os Resíduos exatos antes da confirmação. Free usa 20%; VIP usa 40% no instante da operação. Desmontagem é instantânea e irreversível. Attachment quebrado em Ascensão gera zero.</p>
+      </section>
+
+      <section id="integridade">
+        <span class="section-kicker">25 · Fonte, sink e autoridade</span>
+        <h2>Economia, integridade e rastreabilidade</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fonte</th><th>Ativo</th><th>Sink/uso</th><th>Controle de integridade</th></tr></thead>
+            <tbody>
+              <tr><td>Comuns / Cultivo</td><td>Universais e regionais</td><td>Refinamento, moldes, Fertilizantes e Síntese</td><td>attempt/enemy/process idempotente.</td></tr>
+              <tr><td>Elite</td><td>Componente próprio</td><td>Superior, Vínculo de Fusão</td><td>Somente vitória; uma liquidação.</td></tr>
+              <tr><td>Boss repetido</td><td>Componente de Boss</td><td>Superior/Máxima e Ascensão</td><td>Boss definitivo + encontro vencido.</td></tr>
+              <tr><td>Boss primeira vitória</td><td>Conhecimento</td><td>Pesquisa permanente</td><td>Flag única por conta+encontro.</td></tr>
+              <tr><td>Convergência</td><td>Selo</td><td>Máxima e Épico→Lendário</td><td>Vinculado; fase final válida.</td></tr>
+              <tr><td>Síntese</td><td>Attachment</td><td>Equipar, Calibrar, Fundir, Ascender, Desmontar</td><td>Criação e consumo atômicos.</td></tr>
+              <tr><td>Desmontagem</td><td>Resíduo</td><td>Calibração/Fusão</td><td>Base no ledger real; retorno &lt;100%.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Relação com Marketplace e Trade</h3>
+        <div class="table-wrap"><table class="compact"><thead><tr><th>Categoria</th><th>Estado econômico</th><th>Bloqueio de conteúdo</th></tr></thead><tbody>
+          <tr><td>Seeds</td><td>Circulação futura aprovada quando habilitada; moedas/momento em aberto.</td><td>Em Germinação nunca lista; pool/origem acompanham.</td></tr>
+          <tr><td>Núcleo/Totem</td><td>Estrutura definida; cronograma/moedas em aberto.</td><td>Desequipar; sem batalha/operação concorrente; falhas acompanham.</td></tr>
+          <tr><td>Materiais, moldes, componentes, Fertilizantes</td><td>Negociabilidade não aprovada.</td><td>Servidor mantém flag por categoria desligada.</td></tr>
+          <tr><td>Ferramentas premium</td><td>Loja Cash e Marketplace por Gold aprovados.</td><td>Máximo uma por Calibração.</td></tr>
+        </tbody></table></div>
+        <p>Este catálogo não fixa preço, fee, Saldo, conversão, KYC, saque ou cotação. Listagem, Trade, transferência e liquidação seguem exclusivamente a Economia. Toda mutação usa inventário autoritativo, locks de item, idempotency key, trilha de origem e versão de conteúdo.</p>
+      </section>
+
+      <section id="codex">
+        <span class="section-kicker">26 · Informação antes da decisão</span>
+        <h2>Codex, UX e apresentação</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Entrada</th><th>Antes da descoberta</th><th>Depois da descoberta</th></tr></thead>
+            <tbody>
+              <tr><td>Inimigo</td><td>Silhueta e “Não descoberto”. A tela da fase ainda mostra elemento, categoria, papéis e riscos necessários para entrar.</td><td>Nome, visual, mapa, elemento, categoria, papel, Basic, Power/gatilho, traço, Ressonância e drops possíveis.</td></tr>
+              <tr><td>Material</td><td>Silhueta e “Não descoberto”; receita não pode exigir item sem fonte já liberada.</td><td>Origem, taxa/garantia, stack, vínculo, receitas e quantidade possuída.</td></tr>
+              <tr><td>Attachment</td><td>Silhueta até primeira obtenção.</td><td>Tipo, elemento, Raridade, linhas, passivas, níveis, orçamento, Calibrações, falhas e mercado.</td></tr>
+              <tr><td>Receita</td><td>Oculta até Pesquisa.</td><td>Inputs, outputs, pesos, proteção, riscos e fontes clicáveis.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Obrigatório antes de confirmar</h3>
+        <div class="grid">
+          <article class="card"><h4>Batalha</h4><p>Formação inimiga, níveis, elementos, Ressonância, papéis, gatilhos conhecidos, Stamina, Frenesi/timeout e pools possíveis.</p></article>
+          <article class="card"><h4>Síntese</h4><p>Tipo, elemento, tier, inputs, distribuição pós-proteção, contador e todos os resultados possíveis.</p></article>
+          <article class="card"><h4>Calibração/Fusão</h4><p>Propriedades afetadas, custo, ferramenta, anterior/nova quando aplicável e itens destruídos.</p></article>
+          <article class="card"><h4>Ascensão/Desmontagem</h4><p>Chance, falhas seguras, risco de quebra, perda total ou retorno exato.</p></article>
+        </div>
+        <p>A wiki pública usa a mesma versão <code>S1.0.0</code> e expõe pesos completos. O Codex usa leitura curta e links internos; não esconde multiplicador ativo. Referências: <a href="../gdd/#pve-training">GDD — PvE</a>, <a href="../gdd/#mapas">Mapas</a>, <a href="../gdd/#tipos">Tipos</a>, <a href="../gdd/#equipamentos">Attachments</a>, <a href="../gdd/#crafting">Forja</a>, <a href="../gdd/#bestiario">Bestiário</a> e <a href="../economy/#ativos">Economia — ativos</a>.</p>
+      </section>
+
+      <section id="backlog">
+        <span class="section-kicker">27 · Fechamento e manutenção</span>
+        <h2>Backlog real e critérios de fechamento</h2>
+        <p>O catálogo de lançamento está completo. Estes itens não representam conteúdo omitido; são dependências que o próprio GDD reserva a simulação, progressão de conta, operação financeira ou produção audiovisual.</p>
+        <div class="decision-list" role="list">
+          <div class="decision-row" role="listitem"><h4>Coeficientes finais de inimigos</h4><div><p><span class="label">Por que aberto:</span> HP, dano, cura, escudo e prontidão dependem dos coeficientes de Buds e do simulador. <span class="label">Impacto:</span> duração e win rate.</p><p><span class="label">Fecha com:</span> pacote versionado de status por fase, testes de regressão e metas de duração abaixo dos tetos do GDD.</p></div></div>
+          <div class="decision-row" role="listitem"><h4>Curva final de XP e Gold</h4><div><p><span class="label">Por que aberto:</span> XP por level e fontes de Gold fora do PvP não foram aprovadas. <span class="label">Impacto:</span> tempo até o cap e custo econômico.</p><p><span class="label">Fecha com:</span> simulador de progressão e decisão da Economia; não alterar drops deste catálogo silenciosamente.</p></div></div>
+          <div class="decision-row" role="listitem"><h4>Gates do Jardineiro</h4><div><p><span class="label">Por que aberto:</span> o GDD define responsabilidade, não thresholds. <span class="label">Impacto:</span> ordem operacional da Forja.</p><p><span class="label">Fecha com:</span> tabela de nível que se soma aos marcos territoriais, sem substituí-los.</p></div></div>
+          <div class="decision-row" role="listitem"><h4>Liberação de mercado</h4><div><p><span class="label">Por que aberto:</span> Seeds, attachments e materiais possuem estados financeiros distintos. <span class="label">Impacto:</span> fraude, liquidez e suporte.</p><p><span class="label">Fecha com:</span> política econômica por categoria, moeda, fase, limite e controle.</p></div></div>
+          <div class="decision-row" role="listitem"><h4>Produção audiovisual</h4><div><p><span class="label">Por que aberto:</span> nomes, silhuetas e leitura estão fixos; asset final não. <span class="label">Impacto:</span> performance e legibilidade.</p><p><span class="label">Fecha com:</span> concept, pixel art, animação, VFX, áudio e teste de silhueta aprovados.</p></div></div>
+          <div class="decision-row" role="listitem"><h4>Recalibração pós-Alpha</h4><div><p><span class="label">Por que aberto:</span> pesos S1 são implementáveis, mas precisam de dados reais. <span class="label">Impacto:</span> oferta, sinks e proteção.</p><p><span class="label">Fecha com:</span> relatório por coorte, nova versão de conteúdo, migração quando necessária e patch note público.</p></div></div>
+        </div>
+        <div class="callout defined"><strong>Auditoria global concluída.</strong> As 14 regiões têm encontro e propósito; todo material possui fonte e uso; toda receita exige inputs previamente liberados; nenhum attachment cai pronto; nenhuma regra financeira foi recriada; e todos os riscos, pesos e resultados relevantes aparecem antes do gasto.</div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <div class="shell">Idle Bud — Inimigos, Drops, Itemização e Forja v1.0 · Temporada 1 · subordinado ao GDD v17</div>
+  </footer>
+</body>
+</html>

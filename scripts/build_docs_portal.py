@@ -111,10 +111,10 @@ DOCS = [
     {
         "title": "Enemies, Drops, Itemization & Forge",
         "label": "Enemies, Drops, Itemization & Forge",
-        "description": "Enemy catalog, encounter rewards, itemization, attachments, passives, drop tables, materials and Forge progression.",
+        "description": "Official Season 1 content bible: 14 maps, 139 stages, enemies, drops, materials, attachments, passives and Forge progression.",
         "href": "./enemies-drops-craft/",
-        "status": "TBD",
-        "live": False,
+        "status": "Available · v1.0",
+        "live": True,
         "icon": "E",
     },
     {
@@ -352,12 +352,7 @@ def main() -> None:
     (assets / "docs-portal.css").write_text(PORTAL_CSS.strip() + "\n", encoding="utf-8")
     (site / "index.html").write_text(build_home(), encoding="utf-8")
 
-    placeholders = {
-        "enemies-drops-craft": (
-            "Enemies, Drops, Itemization & Forge",
-            "This document will define enemies, encounters, itemization, attachments, passives, drops, materials, recipes and Forge progression.",
-        ),
-    }
+    placeholders = {}
     for slug, (title, description) in placeholders.items():
         folder = site / slug
         folder.mkdir(parents=True, exist_ok=True)
@@ -403,6 +398,17 @@ def main() -> None:
         "Backlog real de engenharia",
     ]:
         assert phrase in technology, f"Missing Technology content: {phrase}"
+
+    enemies = (site / "enemies-drops-craft" / "index.html").read_text(encoding="utf-8")
+    for phrase in [
+        "<title>Idle Bud — Inimigos, Drops, Itemização e Forja v1.0</title>",
+        "Composição completa das 139 fases",
+        "Vale do Primeiro Broto",
+        "Síntese e Proteção de Forja",
+        "Pools de passivas por tipo e elemento",
+        "Backlog real e critérios de fechamento",
+    ]:
+        assert phrase in enemies, f"Missing Enemies/Forge content: {phrase}"
 
     print(f"Built internal docs portal in {site}")
 

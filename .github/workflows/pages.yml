@@ -36,6 +36,7 @@ jobs:
           cmp gdd-source/index.html _site/gdd/index.html
           cmp economy-source/index.html _site/economy/index.html
           cmp technology-source/index.html _site/technology-guidelines/index.html
+          cmp enemies-drops-craft-source/index.html _site/enemies-drops-craft/index.html
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -43,6 +44,7 @@ jobs:
           gdd = Path('_site/gdd/index.html').read_text(encoding='utf-8')
           economy = Path('_site/economy/index.html').read_text(encoding='utf-8')
           technology = Path('_site/technology-guidelines/index.html').read_text(encoding='utf-8')
+          enemies = Path('_site/enemies-drops-craft/index.html').read_text(encoding='utf-8')
           portal = Path('_site/index.html').read_text(encoding='utf-8')
 
           assert 'Game Design Document · v17' in gdd
@@ -61,10 +63,11 @@ jobs:
           assert '<a class="internal-docs-home"' in gdd
 
           assert 'Available · v17' in portal
-          assert 'Available · v1.0' in portal
-          assert portal.count('>TBD<') == 1
+          assert portal.count('Available · v1.0') == 3
+          assert portal.count('>TBD<') == 0
           assert './economy/' in portal
           assert './technology-guidelines/' in portal
+          assert './enemies-drops-craft/' in portal
 
           required_economy = [
               '<html lang="pt-BR">',
@@ -137,6 +140,49 @@ jobs:
           assert technology.count('Fecha com:') == 16
           assert 'class="topbar-wrap"' in technology
           assert '<a class="internal-docs-home"' in technology
+
+          required_enemies = [
+              '<html lang="pt-BR">',
+              '<title>Idle Bud — Inimigos, Drops, Itemização e Forja v1.0</title>',
+              'Composição completa das 139 fases',
+              'Vale do Primeiro Broto',
+              'Coração Vulcânico',
+              'Leviatã das Marés',
+              'Proteção de Seed',
+              'Pools de passivas por tipo e elemento',
+              'Fusão',
+              'Ascensão',
+              'Desmontagem',
+              'Idle Bud — Inimigos, Drops, Itemização e Forja v1.0',
+          ]
+          for item in required_enemies:
+              assert item in enemies, f'Conteúdo obrigatório ausente em Inimigos/Forja: {item}'
+
+          forbidden_enemies = [
+              'Miniboss',
+              'armadura equipável',
+              'arma equipável',
+              'drop de Núcleo completo',
+              'drop de Totem completo',
+              'Power Move aleatório de Elite',
+          ]
+          for item in forbidden_enemies:
+              assert item not in enemies, f'Mecânica proibida em Inimigos/Forja: {item}'
+
+          enemy_ids = re.findall(r'\bid=["\']([^"\']+)["\']', enemies)
+          assert len(enemy_ids) == len(set(enemy_ids))
+          enemy_targets = re.findall(r'href=["\']#([^"\']+)["\']', enemies)
+          assert set(enemy_targets) <= set(enemy_ids)
+          enemy_tables = re.findall(r'<table class="enemy-table".*?</table>', enemies, re.S)
+          enemy_rows = sum(len(re.findall(r'<tr>', table)) - 1 for table in enemy_tables)
+          assert len(enemy_tables) == 11
+          assert enemy_rows == 72
+          assert enemies.count('<section id=') == 27
+          assert enemies.count('class="decision-row"') == 6
+          assert enemies.count('Por que aberto:') == 6
+          assert enemies.count('Fecha com:') == 6
+          assert 'class="topbar-wrap"' in enemies
+          assert '<a class="internal-docs-home"' in enemies
           PY
           exit 0
           mkdir -p _site/gdd /tmp/gdd-build
