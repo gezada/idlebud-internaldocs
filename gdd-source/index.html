@@ -46,6 +46,12 @@
     a{color:#a9ccff;text-decoration:none}
     a:hover{text-decoration:underline}
     .shell{max-width:var(--max);margin:auto;padding:0 24px}
+    .topbar-wrap{border-bottom:1px solid rgba(39,64,51,.75)}
+    .topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:16px 0;color:var(--muted);font-size:13px}
+    .brand{color:#dff4e5;font-weight:900;letter-spacing:-.01em}
+    .toplinks{display:flex;gap:15px;flex-wrap:wrap;justify-content:flex-end}
+    .toplinks a{color:#a8b9ad;font-weight:720;text-decoration:none}
+    .toplinks a:hover{color:#fff}
     .hero{padding:82px 0 54px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
     .hero:after{
       content:"";position:absolute;right:-80px;bottom:-140px;width:420px;height:420px;border-radius:50%;
@@ -66,7 +72,10 @@
     .layout{display:grid;grid-template-columns:268px minmax(0,1fr);gap:42px;padding:44px 0 100px}
     nav{position:sticky;top:20px;align-self:start;max-height:calc(100vh - 40px);overflow:auto;padding-right:10px}
     nav .nav-title{font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:#6f8678;font-weight:900;margin-bottom:12px}
-    nav a{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border-radius:9px;color:#9cb0a2;font-size:13px;line-height:1.3}
+    nav ol{margin:0;padding:0;list-style:none;counter-reset:nav}
+    nav li{margin:0;counter-increment:nav}
+    nav a{display:grid;grid-template-columns:24px 1fr;gap:7px;padding:7px 9px;border-radius:9px;color:#9cb0a2;font-size:12.5px;line-height:1.3}
+    nav a::before{content:counter(nav,decimal-leading-zero);color:#648070;font-variant-numeric:tabular-nums;font-size:10px;font-weight:850;line-height:1.7}
     nav a:hover{background:var(--panel);color:#fff;text-decoration:none}
     main{min-width:0}
     section{padding:18px 0 46px;border-bottom:1px solid var(--line)}
@@ -224,7 +233,7 @@
     @media(max-width:980px){
       .layout{grid-template-columns:1fr}
       nav{position:relative;top:auto;max-height:none;border:1px solid var(--line);padding:15px;border-radius:16px;background:var(--panel)}
-      nav a{display:inline-flex}
+      nav ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px 8px}
       .grid,.grid.three,.grid.four,.grid.five{grid-template-columns:1fr}
       .flow{grid-template-columns:1fr}
       .flow .node:not(:last-child)::after{content:"↓";right:auto;bottom:-18px;left:50%;top:auto}
@@ -239,6 +248,10 @@
     }
     @media(max-width:700px){
       .shell{padding:0 16px}.hero{padding-top:54px}
+      .topbar{align-items:flex-start}
+      .toplinks{display:grid;gap:6px;text-align:right}
+      nav{max-height:360px;overflow:auto}
+      nav ol{grid-template-columns:1fr}
       table{display:block;overflow-x:auto}
       .decision{grid-template-columns:1fr}
       .battlefield{grid-template-columns:1fr;grid-template-rows:1fr 54px 1fr;min-height:690px}
@@ -254,6 +267,7 @@
       :root{--bg:#fff;--panel:#fff;--panel-2:#f7faf8;--panel-3:#f1f5f2;--text:#111;--muted:#555;--line:#d6ded9}
       body{background:#fff;color:#111}
       .shell{max-width:none;padding:0 24px}
+      .topbar-wrap,.internal-docs-home{display:none}
       nav{display:none}.layout{display:block;padding-top:10px}
       p,li,td{color:#333}.card,.formation-card,.type-wheel{box-shadow:none;background:#fff}
       h1,h2,h3,h4,strong{color:#111}
@@ -307,7 +321,19 @@
 </style>
 </head>
 <body><!-- internal-docs-navigation --><a class="internal-docs-home" href="../" aria-label="Back to Idle Bud Internal Docs">← Internal Docs</a>
-<header class="hero">
+<header>
+<div class="topbar-wrap">
+<div class="shell topbar">
+<span class="brand">Idle Bud · Documentação interna</span>
+<div class="toplinks">
+<a href="../">Portal</a>
+<a href="../economy/">Economia v1.0</a>
+<a href="#decisoes">Decisões consolidadas</a>
+<a href="#aberto">Backlog</a>
+</div>
+</div>
+</div>
+<div class="hero">
 <div class="shell">
 <span class="eyebrow">Idle Lovers · Idle Bud · Game Design Document · v17</span>
 <h1>Idle Bud</h1>
@@ -330,30 +356,32 @@
 <div class="shell layout">
 <nav aria-label="Sumário">
 <div class="nav-title">Sumário</div>
-<a href="#natureza" title="Definido">1. Natureza do documento</a>
-<a href="#fantasia" title="Definido">2. Fantasia central</a>
-<a href="#loop" title="Definido">3. Loop principal</a>
-<a href="#identidade" title="Definido">4. Identidade do Bud</a>
-<a href="#progressao" title="Definido">5. Progressão individual</a>
-<a href="#battle-level" title="Definido">6. Battle Level</a>
-<a href="#farm-level" title="Definido">7. Farm Level</a>
-<a href="#battlefield-formation" title="Definido">8. Campo de batalha e formação</a>
-<a href="#pve-training" title="Definido">9. Carry, treinamento e PvE</a>
-<a href="#pve" title="Definido">10. PvE totalmente idle</a>
-<a href="#mapas" title="Definido">11. Mapas e regiões</a>
-<a href="#tipos" title="Definido">12. Tipos e counters</a>
-<a href="#jardins" title="Definido">13. Jardim e plots</a>
-<a href="#nascimento" title="Definido">14. Cultivo e nascimento</a>
-<a href="#equipamentos" title="Definido">15. Bud, Núcleo e Totem</a>
-<a href="#crafting" title="Definido">16. Forja e crafting</a>
-<a href="#bestiario" title="Definido">17. Bestiário e inimigos</a>
-<a href="#estados" title="Definido">18. Estados e alocação</a>
-<a href="#pvp" title="Definido">19. PvP síncrono</a>
-<a href="#wiki" title="Definido">20. Codex e wiki</a>
-<a href="#economia" title="Definido">21. Economia, mercado e Trade</a>
-<a href="#mvp" title="Definido">22. Validação de Alpha e Beta</a>
-<a href="#decisoes" title="Finalizado">23. Decisões consolidadas</a>
-<a href="#aberto" title="Backlog aberto">24. Backlog futuro</a>
+<ol>
+<li><a data-point="1" href="#natureza" title="Definido">Natureza do documento</a></li>
+<li><a data-point="2" href="#fantasia" title="Definido">Fantasia central</a></li>
+<li><a data-point="3" href="#loop" title="Definido">Loop principal</a></li>
+<li><a data-point="4" href="#identidade" title="Definido">Identidade do Bud</a></li>
+<li><a data-point="5" href="#progressao" title="Definido">Progressão individual</a></li>
+<li><a data-point="6" href="#battle-level" title="Definido">Battle Level</a></li>
+<li><a data-point="7" href="#farm-level" title="Definido">Farm Level</a></li>
+<li><a data-point="8" href="#battlefield-formation" title="Definido">Campo de batalha e formação</a></li>
+<li><a data-point="9" href="#pve-training" title="Definido">Carry, treinamento e PvE</a></li>
+<li><a data-point="10" href="#pve" title="Definido">PvE totalmente idle</a></li>
+<li><a data-point="11" href="#mapas" title="Definido">Mapas e regiões</a></li>
+<li><a data-point="12" href="#tipos" title="Definido">Tipos e counters</a></li>
+<li><a data-point="13" href="#jardins" title="Definido">Jardim e plots</a></li>
+<li><a data-point="14" href="#nascimento" title="Definido">Cultivo e nascimento</a></li>
+<li><a data-point="15" href="#equipamentos" title="Definido">Bud, Núcleo e Totem</a></li>
+<li><a data-point="16" href="#crafting" title="Definido">Forja e crafting</a></li>
+<li><a data-point="17" href="#bestiario" title="Definido">Bestiário e inimigos</a></li>
+<li><a data-point="18" href="#estados" title="Definido">Estados e alocação</a></li>
+<li><a data-point="19" href="#pvp" title="Definido">PvP síncrono</a></li>
+<li><a data-point="20" href="#wiki" title="Definido">Codex e wiki</a></li>
+<li><a data-point="21" href="#economia" title="Definido">Economia, mercado e Trade</a></li>
+<li><a data-point="22" href="#mvp" title="Definido">Validação de Alpha e Beta</a></li>
+<li><a data-point="23" href="#decisoes" title="Finalizado">Decisões consolidadas</a></li>
+<li><a data-point="24" href="#aberto" title="Backlog aberto">Backlog futuro</a></li>
+</ol>
 </nav>
 <main>
 <section id="natureza">

@@ -35,12 +35,14 @@ jobs:
           python3 scripts/build_site.py _site
           cmp gdd-source/index.html _site/gdd/index.html
           cmp economy-source/index.html _site/economy/index.html
+          cmp technology-source/index.html _site/technology-guidelines/index.html
           python3 - <<'PY'
           from pathlib import Path
           import re
 
           gdd = Path('_site/gdd/index.html').read_text(encoding='utf-8')
           economy = Path('_site/economy/index.html').read_text(encoding='utf-8')
+          technology = Path('_site/technology-guidelines/index.html').read_text(encoding='utf-8')
           portal = Path('_site/index.html').read_text(encoding='utf-8')
 
           assert 'Game Design Document · v17' in gdd
@@ -54,11 +56,15 @@ jobs:
           assert set(targets) <= set(ids)
           assert gdd.count('id="battlefield-formation"') == 1
           assert gdd.count('id="pve-training"') == 1
+          assert gdd.count('data-point="') == 24
+          assert 'class="topbar-wrap"' in gdd
+          assert '<a class="internal-docs-home"' in gdd
 
           assert 'Available · v17' in portal
           assert 'Available · v1.0' in portal
-          assert portal.count('>TBD<') == 2
+          assert portal.count('>TBD<') == 1
           assert './economy/' in portal
+          assert './technology-guidelines/' in portal
 
           required_economy = [
               '<html lang="pt-BR">',
@@ -94,6 +100,43 @@ jobs:
           assert set(economy_targets) <= set(economy_ids)
           assert economy.count('<section id=') == 17
           assert economy.count('class="decision-row"') == 15
+          assert 'class="topbar-wrap"' in economy
+          assert '<a class="internal-docs-home"' in economy
+
+          required_technology = [
+              '<html lang="pt-BR">',
+              '<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>',
+              'Tecnologia simples, autoritativa e reutilizável',
+              'Servidor autoritativo',
+              'Game Core, RNG e determinismo',
+              'Ledger, inventário e economia',
+              'OWASP ASVS 5.0',
+              'Backlog real de engenharia',
+              'Mapa de autoridade e referências',
+              'Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0',
+          ]
+          for item in required_technology:
+              assert item in technology, f'Conteúdo obrigatório ausente em Tecnologia: {item}'
+
+          forbidden_technology = [
+              'Cash e Ganhos',
+              '<td>guildas</td>',
+              '>Guildas<',
+              'saldo Ganhos',
+          ]
+          for item in forbidden_technology:
+              assert item not in technology, f'Termo histórico inválido em Tecnologia: {item}'
+
+          technology_ids = re.findall(r'\bid=["\']([^"\']+)["\']', technology)
+          assert len(technology_ids) == len(set(technology_ids))
+          technology_targets = re.findall(r'href=["\']#([^"\']+)["\']', technology)
+          assert set(technology_targets) <= set(technology_ids)
+          assert technology.count('<section id=') == 21
+          assert technology.count('class="decision-row"') == 16
+          assert technology.count('Por que aberto:') == 16
+          assert technology.count('Fecha com:') == 16
+          assert 'class="topbar-wrap"' in technology
+          assert '<a class="internal-docs-home"' in technology
           PY
           exit 0
           mkdir -p _site/gdd /tmp/gdd-build

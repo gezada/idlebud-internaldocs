@@ -120,10 +120,10 @@ DOCS = [
     {
         "title": "Technology Guidelines",
         "label": "Technology Guidelines",
-        "description": "Architecture, authoritative-server rules, coding standards, observability, security and deployment guidance.",
+        "description": "Official engineering reference: architecture, server authority, data, security, quality, operations and technical backlog.",
         "href": "./technology-guidelines/",
-        "status": "TBD",
-        "live": False,
+        "status": "Available · v1.0",
+        "live": True,
         "icon": "T",
     },
 ]
@@ -246,6 +246,10 @@ def repair_gdd_navigation(gdd_path: Path) -> None:
         r"(?P<prefix>\b(?:data-target|data-section)\s*=\s*)(?P<quote>['\"])(?P<hash>#?)(?P<target>[^'\"]*)(?P=quote)",
         flags=re.I,
     )
+    data_point_pattern = re.compile(
+        r"\bdata-point\s*=\s*(['\"])(?P<point>\d{1,2})\1",
+        flags=re.I,
+    )
 
     seen_point_buttons: set[int] = set()
     rewrites: list[tuple[int, str, str]] = []
@@ -254,7 +258,8 @@ def repair_gdd_navigation(gdd_path: Path) -> None:
         tag = match.group("tag")
         attrs = match.group("attrs")
         body = match.group("body")
-        point = _top_level_point(_visible_text(body))
+        point_match = data_point_pattern.search(attrs)
+        point = int(point_match.group("point")) if point_match else _top_level_point(_visible_text(body))
         desired = section_ids.get(point) if point is not None else None
         if desired is None:
             return match.group(0)
@@ -352,10 +357,6 @@ def main() -> None:
             "Enemies, Drops, Itemization & Forge",
             "This document will define enemies, encounters, itemization, attachments, passives, drops, materials, recipes and Forge progression.",
         ),
-        "technology-guidelines": (
-            "Technology Guidelines",
-            "This document will define architecture, server authority, coding standards, security, observability and deployment practices.",
-        ),
     }
     for slug, (title, description) in placeholders.items():
         folder = site / slug
@@ -392,6 +393,16 @@ def main() -> None:
         "Backlog financeiro real",
     ]:
         assert phrase in economy, f"Missing Economy content: {phrase}"
+
+    technology = (site / "technology-guidelines" / "index.html").read_text(encoding="utf-8")
+    for phrase in [
+        "<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>",
+        "Tecnologia simples, autoritativa e reutilizável",
+        "Game Core, RNG e determinismo",
+        "Ledger, inventário e economia",
+        "Backlog real de engenharia",
+    ]:
+        assert phrase in technology, f"Missing Technology content: {phrase}"
 
     print(f"Built internal docs portal in {site}")
 

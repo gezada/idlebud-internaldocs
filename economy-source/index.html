@@ -62,13 +62,13 @@
     }
     .skip-link:focus { transform: translateY(0); }
     .shell { max-width: var(--max); margin: auto; padding: 0 24px; }
+    .topbar-wrap { border-bottom: 1px solid rgba(39, 64, 51, .75); }
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 18px;
       padding: 16px 0;
-      border-bottom: 1px solid rgba(39, 64, 51, .75);
       color: var(--muted);
       font-size: 13px;
     }
@@ -379,6 +379,25 @@
       color: #7f9386;
       font-size: 13px;
     }
+    .internal-docs-home {
+      position: fixed;
+      z-index: 9999;
+      left: 18px;
+      bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border: 1px solid rgba(141, 240, 170, .35);
+      border-radius: 999px;
+      background: rgba(7, 17, 12, .9);
+      backdrop-filter: blur(10px);
+      color: #b8ffc9;
+      text-decoration: none;
+      font: 700 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
+    }
+    .internal-docs-home:hover { transform: translateY(-1px); text-decoration: none; }
     @media (max-width: 1040px) {
       .layout { grid-template-columns: 1fr; }
       nav {
@@ -409,7 +428,7 @@
     @media print {
       :root { --bg: #fff; --panel: #fff; --text: #15231a; --muted: #526158; --line: #cbd7cf; }
       body { color: #15231a; background: #fff; font-size: 10pt; }
-      .topbar, nav, .skip-link { display: none; }
+      .topbar-wrap, nav, .skip-link, .internal-docs-home { display: none; }
       .hero { padding: 24px 0; }
       .hero::after { display: none; }
       .layout { display: block; padding: 20px 0; }
@@ -423,26 +442,31 @@
 </head>
 <body>
   <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <a class="internal-docs-home" href="../" aria-label="Back to Idle Bud Internal Docs">← Internal Docs</a>
 
-  <header class="shell">
-    <div class="topbar">
-      <span class="brand">Idle Bud · Documentação interna</span>
-      <div class="toplinks">
-        <a href="../">Portal</a>
-        <a href="../gdd/">GDD v17</a>
-        <a href="#rastreabilidade">Rastreabilidade</a>
-        <a href="#backlog">Decisões abertas</a>
+  <header>
+    <div class="topbar-wrap">
+      <div class="shell topbar">
+        <span class="brand">Idle Bud · Documentação interna</span>
+        <div class="toplinks">
+          <a href="../">Portal</a>
+          <a href="../gdd/">GDD v17</a>
+          <a href="#rastreabilidade">Rastreabilidade</a>
+          <a href="#backlog">Decisões abertas</a>
+        </div>
       </div>
     </div>
     <div class="hero">
-      <span class="eyebrow">Economia · referência oficial · v1.0</span>
-      <h1>Economia do Idle Bud</h1>
-      <p class="lead">Constituição econômica, fluxos de valor, Marketplace, Trade, segurança, telemetria e backlog financeiro do Idle Bud — subordinados ao Game Design Document v17.</p>
-      <div class="meta" aria-label="Metadados do documento">
-        <span class="chip">Fonte de verdade: GDD v17</span>
-        <span class="chip">Escopo: Idol Lovers + Idle Bud</span>
-        <span class="chip">Atualizado em 28 jul. 2026</span>
-        <span class="chip">Sem promessa de preço ou liquidez</span>
+      <div class="shell">
+        <span class="eyebrow">Economia · referência oficial · v1.0</span>
+        <h1>Economia do Idle Bud</h1>
+        <p class="lead">Constituição econômica, fluxos de valor, Marketplace, Trade, segurança, telemetria e backlog financeiro do Idle Bud — subordinados ao Game Design Document v17.</p>
+        <div class="meta" aria-label="Metadados do documento">
+          <span class="chip">Fonte de verdade: GDD v17</span>
+          <span class="chip">Escopo: Idol Lovers + Idle Bud</span>
+          <span class="chip">Atualizado em 28 jul. 2026</span>
+          <span class="chip">Sem promessa de preço ou liquidez</span>
+        </div>
       </div>
     </div>
   </header>

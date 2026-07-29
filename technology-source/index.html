@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Diretrizes oficiais de tecnologia e engenharia da Idle Lovers para o Idle Bud e a plataforma multi-game." />
+  <title>Idle Bud — Diretrizes de Tecnologia v1.0</title>
+  <style>
+    :root {
+      --bg: #07100b;
+      --panel: #0d1711;
+      --panel-2: #122019;
+      --panel-3: #17271e;
+      --text: #edf7f0;
+      --muted: #9eafa4;
+      --line: #274033;
+      --leaf: #70e28f;
+      --blue: #79a7ff;
+      --blue-soft: #b9ceff;
+      --cyan: #8ee7f2;
+      --warn: #ffc86f;
+      --danger: #ff8c92;
+      --violet: #c5a9ff;
+      --max: 1240px;
+      --radius: 18px;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .35);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% -10%, rgba(121, 167, 255, .17), transparent 31rem),
+        radial-gradient(circle at 96% 4%, rgba(112, 226, 143, .10), transparent 28rem),
+        linear-gradient(180deg, #07100b 0%, #08110c 52%, #060d09 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.66;
+    }
+    a { color: #b6cbff; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a:hover { color: #fff; }
+    a:focus-visible, summary:focus-visible {
+      outline: 3px solid var(--cyan);
+      outline-offset: 3px;
+      border-radius: 6px;
+    }
+    .skip-link {
+      position: fixed;
+      z-index: 10000;
+      top: 10px;
+      left: 10px;
+      transform: translateY(-180%);
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #e9fff0;
+      color: #07100b;
+      font-weight: 850;
+    }
+    .skip-link:focus { transform: translateY(0); }
+    .shell { max-width: var(--max); margin: auto; padding: 0 24px; }
+    .topbar-wrap { border-bottom: 1px solid rgba(39, 64, 51, .75); }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 16px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .brand { color: #dff4e5; font-weight: 900; letter-spacing: -.01em; }
+    .toplinks { display: flex; gap: 15px; flex-wrap: wrap; justify-content: flex-end; }
+    .toplinks a { color: #a8b9ad; font-weight: 720; text-decoration: none; }
+    .toplinks a:hover { color: #fff; }
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 68px 0 54px;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -90px;
+      bottom: -175px;
+      width: 450px;
+      height: 450px;
+      border: 1px solid rgba(121, 167, 255, .14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 42px rgba(121, 167, 255, .025),
+        0 0 0 84px rgba(112, 226, 143, .02);
+      pointer-events: none;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 11px;
+      border: 1px solid rgba(121, 167, 255, .38);
+      border-radius: 999px;
+      background: rgba(121, 167, 255, .08);
+      color: #c7d6ff;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .11em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 1030px;
+      margin: 24px 0 18px;
+      font-size: clamp(44px, 7vw, 80px);
+      line-height: 1;
+      letter-spacing: -.055em;
+    }
+    .lead {
+      max-width: 980px;
+      margin: 0;
+      color: #c8d7cd;
+      font-size: clamp(18px, 2.15vw, 24px);
+      line-height: 1.5;
+    }
+    .meta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 28px; }
+    .chip {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .025);
+      color: #b8c9bd;
+      font-size: 13px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 276px minmax(0, 1fr);
+      gap: 44px;
+      padding: 44px 0 100px;
+    }
+    nav {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      max-height: calc(100vh - 36px);
+      overflow: auto;
+      padding: 0 10px 10px 0;
+      scrollbar-color: #365843 transparent;
+    }
+    .nav-title {
+      margin: 0 0 12px;
+      color: #6f8678;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    nav ol { margin: 0; padding: 0; list-style: none; counter-reset: nav; }
+    nav li { margin: 0; counter-increment: nav; }
+    nav a {
+      display: grid;
+      grid-template-columns: 24px 1fr;
+      gap: 7px;
+      padding: 7px 9px;
+      border-radius: 9px;
+      color: #9cb0a2;
+      font-size: 12.5px;
+      line-height: 1.3;
+      text-decoration: none;
+    }
+    nav a::before {
+      content: counter(nav, decimal-leading-zero);
+      color: #6f8dff;
+      font-variant-numeric: tabular-nums;
+      font-size: 10px;
+      font-weight: 850;
+      line-height: 1.7;
+    }
+    nav a:hover { background: var(--panel); color: #fff; }
+    main { min-width: 0; }
+    section { padding: 18px 0 48px; border-bottom: 1px solid var(--line); }
+    section:last-child { border-bottom: 0; }
+    h2 {
+      margin: 12px 0 20px;
+      font-size: clamp(29px, 4vw, 45px);
+      line-height: 1.12;
+      letter-spacing: -.035em;
+    }
+    h3 { margin: 32px 0 12px; font-size: 22px; line-height: 1.25; letter-spacing: -.018em; }
+    h4 { margin: 24px 0 8px; color: #e0eee4; font-size: 16px; }
+    p { margin: 0 0 16px; color: #c2d0c6; }
+    strong { color: #fff; }
+    ul, ol { padding-left: 21px; color: #c2d0c6; }
+    li { margin: 7px 0; }
+    code {
+      padding: 2px 6px;
+      border: 1px solid #2a4535;
+      border-radius: 6px;
+      background: #132019;
+      color: #dce5ff;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: .92em;
+    }
+    .section-kicker {
+      display: block;
+      margin-bottom: 5px;
+      color: #8293c8;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .statement {
+      margin: 26px 0;
+      padding: 24px 26px;
+      border-left: 4px solid var(--blue);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      background: linear-gradient(90deg, rgba(121, 167, 255, .14), rgba(121, 167, 255, .025));
+      color: #f3faf5;
+      font-size: 20px;
+      line-height: 1.47;
+    }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 20px 0; }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .card {
+      min-width: 0;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .012));
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+    }
+    .card h3, .card h4 { margin-top: 0; }
+    .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+    .required-card { border-color: rgba(255, 140, 146, .3); background: rgba(255, 140, 146, .04); }
+    .recommended-card { border-color: rgba(121, 167, 255, .34); background: rgba(121, 167, 255, .05); }
+    .product-card { border-color: rgba(112, 226, 143, .32); background: rgba(112, 226, 143, .05); }
+    .open-card { border-color: rgba(197, 169, 255, .3); background: rgba(197, 169, 255, .045); }
+    .legend-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 22px 0; }
+    .legend-item { padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: rgba(255, 255, 255, .015); }
+    .legend-item p { margin: 9px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+    .state {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 9px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+    .state::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+    .state.product { color: #a7efba; border-color: rgba(112, 226, 143, .24); background: rgba(112, 226, 143, .08); }
+    .state.required { color: #ffb3b7; border-color: rgba(255, 140, 146, .25); background: rgba(255, 140, 146, .08); }
+    .state.recommended { color: #bfd0ff; border-color: rgba(121, 167, 255, .28); background: rgba(121, 167, 255, .09); }
+    .state.hypothesis { color: #ffd99e; border-color: rgba(255, 200, 111, .25); background: rgba(255, 200, 111, .08); }
+    .state.open { color: #dbcaff; border-color: rgba(197, 169, 255, .25); background: rgba(197, 169, 255, .08); }
+    .table-wrap {
+      width: 100%;
+      margin: 20px 0;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      scrollbar-color: #365843 transparent;
+    }
+    table { width: 100%; min-width: 650px; border-collapse: collapse; }
+    th, td { padding: 13px 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: #132019; color: #edf7f0; font-size: 12px; letter-spacing: .07em; text-transform: uppercase; }
+    td { color: #bdcbc1; font-size: 14px; }
+    tr:last-child td { border-bottom: 0; }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin: 24px 0;
+      align-items: stretch;
+    }
+    .flow.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .flow.six { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .flow .node {
+      position: relative;
+      min-width: 0;
+      padding: 16px 12px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--panel);
+      color: #dce9df;
+      text-align: center;
+      font-size: 13px;
+    }
+    .flow .node strong { display: block; margin-bottom: 4px; font-size: 13px; }
+    .flow .node span { display: block; color: var(--muted); font-size: 11px; line-height: 1.45; }
+    .flow .node:not(:last-child)::after { content: "→"; position: absolute; right: -13px; top: 42%; color: #667f71; font-weight: 900; }
+    .formula {
+      margin: 18px 0;
+      padding: 21px;
+      border: 1px dashed #48607f;
+      border-radius: 14px;
+      background: #09130d;
+      color: #e9eefc;
+      text-align: center;
+      font: 750 16px/1.55 "SFMono-Regular", Consolas, monospace;
+    }
+    .callout {
+      margin: 20px 0;
+      padding: 20px 22px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255, 255, 255, .018);
+    }
+    .callout strong { display: block; margin-bottom: 6px; }
+    .callout p:last-child, .callout ul:last-child { margin-bottom: 0; }
+    .callout.required { border-color: rgba(255, 140, 146, .35); background: rgba(255, 140, 146, .055); }
+    .callout.recommended { border-color: rgba(121, 167, 255, .34); background: rgba(121, 167, 255, .055); }
+    .callout.open { border-color: rgba(197, 169, 255, .34); background: rgba(197, 169, 255, .055); }
+    .decision-list { display: grid; gap: 12px; margin: 22px 0; }
+    .decision-row {
+      display: grid;
+      grid-template-columns: minmax(170px, .34fr) minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px 20px;
+      border: 1px solid rgba(197, 169, 255, .23);
+      border-radius: 15px;
+      background: linear-gradient(145deg, rgba(197, 169, 255, .055), rgba(255, 255, 255, .012));
+    }
+    .decision-row h4 { margin: 1px 0; }
+    .decision-row p { margin: 0; font-size: 13px; }
+    .decision-row p + p { margin-top: 7px; }
+    .label { color: #decfff; font-weight: 850; }
+    .checklist { list-style: none; padding-left: 0; }
+    .checklist li { position: relative; padding-left: 24px; }
+    .checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--leaf); font-weight: 900; }
+    details { margin: 16px 0; border: 1px solid var(--line); border-radius: 14px; background: rgba(255, 255, 255, .015); }
+    summary { padding: 14px 16px; color: #e7f4eb; cursor: pointer; font-weight: 800; }
+    details > div { padding: 0 16px 16px; }
+    .glossary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 22px; }
+    .term { padding: 15px 0; border-bottom: 1px dashed #2b4636; }
+    .term dt { color: #f0faf3; font-weight: 850; }
+    .term dd { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+    .small { color: var(--muted); font-size: 13px; }
+    .footer { padding: 38px 0 70px; border-top: 1px solid var(--line); color: #7f9386; font-size: 13px; }
+    .internal-docs-home {
+      position: fixed;
+      z-index: 9999;
+      left: 18px;
+      bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border: 1px solid rgba(141, 240, 170, .35);
+      border-radius: 999px;
+      background: rgba(7, 17, 12, .9);
+      backdrop-filter: blur(10px);
+      color: #b8ffc9;
+      text-decoration: none;
+      font: 700 13px/1 system-ui, -apple-system, "Segoe UI", sans-serif;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .25);
+    }
+    .internal-docs-home:hover { transform: translateY(-1px); color: #d9ffe2; }
+    @media (max-width: 1040px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: relative; top: auto; max-height: none; padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+      nav ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 8px; }
+      .legend-grid, .grid.four { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .flow.six { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .flow.six .node:nth-child(3)::after { display: none; }
+    }
+    @media (max-width: 760px) {
+      .shell { padding: 0 16px; }
+      .topbar { align-items: flex-start; }
+      .toplinks { display: grid; gap: 6px; text-align: right; }
+      .hero { padding-top: 48px; }
+      .grid, .grid.three, .grid.four, .legend-grid, .glossary { grid-template-columns: 1fr; }
+      nav { max-height: 360px; overflow: auto; }
+      nav ol { grid-template-columns: 1fr; }
+      .flow, .flow.four, .flow.six { grid-template-columns: 1fr; }
+      .flow .node:not(:last-child)::after, .flow.six .node:nth-child(3)::after { content: "↓"; display: block; right: auto; bottom: -20px; left: 50%; top: auto; }
+      .decision-row { grid-template-columns: 1fr; gap: 7px; }
+      th, td { min-width: 150px; }
+    }
+    @media print {
+      :root { --bg: #fff; --panel: #fff; --text: #15231a; --muted: #526158; --line: #cbd7cf; }
+      body { color: #15231a; background: #fff; font-size: 10pt; }
+      .topbar-wrap, nav, .skip-link, .internal-docs-home { display: none; }
+      .hero { padding: 24px 0; }
+      .hero::after { display: none; }
+      .layout { display: block; padding: 20px 0; }
+      section { break-inside: avoid-page; }
+      h1, h2, h3, h4, strong { color: #102117; }
+      p, li, td, .lead, .small, .term dd { color: #35483b; }
+      .card, .callout, .formula, details { box-shadow: none; background: #fff; }
+      a { color: #194d2b; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+  <a class="internal-docs-home" href="../" aria-label="Back to Idle Bud Internal Docs">← Internal Docs</a>
+
+  <header>
+    <div class="topbar-wrap">
+      <div class="shell topbar">
+        <span class="brand">Idle Bud · Documentação interna</span>
+        <div class="toplinks">
+          <a href="../">Portal</a>
+          <a href="../gdd/">GDD v17</a>
+          <a href="../economy/">Economia v1.0</a>
+          <a href="#backlog">Decisões abertas</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero">
+      <div class="shell">
+        <span class="eyebrow">Tecnologia e Engenharia · referência oficial · v1.0</span>
+        <h1>Tecnologia simples, autoritativa e reutilizável</h1>
+        <p class="lead">Arquitetura, stack, regras de engenharia, segurança e operação para construir o Idle Bud e a plataforma multi-game da Idle Lovers sem sacrificar velocidade, rastreabilidade ou confiança.</p>
+        <div class="meta" aria-label="Metadados do documento">
+          <span class="chip">Escopo: Idle Lovers + Idle Bud</span>
+          <span class="chip">TypeScript como padrão</span>
+          <span class="chip">Servidor autoritativo</span>
+          <span class="chip">Arquitetura multi-game</span>
+          <span class="chip">Atualizado em 28 jul. 2026</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="shell layout">
+    <nav aria-label="Sumário de Tecnologia">
+      <p class="nav-title">Neste documento</p>
+      <ol>
+        <li><a href="#autoridade">Autoridade e leitura</a></li>
+        <li><a href="#principios">Princípios e limites</a></li>
+        <li><a href="#arquitetura">Arquitetura alvo</a></li>
+        <li><a href="#stack">Stack padrão</a></li>
+        <li><a href="#modulos">Módulos e contratos</a></li>
+        <li><a href="#autoridade-servidor">Autoridade do servidor</a></li>
+        <li><a href="#determinismo">Game Core e determinismo</a></li>
+        <li><a href="#dados">Dados e PostgreSQL</a></li>
+        <li><a href="#economia">Ledger e economia</a></li>
+        <li><a href="#api">APIs e concorrência</a></li>
+        <li><a href="#conteudo">Conteúdo e rulesets</a></li>
+        <li><a href="#cliente">Cliente, Phaser e assets</a></li>
+        <li><a href="#seguranca">Segurança e privacidade</a></li>
+        <li><a href="#qualidade">Testes e qualidade</a></li>
+        <li><a href="#observabilidade">Observabilidade e operação</a></li>
+        <li><a href="#entrega">CI/CD e releases</a></li>
+        <li><a href="#opensource">Open source e supply chain</a></li>
+        <li><a href="#evolucao">Evolução da arquitetura</a></li>
+        <li><a href="#backlog">Backlog de engenharia</a></li>
+        <li><a href="#rastreabilidade">Rastreabilidade</a></li>
+        <li><a href="#glossario">Glossário</a></li>
+      </ol>
+    </nav>
+
+    <main id="conteudo">
+      <section id="autoridade">
+        <span class="section-kicker">01 · Como usar</span>
+        <h2>Autoridade, propósito e limites</h2>
+        <div class="statement"><strong>Produto antes da stack.</strong> O GDD define o que o jogo faz; a Economia define como seus fluxos de valor precisam se comportar; Tecnologia define como implementar e operar essas decisões sem reinterpretá-las.</div>
+        <p>Esta é a referência técnica oficial da Idle Lovers para o Idle Bud e para componentes reutilizáveis da conta global. Quando houver conflito, prevalecem o <a href="../gdd/">GDD publicado</a> e a <a href="../economy/">Economia oficial</a>. Uma escolha técnica nunca cria moeda, ativo, feature, direito de jogador ou regra de gameplay.</p>
+        <div class="legend-grid" aria-label="Estados das diretrizes">
+          <div class="legend-item"><span class="state product">Regra de produto</span><p>Obrigação vinda do GDD ou da Economia. Tecnologia apenas a preserva.</p></div>
+          <div class="legend-item"><span class="state required">Diretriz obrigatória</span><p>Controle técnico indispensável para autoridade, integridade ou segurança.</p></div>
+          <div class="legend-item"><span class="state recommended">Padrão recomendado</span><p>Escolha inicial preferida; pode mudar por evidência e decisão registrada.</p></div>
+          <div class="legend-item"><span class="state open">Decisão aberta</span><p>Detalhe material ainda sem aprovação. O fechamento necessário é explícito.</p></div>
+        </div>
+        <div class="callout recommended">
+          <strong>Fonte técnica normalizada</strong>
+          <p>O documento fornecido pelos fundadores foi preservado como direção, mas termos históricos foram corrigidos: `Ganhos` tornou-se `Saldo`; guildas saíram do escopo; Phaser e PostgreSQL são padrões recomendados, não verdades de produto.</p>
+        </div>
+      </section>
+
+      <section id="principios">
+        <span class="section-kicker">02 · Constituição técnica</span>
+        <h2>Princípios e limites</h2>
+        <div class="grid">
+          <article class="card recommended-card"><span class="state recommended">Padrão</span><h3>Simples por padrão</h3><p>TypeScript, Node.js, web standards e PostgreSQL devem resolver o produto inicial. Complexidade precisa pagar seu próprio custo.</p></article>
+          <article class="card required-card"><span class="state required">Obrigatório</span><h3>Servidor autoritativo</h3><p>O cliente apresenta e envia intenções. Resultado oficial, propriedade, saldo, ranking e aleatoriedade de valor pertencem ao servidor.</p></article>
+          <article class="card product-card"><span class="state product">Produto</span><h3>Multi-game desde a origem</h3><p>Conta e Cash são globais; Gold e regras do Idle Bud são locais. Domínios precisam declarar jogo, ambiente, temporada e ruleset.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Disciplina</span><h3>Nova tecnologia só com prova</h3><p>Outra linguagem, serviço, banco, fila ou cache entra somente diante de problema medido, ownership claro e plano de reversão.</p></article>
+        </div>
+        <h3>Invariantes transversais</h3>
+        <ul class="checklist">
+          <li>um ativo possui no máximo um proprietário efetivo;</li>
+          <li>uma chave idempotente produz no máximo um efeito econômico;</li>
+          <li>um evento de saldo possui origem, moeda, bucket, ambiente e referência;</li>
+          <li>uma batalha oficial pode ser explicada pelo input, ruleset, seed e versão do simulador;</li>
+          <li>configuração publicada não altera retroativamente uma operação já concluída;</li>
+          <li>cliente, fila, cache e telemetria nunca substituem a fonte transacional de verdade;</li>
+          <li>correções preservam histórico: compensam, não apagam silenciosamente.</li>
+        </ul>
+      </section>
+
+      <section id="arquitetura">
+        <span class="section-kicker">03 · Forma inicial</span>
+        <h2>Arquitetura alvo</h2>
+        <p>O ponto de partida é um <strong>monólito modular implantável</strong>: uma unidade operacional pequena, com fronteiras internas rigorosas. “Monólito” descreve o deploy inicial; não autoriza acoplamento irrestrito.</p>
+        <div class="flow" aria-label="Fluxo principal da arquitetura">
+          <div class="node"><strong>Web + Phaser</strong><span>apresentação e intenção</span></div>
+          <div class="node"><strong>API de comandos</strong><span>identidade, autorização e validação</span></div>
+          <div class="node"><strong>Domínios</strong><span>game core, inventário, economia</span></div>
+          <div class="node"><strong>PostgreSQL</strong><span>estado e histórico transacional</span></div>
+          <div class="node"><strong>Outbox + workers</strong><span>efeitos assíncronos recuperáveis</span></div>
+        </div>
+        <div class="grid three">
+          <article class="card required-card"><span class="state required">Obrigatório</span><h3>Sincronia no núcleo</h3><p>Saldo, propriedade, listing, custódia e conclusão de operação crítica fecham numa única fronteira transacional.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Padrão</span><h3>Assíncrono na borda</h3><p>E-mail, analytics, indexação, notificações e integrações reagem a eventos persistidos por outbox.</p></article>
+          <article class="card open-card"><span class="state open">Aberto</span><h3>Infraestrutura física</h3><p>Cloud, regiões, containers, CDN, object storage e topologia final ainda não foram escolhidos.</p></article>
+        </div>
+        <div class="callout required">
+          <strong>Fronteira de falha</strong>
+          <p>Se um efeito externo falhar depois do commit, a operação principal não é repetida. O worker retoma o efeito pelo evento persistido, com tentativa identificada, política de retry e dead letter auditável.</p>
+        </div>
+      </section>
+
+      <section id="stack">
+        <span class="section-kicker">04 · Padrões iniciais</span>
+        <h2>Stack padrão</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Camada</th><th>Padrão</th><th>Status</th><th>Regra operacional</th></tr></thead>
+            <tbody>
+              <tr><td>Interface e aplicação web</td><td>HTML, CSS e TypeScript</td><td><span class="state recommended">Recomendado</span></td><td>Web-first, acessível, responsiva e sem regra oficial no cliente.</td></tr>
+              <tr><td>Jogo 2D</td><td>Phaser</td><td><span class="state recommended">Recomendado</span></td><td>Adotar após spike com batalhas, pixel art, replays e dispositivos-alvo.</td></tr>
+              <tr><td>Backend</td><td>Node.js + TypeScript</td><td><span class="state recommended">Recomendado</span></td><td>Usar linha LTS suportada; versão exata fixada por lock/toolchain.</td></tr>
+              <tr><td>Game Core</td><td>TypeScript puro</td><td><span class="state required">Obrigatório</span></td><td>Sem dependência de navegador, Phaser, rede ou banco.</td></tr>
+              <tr><td>Banco transacional</td><td>PostgreSQL</td><td><span class="state recommended">Recomendado</span></td><td>Constraints, transações, migrações, backup e restauração testados.</td></tr>
+              <tr><td>Cache e filas</td><td>Nenhum por padrão</td><td><span class="state hypothesis">Sob demanda</span></td><td>Redis, broker ou serviço equivalente só após gargalo/semântica medidos.</td></tr>
+              <tr><td>Observabilidade</td><td>Logs estruturados + métricas + traces</td><td><span class="state required">Obrigatório</span></td><td>Interface vendor-neutral; fornecedor continua aberto.</td></tr>
+              <tr><td>Distribuição</td><td>Navegador</td><td><span class="state recommended">Inicial</span></td><td>Desktop wrapper ou mobile nativo dependem de decisão futura.</td></tr>
+              <tr><td>Assets 2D</td><td>PixelLab.ai + revisão humana</td><td><span class="state recommended">Recomendado</span></td><td>Ferramenta de produção, nunca dependência do runtime do jogo.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout recommended">
+          <strong>Política de versões</strong>
+          <p>Produção usa releases suportadas, lockfile imutável e atualização planejada. “Latest” é permitido em experimento local, nunca como contrato de build. A linha 24 é LTS do Node.js em julho de 2026; a versão do projeto só fecha com a primeira baseline de runtime e compatibilidade.</p>
+        </div>
+      </section>
+
+      <section id="modulos">
+        <span class="section-kicker">05 · Fronteiras internas</span>
+        <h2>Módulos e contratos</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Módulo</th><th>Responsabilidade</th><th>Não pode</th></tr></thead>
+            <tbody>
+              <tr><td><code>identity</code></td><td>Conta global, sessão, consentimentos, bloqueios e permissões.</td><td>Alterar saldo ou inventário diretamente.</td></tr>
+              <tr><td><code>catalog</code></td><td>Conteúdo publicado, assets, receitas, inimigos, espécies e textos.</td><td>Persistir resultado de gameplay.</td></tr>
+              <tr><td><code>game-core</code></td><td>Fórmulas, ticks, targeting, RNG determinístico e simulações.</td><td>Acessar banco, relógio global, rede ou UI.</td></tr>
+              <tr><td><code>idle-bud</code></td><td>Jardim, Plots, Buds, Cultivo, PvE, Forja, estados e alocação.</td><td>Reimplementar identidade ou ledger global.</td></tr>
+              <tr><td><code>inventory</code></td><td>Propriedade, stacks, vínculos, reservas e proveniência.</td><td>Criar item sem comando de domínio autorizado.</td></tr>
+              <tr><td><code>economy</code></td><td>Gold, Cash, Saldo, ledger, fees, reservas e compensações.</td><td>Conhecer apresentação ou aceitar float monetário.</td></tr>
+              <tr><td><code>market</code></td><td>Listings, Marketplace, Trade, pisos, referência e liquidação.</td><td>Transferir ativo sem inventário/economia atômicos.</td></tr>
+              <tr><td><code>competition</code></td><td>PvP, AR, temporadas, ranking, replay e recompensa.</td><td>Confiar em resultado calculado pelo cliente.</td></tr>
+              <tr><td><code>admin</code></td><td>Publicação, suporte, risco, revisão e ações operacionais.</td><td>Editar prova ou agir sem autorização e log.</td></tr>
+              <tr><td><code>platform-events</code></td><td>Outbox, integração, telemetria e efeitos assíncronos.</td><td>Ser fonte primária de saldo ou propriedade.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Direção das dependências</h3>
+        <div class="formula">apresentação → aplicação → domínio ← adaptadores</div>
+        <p>Domínio expõe comandos, resultados e eventos. Adaptadores implementam banco, fila, relógio, RNG seguro, pagamento, KYC e telemetria. Contratos cruzados são pequenos, versionados e validados em runtime; importações profundas entre módulos são proibidas.</p>
+      </section>
+
+      <section id="autoridade-servidor">
+        <span class="section-kicker">06 · Trust boundaries</span>
+        <h2>Autoridade do servidor</h2>
+        <div class="statement"><strong>O servidor decide primeiro; o cliente apenas apresenta.</strong> A duração da animação, a taxa de frames, o relógio local e o payload enviado pelo cliente não alteram o resultado oficial.</div>
+        <div class="grid">
+          <article class="card required-card">
+            <span class="state required">Servidor decide</span>
+            <ul>
+              <li>identidade de nascimento, raridade, Vigor e Pontos Inatos;</li>
+              <li>ticks, targeting, dano, vitória, drops e XP;</li>
+              <li>Stamina, timers, cancelamentos e progresso offline;</li>
+              <li>criação, consumo, quebra, propriedade e estado de ativos;</li>
+              <li>Gold, Cash, Saldo, fees, crédito, conversão e ledger;</li>
+              <li>listing, custódia, liquidação, ranking, AR e reward.</li>
+            </ul>
+          </article>
+          <article class="card product-card">
+            <span class="state product">Cliente pode</span>
+            <ul>
+              <li>coletar input e intenção do jogador;</li>
+              <li>antecipar apresentação sem confirmar valor;</li>
+              <li>reproduzir replay assinado ou payload oficial;</li>
+              <li>calcular preview claramente marcado como estimativa;</li>
+              <li>usar RNG local apenas para partículas, variação visual e som;</li>
+              <li>armazenar preferência não sensível de dispositivo.</li>
+            </ul>
+          </article>
+        </div>
+        <h3>Validação de comando</h3>
+        <ol>
+          <li>autenticar conta e sessão;</li>
+          <li>autorizar ação no jogo, ambiente e recurso;</li>
+          <li>validar schema, estado, versão e pré-condições;</li>
+          <li>carregar ruleset e configuração corretos;</li>
+          <li>executar domínio com relógio/RNG fornecidos pelo servidor;</li>
+          <li>persistir efeitos, ledger, outbox e auditoria atomicamente;</li>
+          <li>devolver recibo estável e seguro para retry.</li>
+        </ol>
+      </section>
+
+      <section id="determinismo">
+        <span class="section-kicker">07 · Simulação reproduzível</span>
+        <h2>Game Core, RNG e determinismo</h2>
+        <p>O `game-core` recebe um pacote fechado e devolve um resultado puro. Nenhuma função de domínio lê `Date.now()`, `Math.random()`, estado global, rede, arquivo, DOM ou banco diretamente.</p>
+        <div class="formula">resultado = simulate(input, ruleset_version, simulator_version, seed, logical_time)</div>
+        <div class="grid three">
+          <article class="card recommended-card"><h3>Seed</h3><p>Gerada pelo servidor com fonte criptograficamente segura. A seed não é escolhida nem antecipada pelo cliente.</p></article>
+          <article class="card recommended-card"><h3>PRNG</h3><p>Algoritmo determinístico, versionado e testado por vetores. Troca de algoritmo não altera replays antigos.</p></article>
+          <article class="card required-card"><h3>Replay</h3><p>Preserva input canônico, versões, seed, decisões e hash do resultado suficiente para reprodução e auditoria.</p></article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Risco</th><th>Regra</th><th>Evidência</th></tr></thead>
+            <tbody>
+              <tr><td>Ordem não determinística</td><td>Ordenação e desempate explícitos; não depender de ordem de hash/mapa.</td><td>Golden tests em runtimes suportados.</td></tr>
+              <tr><td>Ponto flutuante</td><td>Escala fixa ou decimal explícito nas fórmulas que exigem reprodução exata.</td><td>Vetores de cálculo e política de arredondamento.</td></tr>
+              <tr><td>Relógio</td><td>Instante e tempo lógico entram como dependência; timezone não decide regra.</td><td>Timestamp UTC e clock controlado em teste.</td></tr>
+              <tr><td>Mudança de regra</td><td>Ruleset e simulator version acompanham batalha/operação.</td><td>Snapshot imutável recuperável.</td></tr>
+              <tr><td>Animação</td><td>Cliente deriva timing visual do resultado; não bloqueia tick oficial.</td><td>Mesmo replay em 1×, 2× e dispositivo lento.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout open">
+          <strong>Algoritmo e formato de replay continuam abertos</strong>
+          <p>O GDD exige replays determinísticos, mas não aprova PRNG, serialização, compressão ou janela de retenção. Esses detalhes fecham com protótipo cruzado, vetores oficiais e orçamento de armazenamento.</p>
+        </div>
+      </section>
+
+      <section id="dados">
+        <span class="section-kicker">08 · Estado persistente</span>
+        <h2>Dados, PostgreSQL e migrações</h2>
+        <p>PostgreSQL é o padrão recomendado para o estado transacional. Cache, índice de busca, warehouse e data lake são projeções; podem ser reconstruídos e nunca substituem a origem.</p>
+        <div class="grid">
+          <article class="card required-card"><span class="state required">Integridade</span><h3>Banco também protege</h3><p><code>NOT NULL</code>, foreign keys, checks, uniques, versões e transações expressam invariantes que não devem depender só da aplicação.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Modelo</span><h3>Identidade explícita</h3><p>IDs opacos, timestamps UTC, `game_id`, `environment`, `season_id`, `ruleset_version` e proveniência onde o domínio exigir.</p></article>
+        </div>
+        <h3>Precisão e tipos</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Dado</th><th>Representação</th><th>Proibição</th></tr></thead>
+            <tbody>
+              <tr><td>Gold, Cash e Saldo</td><td>Inteiro na menor unidade definida ou `NUMERIC(p,s)` com escala fechada.</td><td>`real`, `double precision` ou `Number` fracionário.</td></tr>
+              <tr><td>Percentuais e probabilidades</td><td>Inteiro escalado/racional ou decimal com arredondamento único.</td><td>Arredondar em cada etapa intermediária.</td></tr>
+              <tr><td>IDs</td><td>UUID/identificador opaco definido pelo padrão do projeto.</td><td>ID previsível exposto como autorização.</td></tr>
+              <tr><td>Tempo</td><td>Instante UTC + duração explícita; calendário quando necessário.</td><td>Regra baseada no timezone do dispositivo.</td></tr>
+              <tr><td>Payload flexível</td><td>JSONB apenas para extensão versionada e consultável.</td><td>Esconder invariantes ou relações essenciais em blob.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Migrações e recuperação</h3>
+        <ul>
+          <li>migração é código revisado, ordenado, imutável depois de aplicado e testado com cópia representativa;</li>
+          <li>mudança destrutiva usa expansão → backfill → troca → contração, não deploy único irreversível;</li>
+          <li>backup só conta quando restauração completa e restauração pontual são exercitadas;</li>
+          <li>migração de ledger, propriedade, replay ou consentimento exige verificação de contagem e reconciliação;</li>
+          <li>RPO, RTO, retenção e região de backup permanecem decisões abertas.</li>
+        </ul>
+      </section>
+
+      <section id="economia">
+        <span class="section-kicker">09 · Domínio de maior criticidade</span>
+        <h2>Ledger, inventário e economia</h2>
+        <div class="statement">Saldo não é um campo editável. É a consequência reconstruível de eventos econômicos autorizados, com origem, débito, crédito, fee, moeda, bucket e referência.</div>
+        <div class="flow six" aria-label="Liquidação econômica">
+          <div class="node"><strong>Validar</strong><span>conta, recurso e estado</span></div>
+          <div class="node"><strong>Bloquear</strong><span>listing, ativo e saldo</span></div>
+          <div class="node"><strong>Debitar</strong><span>comprador e bucket</span></div>
+          <div class="node"><strong>Creditar</strong><span>vendedor e fee</span></div>
+          <div class="node"><strong>Transferir</strong><span>propriedade e estado</span></div>
+          <div class="node"><strong>Registrar</strong><span>ledger, outbox e recibo</span></div>
+        </div>
+        <h3>Regras de implementação</h3>
+        <ul class="checklist">
+          <li>Marketplace e venda direcionada liquidam tudo ou nada;</li>
+          <li>venda em Cash credita Saldo, nunca Cash;</li>
+          <li>anúncio em duas moedas possui uma única corrida vencedora;</li>
+          <li>escambo bloqueia todos os ativos e fees antes de confirmar;</li>
+          <li>propriedade única existe no banco e no domínio;</li>
+          <li>cada mutação carrega idempotency key, actor, causation e correlation ID;</li>
+          <li>estorno e correção criam evento compensatório; o original permanece;</li>
+          <li>leitura rápida de saldo pode ser projeção, mas reconcilia com o ledger.</li>
+        </ul>
+        <div class="grid">
+          <article class="card recommended-card"><span class="state recommended">Padrão</span><h3>Journal balanceado</h3><p>Usar lançamentos balanceados por moeda e bucket é a recomendação inicial. A política contábil final e os nomes das contas permanecem com Financeiro/Contabilidade.</p></article>
+          <article class="card required-card"><span class="state required">Invariante</span><h3>Nunca misturar direitos</h3><p>Cash comprado, Cash promocional, Saldo e Gold continuam distinguíveis internamente, mesmo quando a UX mostra uma moeda agregada.</p></article>
+        </div>
+        <div class="callout required">
+          <strong>Integrações não são autoridade</strong>
+          <p>Gateway, KYC, provedor cripto, blockchain ou webhook fornecem evidência externa. O servidor valida assinatura, deduplica evento, aplica máquina de estados e só então produz efeito interno.</p>
+        </div>
+      </section>
+
+      <section id="api">
+        <span class="section-kicker">10 · Comandos seguros</span>
+        <h2>APIs, idempotência e concorrência</h2>
+        <p>APIs mutáveis expõem comandos de negócio, não CRUD irrestrito de tabelas. Cada comando declara intenção, ator, recurso, versão esperada e chave idempotente.</p>
+        <div class="formula">Command = { command_id, idempotency_key, actor, game_id, expected_version, payload }</div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Fase</th><th>Estado persistido</th><th>Comportamento de retry</th></tr></thead>
+            <tbody>
+              <tr><td>Recebido</td><td>Hash do request, ator, rota e chave.</td><td>Mesmo request aguarda ou recebe o mesmo resultado.</td></tr>
+              <tr><td>Concluído</td><td>Status, response seguro e referências geradas.</td><td>Resposta é reproduzida; efeito não roda novamente.</td></tr>
+              <tr><td>Falhou definitivamente</td><td>Código estável e razão sanitizada.</td><td>Mesmo request recebe a mesma falha.</td></tr>
+              <tr><td>Conflito</td><td>Versão atual do agregado.</td><td>Cliente recarrega e envia novo command ID, se ainda válido.</td></tr>
+              <tr><td>Indeterminado externo</td><td>Estado pendente + referência do provedor.</td><td>Reconciliação consulta o provedor; não duplica a solicitação.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Controle de concorrência</h3>
+        <ul>
+          <li>optimistic concurrency para agregados comuns, com versão esperada;</li>
+          <li>row lock/advisory lock ou serialização explícita em listing, custódia e saldo conforme teste;</li>
+          <li>unique constraints para chave idempotente, propriedade exclusiva e IDs externos;</li>
+          <li>timeouts curtos, ordem estável de locks e retry limitado para deadlock/serialization failure;</li>
+          <li>rate limit por conta, sessão, rota e risco sem usar IP como identidade única;</li>
+          <li>respostas não revelam existência de conta, segredo, regra antifraude ou dado de outro jogador.</li>
+        </ul>
+      </section>
+
+      <section id="conteudo">
+        <span class="section-kicker">11 · LiveOps controlável</span>
+        <h2>Conteúdo, parâmetros e rulesets</h2>
+        <div class="grid">
+          <article class="card recommended-card"><span class="state recommended">Configurável</span><h3>Conteúdo e calibração</h3><p>Espécies, inimigos, mapas, drops, receitas, curvas, chances, custos, textos, assets e parâmetros dentro de limites aprovados.</p></article>
+          <article class="card required-card"><span class="state required">Código</span><h3>Invariantes</h3><p>Propriedade única, atomicidade, limites de estado, autoridade, moedas, elegibilidade e ausência de duplicação.</p></article>
+        </div>
+        <h3>Pipeline de publicação</h3>
+        <div class="flow" aria-label="Publicação de conteúdo">
+          <div class="node"><strong>Editar</strong><span>schema e ownership</span></div>
+          <div class="node"><strong>Validar</strong><span>tipos, referências e limites</span></div>
+          <div class="node"><strong>Revisar</strong><span>diff humano e simulação</span></div>
+          <div class="node"><strong>Publicar</strong><span>versão imutável e assinatura</span></div>
+          <div class="node"><strong>Observar</strong><span>métricas, rollback e auditoria</span></div>
+        </div>
+        <ul>
+          <li>configuração publicada recebe ID, versão, autor, aprovador, instante, ambiente e hash;</li>
+          <li>referências quebradas, números fora de faixa e invariantes falham antes da publicação;</li>
+          <li>batalha, nascimento e operação econômica guardam a versão usada;</li>
+          <li>rollback cria nova publicação que restaura conteúdo anterior; não reescreve o passado;</li>
+          <li>feature flag altera exposição ou rota dentro de regras aprovadas; não cria direito secreto;</li>
+          <li>kill switch interrompe uma rota com falha preservando evidência e funções não afetadas.</li>
+        </ul>
+        <div class="callout open">
+          <strong>Ferramenta de conteúdo ainda aberta</strong>
+          <p>Schema, formato, editor, permissões, assinatura, promoção entre ambientes e estratégia de cache só fecham com o primeiro catálogo implementável e o fluxo real de Game Design/LiveOps.</p>
+        </div>
+      </section>
+
+      <section id="cliente">
+        <span class="section-kicker">12 · Apresentação 2D</span>
+        <h2>Cliente web, Phaser e pipeline de assets</h2>
+        <p>Phaser é o padrão recomendado para batalha, animação, efeitos, cenas e replay no navegador. Interfaces densas — conta, inventário, Forja, Marketplace, Codex e administração — permanecem em HTML/CSS acessível.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Responsabilidade</th><th>Cliente</th><th>Servidor</th></tr></thead>
+            <tbody>
+              <tr><td>Batalha</td><td>Reproduz timeline e efeitos.</td><td>Calcula ticks, alvos, ativações, dano e resultado.</td></tr>
+              <tr><td>Preview</td><td>Mostra estimativa e feedback imediato.</td><td>Confirma regra, custo e estado final.</td></tr>
+              <tr><td>Offline</td><td>Solicita sincronização e apresenta resumo.</td><td>Valida intervalo, progresso e recompensa.</td></tr>
+              <tr><td>Asset</td><td>Carrega manifesto, escala e fallback.</td><td>Autoriza catálogo e versão; não confia em asset ID do cliente.</td></tr>
+              <tr><td>Telemetria</td><td>UX, navegação, performance e erro visual.</td><td>Prova gameplay, economia, fraude e operação.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Constituição de pixel art</h3>
+        <ul>
+          <li>resolução-base, escala inteira e política para telas fracionárias;</li>
+          <li>perspectiva, orientação, direções, frames e proporções;</li>
+          <li>paleta, contraste, contorno, iluminação e acessibilidade visual;</li>
+          <li>pivôs, anchors, hitboxes visuais, atlas e nomenclatura;</li>
+          <li>manifesto com ID, versão, hash, origem, licença e estado de revisão;</li>
+          <li>exportação, compressão, orçamento de memória, preload e fallback;</li>
+          <li>PixelLab.ai como ferramenta de produção recomendada, com curadoria humana e arquivos-fonte preservados.</li>
+        </ul>
+        <div class="callout recommended">
+          <strong>Spike obrigatório antes do lock</strong>
+          <p>Validar Phaser com formação 1–2–1–2–1, sete contra sete, efeitos simultâneos, replay longo, 1×/2×, pixel snapping, dispositivos modestos, perda de contexto WebGL e fallback Canvas quando aplicável.</p>
+        </div>
+      </section>
+
+      <section id="seguranca">
+        <span class="section-kicker">13 · Defesa por desenho</span>
+        <h2>Segurança, identidade e privacidade</h2>
+        <div class="statement">Segurança não é um middleware no fim. É uma propriedade de cada fronteira que aceita intenção, altera estado, movimenta valor, publica conteúdo ou concede poder administrativo.</div>
+        <div class="grid three">
+          <article class="card required-card"><h3>Identidade</h3><p>Sessão curta, rotação/revogação, proteção contra fixação, MFA para administração e autorização por recurso.</p></article>
+          <article class="card required-card"><h3>Segredos</h3><p>Vault/KMS ou equivalente, acesso mínimo, rotação, inventário e nunca no cliente, repositório, log ou artefato.</p></article>
+          <article class="card required-card"><h3>Administração</h3><p>Contas separadas, step-up, aprovação para ações críticas, trilha imutável e kill switches limitados.</p></article>
+        </div>
+        <h3>Threat model mínimo</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Superfície</th><th>Ameaças prioritárias</th><th>Controles</th></tr></thead>
+            <tbody>
+              <tr><td>Conta e sessão</td><td>Credential stuffing, takeover, replay, enumeração.</td><td>Rate limit, MFA adaptativo/admin, detecção, revogação, resposta uniforme.</td></tr>
+              <tr><td>Gameplay</td><td>Cliente adulterado, speed hack, seed prediction, packet replay.</td><td>Autoridade do servidor, clock oficial, nonce, versão, replay e anomalias.</td></tr>
+              <tr><td>Economia</td><td>Duplicação, race, chargeback, wash trading, multiaccount.</td><td>Transação, idempotência, reconciliação, risco, limites e revisão.</td></tr>
+              <tr><td>Conteúdo/admin</td><td>Publicação maliciosa, privilégio excessivo, log apagado.</td><td>RBAC/ABAC, revisão, assinatura/hash, trilha separada e rollback.</td></tr>
+              <tr><td>Supply chain</td><td>Dependência comprometida, action mutável, segredo no build.</td><td>Pin, SBOM, scanner, provenance, OIDC e permissões mínimas.</td></tr>
+              <tr><td>Dados pessoais</td><td>Coleta excessiva, acesso indevido, retenção infinita.</td><td>Finalidade, minimização, classificação, retenção e direitos.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout required">
+          <strong>Baseline de verificação</strong>
+          <p>Usar OWASP ASVS 5.0 como catálogo de requisitos e evidências, com nível final definido pelo threat model. Citar controles pela versão; não afirmar conformidade antes de verificação independente do escopo real.</p>
+        </div>
+        <div class="callout open">
+          <strong>Pagamentos, KYC e cripto</strong>
+          <p>A arquitetura deve isolar provedores, dados e credenciais, mas não escolhe parceiro, custódia, jurisdição ou base legal. Ativação depende das decisões abertas na Economia e de validação jurídica, financeira, de segurança e privacidade.</p>
+        </div>
+      </section>
+
+      <section id="qualidade">
+        <span class="section-kicker">14 · Evidência antes de release</span>
+        <h2>Testes e qualidade</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Camada</th><th>O que prova</th><th>Obrigatório para</th></tr></thead>
+            <tbody>
+              <tr><td>Unitário puro</td><td>Fórmulas, estados, arredondamento, regras e erros.</td><td>Todo domínio.</td></tr>
+              <tr><td>Property-based / invariantes</td><td>Conservação, limites, unicidade e sequências imprevistas.</td><td>Game core, inventário, economia.</td></tr>
+              <tr><td>Golden / vetores</td><td>Determinismo entre versão, plataforma e refactor.</td><td>Combate, nascimento, preço, fee e crédito.</td></tr>
+              <tr><td>Integração com banco</td><td>Constraint, transação, lock, migração e concorrência real.</td><td>API mutável e workers.</td></tr>
+              <tr><td>Contrato</td><td>Compatibilidade de API, evento, schema e provedor.</td><td>Cliente, módulos e integrações.</td></tr>
+              <tr><td>End-to-end</td><td>Jornada e autorização pelo sistema implantado.</td><td>Fluxos críticos, poucos e estáveis.</td></tr>
+              <tr><td>Carga e soak</td><td>Capacidade, fila, pool, memória e degradação.</td><td>PvP, mercado, batch e lançamentos.</td></tr>
+              <tr><td>Segurança</td><td>Controles ASVS, dependências, segredos e abuso.</td><td>Release e mudança de trust boundary.</td></tr>
+              <tr><td>Recuperação</td><td>Restore, replay, failover e reconciliação.</td><td>Operação antes de produção financeira.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Gates de merge e release</h3>
+        <ul class="checklist">
+          <li>formatação, lint, tipos e testes rápidos passam em todo PR;</li>
+          <li>mudança de schema inclui migração, compatibilidade e plano de rollback;</li>
+          <li>mudança de regra inclui versão, vetores e impacto sobre replays antigos;</li>
+          <li>mudança econômica inclui invariantes, concorrência, idempotência e reconciliação;</li>
+          <li>mudança de segurança inclui threat model/diff de autorização e evidência ASVS;</li>
+          <li>produção só recebe artefato construído pelo pipeline, nunca workstation local;</li>
+          <li>falha conhecida aceita exige owner, prazo e risco registrado.</li>
+        </ul>
+      </section>
+
+      <section id="observabilidade">
+        <span class="section-kicker">15 · Operar com prova</span>
+        <h2>Observabilidade, auditoria e incidentes</h2>
+        <p>Logs, métricas e traces respondem “o sistema está saudável?”. Ledger, replay e trilha administrativa respondem “o que aconteceu e por quê?”. Uma categoria não substitui a outra.</p>
+        <div class="grid">
+          <article class="card recommended-card"><span class="state recommended">Envelope</span><h3>Correlação</h3><p><code>timestamp</code>, <code>service</code>, <code>environment</code>, <code>game_id</code>, <code>trace_id</code>, <code>request_id</code>, <code>actor_id</code> mascarado, evento, versão e resultado.</p></article>
+          <article class="card required-card"><span class="state required">Redação</span><h3>Dados proibidos</h3><p>Senha, token, segredo, seed antes da revelação, carteira completa, documento, payload KYC ou conteúdo pessoal desnecessário não entram no log.</p></article>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Sinal</th><th>Indicadores mínimos</th><th>Ação</th></tr></thead>
+            <tbody>
+              <tr><td>API</td><td>taxa, latência p50/p95/p99, erro, timeout, saturação.</td><td>Alertar por SLO e orçamento de erro.</td></tr>
+              <tr><td>Banco</td><td>pool, lock, deadlock, replica lag, WAL, tamanho, query lenta.</td><td>Diagnóstico e capacidade antes de cache.</td></tr>
+              <tr><td>Game Core</td><td>duração de simulação, divergência de hash, replay inválido.</td><td>Bloquear ruleset/versão suspeita.</td></tr>
+              <tr><td>Economia</td><td>saldo divergente, idempotency conflict, listing race, reconciliação.</td><td>Kill switch por rota e preservação de evidência.</td></tr>
+              <tr><td>Workers</td><td>lag, retry, dead letter, idade do evento.</td><td>Retomar com deduplicação e owner.</td></tr>
+              <tr><td>Cliente</td><td>crash, FPS, memória, carregamento, abandono e erro de asset.</td><td>Corrigir UX/performance sem tratar como verdade de reward.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">OpenTelemetry é a direção recomendada para traces e métricas vendor-neutral. Em julho de 2026, traces e métricas do SDK JavaScript são estáveis, enquanto logs e instrumentação de browser exigem avaliação do status antes do lock.</p>
+        <h3>Incidente</h3>
+        <div class="flow four" aria-label="Ciclo de incidente">
+          <div class="node"><strong>Conter</strong><span>kill switch e acesso mínimo</span></div>
+          <div class="node"><strong>Preservar</strong><span>logs, snapshot e cadeia de evidência</span></div>
+          <div class="node"><strong>Recuperar</strong><span>rollback, compensação e reconciliação</span></div>
+          <div class="node"><strong>Aprender</strong><span>postmortem, ação e verificação</span></div>
+        </div>
+      </section>
+
+      <section id="entrega">
+        <span class="section-kicker">16 · Software confiável</span>
+        <h2>CI/CD, ambientes e releases</h2>
+        <div class="flow six" aria-label="Pipeline de entrega">
+          <div class="node"><strong>PR</strong><span>review e escopo</span></div>
+          <div class="node"><strong>Verificar</strong><span>types, tests, security</span></div>
+          <div class="node"><strong>Build</strong><span>toolchain e lock imutáveis</span></div>
+          <div class="node"><strong>Atestar</strong><span>hash, SBOM e provenance</span></div>
+          <div class="node"><strong>Promover</strong><span>mesmo artefato entre ambientes</span></div>
+          <div class="node"><strong>Observar</strong><span>smoke, canary e rollback</span></div>
+        </div>
+        <h3>Controles do pipeline</h3>
+        <ul>
+          <li>branch protegida, revisão proporcional ao risco e ownership de código crítico;</li>
+          <li>permissões explícitas e mínimas para workflow/token;</li>
+          <li>actions externas fixadas por commit SHA completo e revisado;</li>
+          <li>credencial de cloud preferencialmente curta via OIDC, condicionada a repo, branch/workflow e ambiente;</li>
+          <li>segredos nunca expostos a build de fork ou etapa que não precisa deles;</li>
+          <li>artefato recebe hash, commit, toolchain, dependências e configuração de build;</li>
+          <li>deploy usa artefato já verificado; não recompila diferente em produção;</li>
+          <li>migração e aplicação respeitam compatibilidade durante rollout/rollback;</li>
+          <li>mudança crítica registra aprovador, instante, ambiente e resultado do smoke test.</li>
+        </ul>
+        <div class="callout open">
+          <strong>Topologia de ambientes ainda aberta</strong>
+          <p>Local, preview, integração, staging e produção são necessários conceitualmente; contas, regiões, dados sintéticos, promoção, canary e aprovação final dependem da cloud e do modelo operacional escolhidos.</p>
+        </div>
+      </section>
+
+      <section id="opensource">
+        <span class="section-kicker">17 · Dependências controladas</span>
+        <h2>Open source, licenças e supply chain</h2>
+        <p>Open source acelera framework, UI, validação, testes e tooling. Não transfere a autoridade do ledger, da propriedade, do ruleset ou da liquidação para uma caixa-preta sem domínio interno e capacidade de substituição.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Antes de adotar</th><th>Evidência mínima</th></tr></thead>
+            <tbody>
+              <tr><td>Função</td><td>Problema resolvido, alternativas e custo de implementar/manter.</td></tr>
+              <tr><td>Saúde</td><td>Release recente, manutenção, bus factor, issues e política de segurança.</td></tr>
+              <tr><td>Segurança</td><td>Histórico, advisories, transitive deps, permissões e superfície.</td></tr>
+              <tr><td>Licença</td><td>SPDX ID, copyright, notice, compatibilidade e revisão quando necessário.</td></tr>
+              <tr><td>Operação</td><td>Tamanho, performance, observabilidade, suporte e plano de remoção.</td></tr>
+              <tr><td>Integridade</td><td>Versão fixa, hash/assinatura quando disponível, origem e SBOM.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <ul>
+          <li>repositório sem licença não concede permissão automática de incorporação;</li>
+          <li>código e assets possuem licenças e cadeias de proveniência separadas;</li>
+          <li>MIT, BSD e Apache-2.0 tendem a ser simples, mas não dispensam notices/obrigações;</li>
+          <li>MPL, GPL, AGPL e licenças específicas exigem análise do uso e distribuição reais;</li>
+          <li>SBOM em formato aberto, como SPDX, acompanha artefatos relevantes;</li>
+          <li>scanner informa risco; aceite, mitigação e prazo continuam decisões humanas;</li>
+          <li>proveniência de build segue evolução incremental alinhada ao SLSA, sem alegar nível não auditado.</li>
+        </ul>
+        <div class="callout required">
+          <strong>Não é parecer jurídico</strong>
+          <p>Esta seção organiza o processo técnico. Compatibilidade de licença, obrigação de distribuição, marca, patente e direitos de asset precisam de revisão adequada ao caso concreto.</p>
+        </div>
+      </section>
+
+      <section id="evolucao">
+        <span class="section-kicker">18 · Complexidade conquistada</span>
+        <h2>Quando evoluir a arquitetura</h2>
+        <p>Go, Rust, Redis, broker, busca, warehouse, serviços separados ou wrapper desktop podem entrar. Nenhum entra para parecer sofisticado.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Candidato</th><th>Sinal legítimo</th><th>Prova antes da adoção</th></tr></thead>
+            <tbody>
+              <tr><td>Cache</td><td>Leitura repetida cara domina latência/custo.</td><td>Perfil, hit ratio previsto, invalidation e fallback sem cache.</td></tr>
+              <tr><td>Fila/broker</td><td>Trabalho assíncrono exige durabilidade, backpressure ou fan-out.</td><td>Semântica de entrega, deduplicação, DLQ, replay e operação.</td></tr>
+              <tr><td>Serviço separado</td><td>Escala, isolamento de risco ou ownership realmente independente.</td><td>Contrato, SLO, deploy, trace, dados e custo de falha distribuída.</td></tr>
+              <tr><td>Go/Rust</td><td>Hotspot medido não resolvido com otimização razoável em TypeScript.</td><td>Benchmark representativo, FFI/contrato, observabilidade e equipe.</td></tr>
+              <tr><td>Busca dedicada</td><td>PostgreSQL não atende consulta/latência após índice e modelagem.</td><td>Sincronização, consistência, rebuild e custo.</td></tr>
+              <tr><td>Desktop wrapper</td><td>Steam, presença persistente ou integração nativa geram valor real.</td><td>Atualização, assinatura, sandbox, tamanho, segurança e suporte.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Critério de exceção</h3>
+        <ol>
+          <li>problema real e métrica de baseline;</li>
+          <li>tentativa ou análise da solução dentro da stack principal;</li>
+          <li>ADR com opções, custo total, risco, segurança e reversibilidade;</li>
+          <li>owner capaz de operar e responder por incidentes;</li>
+          <li>spike/benchmark com carga representativa;</li>
+          <li>plano de migração, coexistência, observabilidade e rollback;</li>
+          <li>decisão aprovada antes de se tornar dependência crítica.</li>
+        </ol>
+      </section>
+
+      <section id="backlog">
+        <span class="section-kicker">19 · O que falta decidir</span>
+        <h2>Backlog real de engenharia</h2>
+        <p>Estes itens fecham detalhes técnicos ainda não aprovados. Eles não reabrem decisões de gameplay, economia ou autoridade já definidas.</p>
+        <div class="decision-list" role="list">
+          <div class="decision-row" role="listitem">
+            <h4>Baseline de runtime e toolchain</h4>
+            <div><p><span class="label">Por que aberto:</span> TypeScript/Node são direção, mas versões, package manager, compiler, bundler e política de upgrade não foram fixados. <span class="label">Impacto:</span> builds e suporte podem divergir.</p><p><span class="label">Fecha com:</span> ADR, matriz de suporte, lockfile, arquivos de versão, CI e calendário de atualização.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Framework web e composição da UI</h4>
+            <div><p><span class="label">Por que aberto:</span> HTML/CSS/TypeScript são padrão, mas framework, roteamento, SSR e integração com Phaser não. <span class="label">Impacto:</span> arquitetura de frontend e contratação dependem disso.</p><p><span class="label">Fecha com:</span> protótipo das telas densas, acessibilidade, bundle, estado e boundary Phaser/DOM.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Validação do Phaser</h4>
+            <div><p><span class="label">Por que aberto:</span> é recomendado, mas não foi provado com o combate real e devices-alvo. <span class="label">Impacto:</span> risco de performance e retrabalho visual.</p><p><span class="label">Fecha com:</span> spike 7×7, replay, 1×/2×, atlas real, métricas e critérios de aceite.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Cloud, regiões e topologia</h4>
+            <div><p><span class="label">Por que aberto:</span> nenhum provedor, região ou modelo de compute/storage foi aprovado. <span class="label">Impacto:</span> custo, latência, segurança e recuperação ficam indefinidos.</p><p><span class="label">Fecha com:</span> requisitos, orçamento, países, threat model, benchmark, diagrama e ADR de fornecedor.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Autenticação e recuperação de conta</h4>
+            <div><p><span class="label">Por que aberto:</span> conta global é obrigatória, mas métodos, MFA, social login e recuperação não. <span class="label">Impacto:</span> takeover e suporte podem comprometer ativos.</p><p><span class="label">Fecha com:</span> threat model, jornadas, fornecedor/build, sessão, MFA, recovery e políticas anti-enumeração.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Modelo físico do PostgreSQL</h4>
+            <div><p><span class="label">Por que aberto:</span> banco é recomendado, mas schemas, tenancy, IDs, particionamento e conexão não. <span class="label">Impacto:</span> migração e isolamento multi-game podem ficar caros.</p><p><span class="label">Fecha com:</span> primeiro modelo de dados, volumes, queries críticas, constraints, benchmark e ADR.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Precisão numérica e arredondamento</h4>
+            <div><p><span class="label">Por que aberto:</span> representação exata é obrigatória, mas escalas de Gold/Cash/Saldo e fórmulas não foram fechadas. <span class="label">Impacto:</span> cliente, servidor, ledger e relatórios podem divergir.</p><p><span class="label">Fecha com:</span> unidade mínima, tipos, escalas, pontos de arredondamento, resíduos e vetores oficiais.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>PRNG e formato de replay</h4>
+            <div><p><span class="label">Por que aberto:</span> determinismo é obrigatório; algoritmo, serialização e retenção não. <span class="label">Impacto:</span> compatibilidade e auditoria podem quebrar.</p><p><span class="label">Fecha com:</span> algoritmo versionado, vetores, schema canônico, hash, compressão, storage e política de migração.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Conteúdo e painel administrativo</h4>
+            <div><p><span class="label">Por que aberto:</span> publicação versionada é necessária, mas ferramenta, permissões e workflow não. <span class="label">Impacto:</span> LiveOps pode depender de deploy manual arriscado.</p><p><span class="label">Fecha com:</span> schemas, papéis, four-eyes, staging, diff, simulação, assinatura, rollback e trilha.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Cache, filas e tarefas agendadas</h4>
+            <div><p><span class="label">Por que aberto:</span> a necessidade existe conceitualmente, não o produto ou a semântica. <span class="label">Impacto:</span> adoção precoce cria operação; tardia cria gargalo.</p><p><span class="label">Fecha com:</span> carga medida, casos, guarantees, dedupe, ordering, DLQ, scheduler e ADR.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Observabilidade e SLOs</h4>
+            <div><p><span class="label">Por que aberto:</span> sinais são obrigatórios, mas fornecedor, retenção, sampling, SLO e plantão não. <span class="label">Impacto:</span> incidentes podem ser invisíveis ou caros.</p><p><span class="label">Fecha com:</span> catálogo de serviços, SLIs/SLOs, alertas acionáveis, ownership, retenção, custo e runbooks.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Backup, desastre e continuidade</h4>
+            <div><p><span class="label">Por que aberto:</span> restauração é exigida, mas RPO, RTO, região e testes não. <span class="label">Impacto:</span> perda de ledger, ativo ou conta pode ser irrecuperável.</p><p><span class="label">Fecha com:</span> classificação de dados, RPO/RTO, PITR, cópia isolada, restore drill e plano de comunicação.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Retenção e localização de dados</h4>
+            <div><p><span class="label">Por que aberto:</span> GDD exige finalidade e retenção, mas a matriz campo/dado não existe. <span class="label">Impacto:</span> coleta excessiva ou descarte precoce prejudica direitos e auditoria.</p><p><span class="label">Fecha com:</span> inventário, classificação, finalidade, base, região, retenção, acesso, deleção e exceções.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Integrações financeiras e KYC</h4>
+            <div><p><span class="label">Por que aberto:</span> interfaces são necessárias, mas parceiros, países, custódia, webhooks e SLAs não foram aprovados. <span class="label">Impacto:</span> saque e compra não podem operar com segurança.</p><p><span class="label">Fecha com:</span> decisões da Economia, due diligence, threat model, contrato, sandbox, reconciliação e kill switches.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Política de vulnerabilidades e supply chain</h4>
+            <div><p><span class="label">Por que aberto:</span> scanning/SBOM são direção, mas severidade, SLA, exceção e assinatura não. <span class="label">Impacto:</span> risco conhecido pode permanecer sem owner.</p><p><span class="label">Fecha com:</span> fontes, scoring contextual, prazos, aprovação de exceção, divulgação, provenance e verificação.</p></div>
+          </div>
+          <div class="decision-row" role="listitem">
+            <h4>Distribuição desktop e mobile</h4>
+            <div><p><span class="label">Por que aberto:</span> navegador é inicial; Steam, wrapper e lojas não foram aprovados. <span class="label">Impacto:</span> decisões prematuras ampliam superfície e pipeline.</p><p><span class="label">Fecha com:</span> necessidade de produto, canais, requisitos nativos, segurança, atualização, suporte e custo.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rastreabilidade">
+        <span class="section-kicker">20 · Auditoria editorial</span>
+        <h2>Mapa de autoridade e referências</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Tema nesta página</th><th>Fonte</th><th>Obrigação preservada</th></tr></thead>
+            <tbody>
+              <tr><td>Servidor autoritativo</td><td>GDD P4–P22; fonte técnica §6</td><td>Cliente nunca confirma resultado, valor, estado ou ranking.</td></tr>
+              <tr><td>Determinismo e replay</td><td>GDD P8 e P19; fonte técnica §4.2/6.1</td><td>Seed/ruleset/versão reproduzem resultado.</td></tr>
+              <tr><td>Estados, alocação e propriedade</td><td>GDD P4, P13–P18</td><td>Exclusividade, transição válida, proveniência e bloqueio.</td></tr>
+              <tr><td>Ledger e liquidação</td><td>GDD P21; Economia 3–6 e 12</td><td>Moedas separadas, atomicidade, fee, idempotência e compensação.</td></tr>
+              <tr><td>Alpha/Beta e crédito</td><td>GDD P22; Economia 11</td><td>Ledgers separados, snapshot, multiplicadores e exclusões.</td></tr>
+              <tr><td>Telemetria e privacidade</td><td>GDD P22; Economia 13–14</td><td>Servidor como verdade, finalidade, minimização e retenção.</td></tr>
+              <tr><td>Stack e módulos</td><td>Fonte técnica §§2–5 e 12</td><td>TypeScript padrão, core puro, Node/Phaser/PostgreSQL recomendados.</td></tr>
+              <tr><td>Pixel art e assets</td><td>Fonte técnica §8</td><td>Constituição visual, pipeline e revisão humana.</td></tr>
+              <tr><td>Qualidade/operação</td><td>Fonte técnica §10</td><td>Testes, logs, transações, segredos e ações auditadas.</td></tr>
+              <tr><td>Evolução</td><td>Fonte técnica §11</td><td>Nova tecnologia exige problema medido e justificativa.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Documentação primária verificada</h3>
+        <div class="grid">
+          <article class="card">
+            <h4>Linguagem, runtime e cliente</h4>
+            <ul>
+              <li><a href="https://www.typescriptlang.org/tsconfig/strict.html">TypeScript · `strict`</a></li>
+              <li><a href="https://nodejs.org/en/about/previous-releases">Node.js · releases e LTS</a></li>
+              <li><a href="https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule">Node.js · calendário a partir da linha 27</a></li>
+              <li><a href="https://docs.phaser.io/">Phaser · documentação oficial</a></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h4>Dados e segurança</h4>
+            <ul>
+              <li><a href="https://www.postgresql.org/docs/current/datatype-numeric.html">PostgreSQL · tipos numéricos</a></li>
+              <li><a href="https://www.postgresql.org/docs/current/ddl-constraints.html">PostgreSQL · constraints</a></li>
+              <li><a href="https://www.postgresql.org/docs/current/transaction-iso.html">PostgreSQL · isolamento</a></li>
+              <li><a href="https://owasp.org/www-project-application-security-verification-standard/">OWASP ASVS 5.0</a></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h4>Operação e supply chain</h4>
+            <ul>
+              <li><a href="https://opentelemetry.io/docs/languages/js/">OpenTelemetry JavaScript</a></li>
+              <li><a href="https://spdx.dev/">SPDX</a></li>
+              <li><a href="https://slsa.dev/spec/v1.2/">SLSA 1.2</a></li>
+              <li><a href="https://docs.github.com/en/code-security/tutorials/secure-your-organization/protect-against-threats">GitHub Actions · hardening</a></li>
+            </ul>
+          </article>
+          <article class="card">
+            <h4>Credenciais de deploy</h4>
+            <ul>
+              <li><a href="https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-cloud-providers">GitHub Actions · OIDC</a></li>
+            </ul>
+            <p class="small">Referências externas verificam capacidade e práticas atuais; não escolhem fornecedor nem substituem threat model.</p>
+          </article>
+        </div>
+        <details>
+          <summary>Correções feitas na fonte técnica original</summary>
+          <div>
+            <ul>
+              <li>`Ganhos` foi substituído por `Saldo`;</li>
+              <li>guildas foram removidas porque o GDD não aprovou esse sistema;</li>
+              <li>Phaser e PostgreSQL foram separados como recomendações, não regras de produto;</li>
+              <li>“próprio” passou a significar domínio/invariantes controlados, sem proibir biblioteca ou provedor auditado;</li>
+              <li>licenças deixaram de receber conclusão genérica e passaram a exigir análise do uso real;</li>
+              <li>Electron/Tauri ficaram no backlog, sem rota de distribuição prometida.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section id="glossario">
+        <span class="section-kicker">21 · Vocabulário</span>
+        <h2>Glossário</h2>
+        <dl class="glossary">
+          <div class="term"><dt>ADR</dt><dd>Registro curto de uma decisão arquitetural, alternativas, motivos, consequências e status.</dd></div>
+          <div class="term"><dt>Agregado</dt><dd>Conjunto de estado alterado sob uma fronteira consistente e uma versão de concorrência.</dd></div>
+          <div class="term"><dt>ASVS</dt><dd>Padrão OWASP de requisitos verificáveis de segurança de aplicações.</dd></div>
+          <div class="term"><dt>Atomicidade</dt><dd>Conjunto de efeitos que confirma inteiro ou não confirma.</dd></div>
+          <div class="term"><dt>Backpressure</dt><dd>Controle que impede produtores de sobrecarregarem consumidores ou filas.</dd></div>
+          <div class="term"><dt>Compensação</dt><dd>Novo evento que corrige efeito anterior preservando o histórico.</dd></div>
+          <div class="term"><dt>Determinismo</dt><dd>Mesmas entradas e versões produzem o mesmo resultado observável.</dd></div>
+          <div class="term"><dt>Idempotência</dt><dd>Repetir a mesma intenção identificada não repete seu efeito.</dd></div>
+          <div class="term"><dt>Ledger</dt><dd>Registro econômico que permite explicar origem, débito, crédito, fee e saldo.</dd></div>
+          <div class="term"><dt>Monólito modular</dt><dd>Deploy único com domínios internos isolados por contratos e dependências controladas.</dd></div>
+          <div class="term"><dt>Outbox</dt><dd>Evento gravado na mesma transação do domínio e publicado depois com retry seguro.</dd></div>
+          <div class="term"><dt>PRNG</dt><dd>Gerador pseudoaleatório; no game core precisa ser determinístico e versionado.</dd></div>
+          <div class="term"><dt>Projeção</dt><dd>Visão derivada para leitura rápida, reconstruível a partir da fonte de verdade.</dd></div>
+          <div class="term"><dt>RPO</dt><dd>Quantidade máxima de dados que a recuperação aceita perder.</dd></div>
+          <div class="term"><dt>RTO</dt><dd>Tempo-alvo para restaurar uma capacidade depois de falha.</dd></div>
+          <div class="term"><dt>Ruleset</dt><dd>Versão imutável das regras e parâmetros aplicados a uma operação ou simulação.</dd></div>
+          <div class="term"><dt>SBOM</dt><dd>Inventário legível por máquina dos componentes presentes em um artefato.</dd></div>
+          <div class="term"><dt>Saldo</dt><dd>Crédito global originado por venda em Cash, conforme GDD/Economia; não é o termo histórico “Ganhos”.</dd></div>
+          <div class="term"><dt>SLI/SLO</dt><dd>Indicador mensurável de serviço e objetivo associado para operação.</dd></div>
+          <div class="term"><dt>Trust boundary</dt><dd>Fronteira em que dados ou autoridade mudam de nível de confiança.</dd></div>
+        </dl>
+      </section>
+    </main>
+  </div>
+
+  <footer class="shell footer">
+    Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0 · alinhadas ao GDD v17 e à Economia v1.0 · 28 de julho de 2026
+  </footer>
+</body>
+</html>

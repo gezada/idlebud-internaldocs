@@ -11,6 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "gdd-source" / "index.html"
 ECONOMY_SOURCE = ROOT / "economy-source" / "index.html"
+TECHNOLOGY_SOURCE = ROOT / "technology-source" / "index.html"
 
 
 def main() -> None:
@@ -20,6 +21,7 @@ def main() -> None:
     site = Path(sys.argv[1])
     gdd = site / "gdd" / "index.html"
     economy = site / "economy" / "index.html"
+    technology = site / "technology-guidelines" / "index.html"
     html = SOURCE.read_text(encoding="utf-8")
     for expected in [
         "Game Design Document · v17",
@@ -45,6 +47,20 @@ def main() -> None:
 
     economy.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(ECONOMY_SOURCE, economy)
+
+    technology_html = TECHNOLOGY_SOURCE.read_text(encoding="utf-8")
+    for expected in [
+        "<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>",
+        "Tecnologia simples, autoritativa e reutilizável",
+        "Servidor autoritativo",
+        "Backlog real de engenharia",
+        "Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0",
+    ]:
+        if expected not in technology_html:
+            raise RuntimeError(f"Fonte canônica de Tecnologia inválida: {expected}")
+
+    technology.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(TECHNOLOGY_SOURCE, technology)
 
     from build_docs_portal import main as build_portal
 
