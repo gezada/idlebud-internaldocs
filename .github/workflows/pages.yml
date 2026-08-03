@@ -63,7 +63,8 @@ jobs:
           assert '<a class="internal-docs-home"' in gdd
 
           assert 'Available · v17' in portal
-          assert portal.count('Available · v1.0') == 3
+          assert portal.count('Available · v1.0') == 2
+          assert portal.count('Available · v1.1') == 1
           assert portal.count('>TBD<') == 0
           assert './economy/' in portal
           assert './technology-guidelines/' in portal
@@ -108,15 +109,19 @@ jobs:
 
           required_technology = [
               '<html lang="pt-BR">',
-              '<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>',
+              '<title>Idle Bud — Diretrizes de Tecnologia v1.1</title>',
               'Tecnologia simples, autoritativa e reutilizável',
+              'Monorepo, aplicações e pacotes',
+              'apps/{web, server} · packages/{game-core, contracts, catalog-schema, tooling}',
+              'pnpm workspaces',
+              'Sem <code>shared</code> genérico',
               'Servidor autoritativo',
               'Game Core, RNG e determinismo',
               'Ledger, inventário e economia',
               'OWASP ASVS 5.0',
               'Backlog real de engenharia',
               'Mapa de autoridade e referências',
-              'Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0',
+              'Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.1',
           ]
           for item in required_technology:
               assert item in technology, f'Conteúdo obrigatório ausente em Tecnologia: {item}'
@@ -134,7 +139,7 @@ jobs:
           assert len(technology_ids) == len(set(technology_ids))
           technology_targets = re.findall(r'href=["\']#([^"\']+)["\']', technology)
           assert set(technology_targets) <= set(technology_ids)
-          assert technology.count('<section id=') == 21
+          assert technology.count('<section id=') == 22
           assert technology.count('class="decision-row"') == 16
           assert technology.count('Por que aberto:') == 16
           assert technology.count('Fecha com:') == 16

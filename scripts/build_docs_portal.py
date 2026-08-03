@@ -120,9 +120,9 @@ DOCS = [
     {
         "title": "Technology Guidelines",
         "label": "Technology Guidelines",
-        "description": "Official engineering reference: architecture, server authority, data, security, quality, operations and technical backlog.",
+        "description": "Official engineering reference: monorepo, modular architecture, server authority, data, security, quality and operations.",
         "href": "./technology-guidelines/",
-        "status": "Available · v1.0",
+        "status": "Available · v1.1",
         "live": True,
         "icon": "T",
     },
@@ -391,8 +391,10 @@ def main() -> None:
 
     technology = (site / "technology-guidelines" / "index.html").read_text(encoding="utf-8")
     for phrase in [
-        "<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>",
+        "<title>Idle Bud — Diretrizes de Tecnologia v1.1</title>",
         "Tecnologia simples, autoritativa e reutilizável",
+        "Monorepo, aplicações e pacotes",
+        "pnpm workspaces",
         "Game Core, RNG e determinismo",
         "Ledger, inventário e economia",
         "Backlog real de engenharia",

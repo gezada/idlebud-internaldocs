@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <meta name="description" content="Diretrizes oficiais de tecnologia e engenharia da Idle Lovers para o Idle Bud e a plataforma multi-game." />
-  <title>Idle Bud — Diretrizes de Tecnologia v1.0</title>
+  <title>Idle Bud — Diretrizes de Tecnologia v1.1</title>
   <style>
     :root {
       --bg: #07100b;
@@ -413,15 +413,16 @@
     </div>
     <div class="hero">
       <div class="shell">
-        <span class="eyebrow">Tecnologia e Engenharia · referência oficial · v1.0</span>
+        <span class="eyebrow">Tecnologia e Engenharia · referência oficial · v1.1</span>
         <h1>Tecnologia simples, autoritativa e reutilizável</h1>
         <p class="lead">Arquitetura, stack, regras de engenharia, segurança e operação para construir o Idle Bud e a plataforma multi-game da Idle Lovers sem sacrificar velocidade, rastreabilidade ou confiança.</p>
         <div class="meta" aria-label="Metadados do documento">
           <span class="chip">Escopo: Idle Lovers + Idle Bud</span>
           <span class="chip">TypeScript como padrão</span>
           <span class="chip">Servidor autoritativo</span>
+          <span class="chip">Monorepo com pnpm</span>
           <span class="chip">Arquitetura multi-game</span>
-          <span class="chip">Atualizado em 28 jul. 2026</span>
+          <span class="chip">Atualizado em 3 ago. 2026</span>
         </div>
       </div>
     </div>
@@ -435,6 +436,7 @@
         <li><a href="#principios">Princípios e limites</a></li>
         <li><a href="#arquitetura">Arquitetura alvo</a></li>
         <li><a href="#stack">Stack padrão</a></li>
+        <li><a href="#monorepo">Monorepo e organização</a></li>
         <li><a href="#modulos">Módulos e contratos</a></li>
         <li><a href="#autoridade-servidor">Autoridade do servidor</a></li>
         <li><a href="#determinismo">Game Core e determinismo</a></li>
@@ -497,7 +499,7 @@
       <section id="arquitetura">
         <span class="section-kicker">03 · Forma inicial</span>
         <h2>Arquitetura alvo</h2>
-        <p>O ponto de partida é um <strong>monólito modular implantável</strong>: uma unidade operacional pequena, com fronteiras internas rigorosas. “Monólito” descreve o deploy inicial; não autoriza acoplamento irrestrito.</p>
+        <p>O ponto de partida combina duas decisões complementares: <strong>monorepo</strong> para organizar código, ferramentas e mudanças; <strong>monólito modular implantável</strong> para executar o backend como uma unidade operacional pequena, com fronteiras internas rigorosas. Repositório e topologia de runtime são eixos diferentes: “monorepo” não significa deploy único de tudo, e “monólito” não autoriza acoplamento irrestrito.</p>
         <div class="flow" aria-label="Fluxo principal da arquitetura">
           <div class="node"><strong>Web + Phaser</strong><span>apresentação e intenção</span></div>
           <div class="node"><strong>API de comandos</strong><span>identidade, autorização e validação</span></div>
@@ -508,6 +510,7 @@
         <div class="grid three">
           <article class="card required-card"><span class="state required">Obrigatório</span><h3>Sincronia no núcleo</h3><p>Saldo, propriedade, listing, custódia e conclusão de operação crítica fecham numa única fronteira transacional.</p></article>
           <article class="card recommended-card"><span class="state recommended">Padrão</span><h3>Assíncrono na borda</h3><p>E-mail, analytics, indexação, notificações e integrações reagem a eventos persistidos por outbox.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Organização</span><h3>Um workspace, limites explícitos</h3><p>Cliente, servidor e pacotes reutilizáveis vivem juntos, mas dependem apenas de contratos e exports públicos permitidos.</p></article>
           <article class="card open-card"><span class="state open">Aberto</span><h3>Infraestrutura física</h3><p>Cloud, regiões, containers, CDN, object storage e topologia final ainda não foram escolhidos.</p></article>
         </div>
         <div class="callout required">
@@ -527,6 +530,7 @@
               <tr><td>Jogo 2D</td><td>Phaser</td><td><span class="state recommended">Recomendado</span></td><td>Adotar após spike com batalhas, pixel art, replays e dispositivos-alvo.</td></tr>
               <tr><td>Backend</td><td>Node.js + TypeScript</td><td><span class="state recommended">Recomendado</span></td><td>Usar linha LTS suportada; versão exata fixada por lock/toolchain.</td></tr>
               <tr><td>Game Core</td><td>TypeScript puro</td><td><span class="state required">Obrigatório</span></td><td>Sem dependência de navegador, Phaser, rede ou banco.</td></tr>
+              <tr><td>Workspace</td><td>pnpm workspaces</td><td><span class="state required">Padrão aprovado</span></td><td>Um lockfile imutável, dependências declaradas por pacote e instalação reproduzível.</td></tr>
               <tr><td>Banco transacional</td><td>PostgreSQL</td><td><span class="state recommended">Recomendado</span></td><td>Constraints, transações, migrações, backup e restauração testados.</td></tr>
               <tr><td>Cache e filas</td><td>Nenhum por padrão</td><td><span class="state hypothesis">Sob demanda</span></td><td>Redis, broker ou serviço equivalente só após gargalo/semântica medidos.</td></tr>
               <tr><td>Observabilidade</td><td>Logs estruturados + métricas + traces</td><td><span class="state required">Obrigatório</span></td><td>Interface vendor-neutral; fornecedor continua aberto.</td></tr>
@@ -541,8 +545,42 @@
         </div>
       </section>
 
+      <section id="monorepo">
+        <span class="section-kicker">05 · Organização física</span>
+        <h2>Monorepo, aplicações e pacotes</h2>
+        <div class="statement"><strong>Decisão aprovada.</strong> O produto nasce em um monorepo privado da Idle Lovers, administrado por pnpm workspaces. O portal público <code>idlebud-internaldocs</code> permanece em repositório separado por possuir visibilidade, finalidade e ciclo de publicação próprios.</div>
+        <p>O monorepo contém somente aplicações implantáveis e pacotes com fronteira real. Colocar código no mesmo repositório não concede permissão de importação, não transforma módulo em serviço e não obriga aplicações diferentes a compartilhar o mesmo deploy.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Caminho inicial</th><th>Responsabilidade</th><th>Limite</th></tr></thead>
+            <tbody>
+              <tr><td><code>apps/web</code></td><td>Shell web, UI HTML/CSS, Phaser, apresentação, intenção e ferramentas administrativas autorizadas.</td><td>Não confirma gameplay, propriedade, saldo, ranking, drop ou aleatoriedade de valor.</td></tr>
+              <tr><td><code>apps/server</code></td><td>API de comandos, módulos de domínio, persistência, outbox, workers, migrações e entrypoints operacionais.</td><td>Nasce como backend modular único; não se divide em serviços sem evidência e ADR.</td></tr>
+              <tr><td><code>packages/game-core</code></td><td>Simulação pura, fórmulas, ticks, targeting, estados e PRNG determinístico versionado.</td><td>Não acessa UI, Phaser, rede, banco, arquivo, estado global nem relógio implícito.</td></tr>
+              <tr><td><code>packages/contracts</code></td><td>Schemas runtime, DTOs, comandos, resultados, erros e eventos deliberadamente públicos.</td><td>Não exporta entidades de persistência, autorização, antifraude ou implementação interna.</td></tr>
+              <tr><td><code>packages/catalog-schema</code></td><td>Formato, tipos, referências, limites e validação estrutural de conteúdo.</td><td>Não torna público o catálogo autoritativo nem mistura schema com publicação LiveOps.</td></tr>
+              <tr><td><code>packages/tooling</code></td><td>Configurações compartilhadas de TypeScript, lint, testes e build.</td><td>Não contém regra de produto ou domínio.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h3>Forma inicial do workspace</h3>
+        <div class="formula">apps/{web, server} · packages/{game-core, contracts, catalog-schema, tooling}</div>
+        <div class="grid">
+          <article class="card required-card"><span class="state required">Obrigatório</span><h3>Sem <code>shared</code> genérico</h3><p>Código só sobe para pacote quando possui responsabilidade, owner, API pública e consumidor real. Utilitário local permanece junto do módulo que o possui.</p></article>
+          <article class="card required-card"><span class="state required">Obrigatório</span><h3>Exports controlados</h3><p>Cada pacote declara sua superfície pública. Deep imports, ciclos e acesso do cliente a internos do servidor falham em lint, tipos ou build.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Inicial</span><h3>Admin dentro do produto</h3><p>UI administrativa começa como área protegida de <code>apps/web</code>; comandos e autorização pertencem ao módulo <code>admin</code> do servidor.</p></article>
+          <article class="card recommended-card"><span class="state recommended">Inicial</span><h3>Workers no servidor</h3><p>Workers podem ter processo ou entrypoint próprio, mas usam o mesmo código, artefato e release do backend até existir motivo operacional para extração.</p></article>
+        </div>
+        <h3>Plataforma global e Idle Bud</h3>
+        <p>O repositório representa a Idle Lovers, mas implementa apenas necessidades concretas do Idle Bud. Conta e Cash permanecem globais; Gold, campanha e regras de gameplay permanecem locais. Módulos e registros carregam <code>game_id</code>, <code>environment</code>, <code>season_id</code> e <code>ruleset_version</code> onde aplicável, sem criar abstrações para jogos hipotéticos.</p>
+        <div class="callout required">
+          <strong>Compartilhar código não compartilha autoridade</strong>
+          <p>O cliente pode consumir schemas, respostas e lógica de apresentação ou preview expressamente pública. Resultado oficial sempre é validado e persistido pelo servidor; domínio interno, regras sensíveis e catálogo privado nunca entram no bundle do navegador.</p>
+        </div>
+      </section>
+
       <section id="modulos">
-        <span class="section-kicker">05 · Fronteiras internas</span>
+        <span class="section-kicker">06 · Fronteiras internas</span>
         <h2>Módulos e contratos</h2>
         <div class="table-wrap">
           <table>
@@ -563,11 +601,11 @@
         </div>
         <h3>Direção das dependências</h3>
         <div class="formula">apresentação → aplicação → domínio ← adaptadores</div>
-        <p>Domínio expõe comandos, resultados e eventos. Adaptadores implementam banco, fila, relógio, RNG seguro, pagamento, KYC e telemetria. Contratos cruzados são pequenos, versionados e validados em runtime; importações profundas entre módulos são proibidas.</p>
+        <p>Os módulos de negócio começam em <code>apps/server/src/modules</code>; <code>game-core</code> possui pacote próprio por sua exigência de pureza e reutilização determinística. Domínio expõe comandos, resultados e eventos. Adaptadores implementam banco, fila, relógio, RNG seguro, pagamento, KYC e telemetria. Contratos cruzados são pequenos, versionados e validados em runtime; importações profundas entre módulos são proibidas.</p>
       </section>
 
       <section id="autoridade-servidor">
-        <span class="section-kicker">06 · Trust boundaries</span>
+        <span class="section-kicker">07 · Trust boundaries</span>
         <h2>Autoridade do servidor</h2>
         <div class="statement"><strong>O servidor decide primeiro; o cliente apenas apresenta.</strong> A duração da animação, a taxa de frames, o relógio local e o payload enviado pelo cliente não alteram o resultado oficial.</div>
         <div class="grid">
@@ -607,7 +645,7 @@
       </section>
 
       <section id="determinismo">
-        <span class="section-kicker">07 · Simulação reproduzível</span>
+        <span class="section-kicker">08 · Simulação reproduzível</span>
         <h2>Game Core, RNG e determinismo</h2>
         <p>O `game-core` recebe um pacote fechado e devolve um resultado puro. Nenhuma função de domínio lê `Date.now()`, `Math.random()`, estado global, rede, arquivo, DOM ou banco diretamente.</p>
         <div class="formula">resultado = simulate(input, ruleset_version, simulator_version, seed, logical_time)</div>
@@ -635,7 +673,7 @@
       </section>
 
       <section id="dados">
-        <span class="section-kicker">08 · Estado persistente</span>
+        <span class="section-kicker">09 · Estado persistente</span>
         <h2>Dados, PostgreSQL e migrações</h2>
         <p>PostgreSQL é o padrão recomendado para o estado transacional. Cache, índice de busca, warehouse e data lake são projeções; podem ser reconstruídos e nunca substituem a origem.</p>
         <div class="grid">
@@ -666,7 +704,7 @@
       </section>
 
       <section id="economia">
-        <span class="section-kicker">09 · Domínio de maior criticidade</span>
+        <span class="section-kicker">10 · Domínio de maior criticidade</span>
         <h2>Ledger, inventário e economia</h2>
         <div class="statement">Saldo não é um campo editável. É a consequência reconstruível de eventos econômicos autorizados, com origem, débito, crédito, fee, moeda, bucket e referência.</div>
         <div class="flow six" aria-label="Liquidação econômica">
@@ -699,7 +737,7 @@
       </section>
 
       <section id="api">
-        <span class="section-kicker">10 · Comandos seguros</span>
+        <span class="section-kicker">11 · Comandos seguros</span>
         <h2>APIs, idempotência e concorrência</h2>
         <p>APIs mutáveis expõem comandos de negócio, não CRUD irrestrito de tabelas. Cada comando declara intenção, ator, recurso, versão esperada e chave idempotente.</p>
         <div class="formula">Command = { command_id, idempotency_key, actor, game_id, expected_version, payload }</div>
@@ -727,7 +765,7 @@
       </section>
 
       <section id="conteudo-rulesets">
-        <span class="section-kicker">11 · LiveOps controlável</span>
+        <span class="section-kicker">12 · LiveOps controlável</span>
         <h2>Conteúdo, parâmetros e rulesets</h2>
         <div class="grid">
           <article class="card recommended-card"><span class="state recommended">Configurável</span><h3>Conteúdo e calibração</h3><p>Espécies, inimigos, mapas, drops, receitas, curvas, chances, custos, textos, assets e parâmetros dentro de limites aprovados.</p></article>
@@ -756,7 +794,7 @@
       </section>
 
       <section id="cliente">
-        <span class="section-kicker">12 · Apresentação 2D</span>
+        <span class="section-kicker">13 · Apresentação 2D</span>
         <h2>Cliente web, Phaser e pipeline de assets</h2>
         <p>Phaser é o padrão recomendado para batalha, animação, efeitos, cenas e replay no navegador. Interfaces densas — conta, inventário, Forja, Marketplace, Codex e administração — permanecem em HTML/CSS acessível.</p>
         <div class="table-wrap">
@@ -788,7 +826,7 @@
       </section>
 
       <section id="seguranca">
-        <span class="section-kicker">13 · Defesa por desenho</span>
+        <span class="section-kicker">14 · Defesa por desenho</span>
         <h2>Segurança, identidade e privacidade</h2>
         <div class="statement">Segurança não é um middleware no fim. É uma propriedade de cada fronteira que aceita intenção, altera estado, movimenta valor, publica conteúdo ou concede poder administrativo.</div>
         <div class="grid three">
@@ -821,7 +859,7 @@
       </section>
 
       <section id="qualidade">
-        <span class="section-kicker">14 · Evidência antes de release</span>
+        <span class="section-kicker">15 · Evidência antes de release</span>
         <h2>Testes e qualidade</h2>
         <div class="table-wrap">
           <table>
@@ -852,7 +890,7 @@
       </section>
 
       <section id="observabilidade">
-        <span class="section-kicker">15 · Operar com prova</span>
+        <span class="section-kicker">16 · Operar com prova</span>
         <h2>Observabilidade, auditoria e incidentes</h2>
         <p>Logs, métricas e traces respondem “o sistema está saudável?”. Ledger, replay e trilha administrativa respondem “o que aconteceu e por quê?”. Uma categoria não substitui a outra.</p>
         <div class="grid">
@@ -883,7 +921,7 @@
       </section>
 
       <section id="entrega">
-        <span class="section-kicker">16 · Software confiável</span>
+        <span class="section-kicker">17 · Software confiável</span>
         <h2>CI/CD, ambientes e releases</h2>
         <div class="flow six" aria-label="Pipeline de entrega">
           <div class="node"><strong>PR</strong><span>review e escopo</span></div>
@@ -896,6 +934,10 @@
         <h3>Controles do pipeline</h3>
         <ul>
           <li>branch protegida, revisão proporcional ao risco e ownership de código crítico;</li>
+          <li>raiz do workspace mantém um único <code>pnpm-lock.yaml</code>; instalação em CI usa lockfile congelado e a versão fixada do pnpm;</li>
+          <li>cada aplicação e pacote declara scripts, dependências e exports; dependência fantasma ou deep import falha antes do merge;</li>
+          <li>o pipeline pode selecionar projetos afetados, mas mudança em contrato, tooling ou dependência compartilhada amplia os testes conforme o grafo real;</li>
+          <li><code>game-core</code>, contratos e catálogos executam seus vetores e validações antes dos consumidores;</li>
           <li>permissões explícitas e mínimas para workflow/token;</li>
           <li>actions externas fixadas por commit SHA completo e revisado;</li>
           <li>credencial de cloud preferencialmente curta via OIDC, condicionada a repo, branch/workflow e ambiente;</li>
@@ -912,7 +954,7 @@
       </section>
 
       <section id="opensource">
-        <span class="section-kicker">17 · Dependências controladas</span>
+        <span class="section-kicker">18 · Dependências controladas</span>
         <h2>Open source, licenças e supply chain</h2>
         <p>Open source acelera framework, UI, validação, testes e tooling. Não transfere a autoridade do ledger, da propriedade, do ruleset ou da liquidação para uma caixa-preta sem domínio interno e capacidade de substituição.</p>
         <div class="table-wrap">
@@ -944,7 +986,7 @@
       </section>
 
       <section id="evolucao">
-        <span class="section-kicker">18 · Complexidade conquistada</span>
+        <span class="section-kicker">19 · Complexidade conquistada</span>
         <h2>Quando evoluir a arquitetura</h2>
         <p>Go, Rust, Redis, broker, busca, warehouse, serviços separados ou wrapper desktop podem entrar. Nenhum entra para parecer sofisticado.</p>
         <div class="table-wrap">
@@ -953,6 +995,7 @@
             <tbody>
               <tr><td>Cache</td><td>Leitura repetida cara domina latência/custo.</td><td>Perfil, hit ratio previsto, invalidation e fallback sem cache.</td></tr>
               <tr><td>Fila/broker</td><td>Trabalho assíncrono exige durabilidade, backpressure ou fan-out.</td><td>Semântica de entrega, deduplicação, DLQ, replay e operação.</td></tr>
+              <tr><td>Novo pacote</td><td>Responsabilidade estável possui consumidor real fora do módulo de origem.</td><td>API pública, owner, regra de dependência, testes e custo de versionamento interno.</td></tr>
               <tr><td>Serviço separado</td><td>Escala, isolamento de risco ou ownership realmente independente.</td><td>Contrato, SLO, deploy, trace, dados e custo de falha distribuída.</td></tr>
               <tr><td>Go/Rust</td><td>Hotspot medido não resolvido com otimização razoável em TypeScript.</td><td>Benchmark representativo, FFI/contrato, observabilidade e equipe.</td></tr>
               <tr><td>Busca dedicada</td><td>PostgreSQL não atende consulta/latência após índice e modelagem.</td><td>Sincronização, consistência, rebuild e custo.</td></tr>
@@ -970,16 +1013,20 @@
           <li>plano de migração, coexistência, observabilidade e rollback;</li>
           <li>decisão aprovada antes de se tornar dependência crítica.</li>
         </ol>
+        <div class="callout recommended">
+          <strong>Orquestrador de monorepo também precisa ser conquistado</strong>
+          <p>pnpm workspaces é suficiente para iniciar. Nx, Turborepo ou equivalente só entra quando cache, seleção por grafo, paralelismo ou enforcement existentes deixarem de atender com simplicidade; a adoção exige baseline de CI e ADR reversível.</p>
+        </div>
       </section>
 
       <section id="backlog">
-        <span class="section-kicker">19 · O que falta decidir</span>
+        <span class="section-kicker">20 · O que falta decidir</span>
         <h2>Backlog real de engenharia</h2>
         <p>Estes itens fecham detalhes técnicos ainda não aprovados. Eles não reabrem decisões de gameplay, economia ou autoridade já definidas.</p>
         <div class="decision-list" role="list">
           <div class="decision-row" role="listitem">
             <h4>Baseline de runtime e toolchain</h4>
-            <div><p><span class="label">Por que aberto:</span> TypeScript/Node são direção, mas versões, package manager, compiler, bundler e política de upgrade não foram fixados. <span class="label">Impacto:</span> builds e suporte podem divergir.</p><p><span class="label">Fecha com:</span> ADR, matriz de suporte, lockfile, arquivos de versão, CI e calendário de atualização.</p></div>
+            <div><p><span class="label">Por que aberto:</span> TypeScript/Node e pnpm workspaces estão aprovados, mas versões exatas, compiler, bundler, test runner e política de upgrade não foram fixados. <span class="label">Impacto:</span> builds e suporte podem divergir mesmo com um único lockfile.</p><p><span class="label">Fecha com:</span> ADR de baseline, matriz de suporte, lockfile gerado pela versão fixada do pnpm, arquivos de versão, CI e calendário de atualização.</p></div>
           </div>
           <div class="decision-row" role="listitem">
             <h4>Framework web e composição da UI</h4>
@@ -1045,7 +1092,7 @@
       </section>
 
       <section id="rastreabilidade">
-        <span class="section-kicker">20 · Auditoria editorial</span>
+        <span class="section-kicker">21 · Auditoria editorial</span>
         <h2>Mapa de autoridade e referências</h2>
         <div class="table-wrap">
           <table>
@@ -1057,6 +1104,7 @@
               <tr><td>Ledger e liquidação</td><td>GDD P21; Economia 3–6 e 12</td><td>Moedas separadas, atomicidade, fee, idempotência e compensação.</td></tr>
               <tr><td>Alpha/Beta e crédito</td><td>GDD P22; Economia 11</td><td>Ledgers separados, snapshot, multiplicadores e exclusões.</td></tr>
               <tr><td>Telemetria e privacidade</td><td>GDD P22; Economia 13–14</td><td>Servidor como verdade, finalidade, minimização e retenção.</td></tr>
+              <tr><td>Monorepo e pnpm</td><td>Decisão dos fundadores de 3 ago. 2026; princípios técnicos §§2–5</td><td>Workspace único, dois apps iniciais, pacotes com fronteira real e backend modular único.</td></tr>
               <tr><td>Stack e módulos</td><td>Fonte técnica §§2–5 e 12</td><td>TypeScript padrão, core puro, Node/Phaser/PostgreSQL recomendados.</td></tr>
               <tr><td>Pixel art e assets</td><td>Fonte técnica §8</td><td>Constituição visual, pipeline e revisão humana.</td></tr>
               <tr><td>Qualidade/operação</td><td>Fonte técnica §10</td><td>Testes, logs, transações, segredos e ações auditadas.</td></tr>
@@ -1072,6 +1120,7 @@
               <li><a href="https://www.typescriptlang.org/tsconfig/strict.html">TypeScript · `strict`</a></li>
               <li><a href="https://nodejs.org/en/about/previous-releases">Node.js · releases e LTS</a></li>
               <li><a href="https://nodejs.org/en/blog/announcements/evolving-the-nodejs-release-schedule">Node.js · calendário a partir da linha 27</a></li>
+              <li><a href="https://pnpm.io/workspaces">pnpm · workspaces</a></li>
               <li><a href="https://docs.phaser.io/">Phaser · documentação oficial</a></li>
             </ul>
           </article>
@@ -1117,7 +1166,7 @@
       </section>
 
       <section id="glossario">
-        <span class="section-kicker">21 · Vocabulário</span>
+        <span class="section-kicker">22 · Vocabulário</span>
         <h2>Glossário</h2>
         <dl class="glossary">
           <div class="term"><dt>ADR</dt><dd>Registro curto de uma decisão arquitetural, alternativas, motivos, consequências e status.</dd></div>
@@ -1129,8 +1178,10 @@
           <div class="term"><dt>Determinismo</dt><dd>Mesmas entradas e versões produzem o mesmo resultado observável.</dd></div>
           <div class="term"><dt>Idempotência</dt><dd>Repetir a mesma intenção identificada não repete seu efeito.</dd></div>
           <div class="term"><dt>Ledger</dt><dd>Registro econômico que permite explicar origem, débito, crédito, fee e saldo.</dd></div>
+          <div class="term"><dt>Monorepo</dt><dd>Um repositório que contém aplicações e pacotes relacionados sob governança e toolchain comuns, sem eliminar suas fronteiras ou exigir deploy conjunto.</dd></div>
           <div class="term"><dt>Monólito modular</dt><dd>Deploy único com domínios internos isolados por contratos e dependências controladas.</dd></div>
           <div class="term"><dt>Outbox</dt><dd>Evento gravado na mesma transação do domínio e publicado depois com retry seguro.</dd></div>
+          <div class="term"><dt>Pacote</dt><dd>Unidade de código com responsabilidade, owner, dependências declaradas e superfície pública explícita dentro do workspace.</dd></div>
           <div class="term"><dt>PRNG</dt><dd>Gerador pseudoaleatório; no game core precisa ser determinístico e versionado.</dd></div>
           <div class="term"><dt>Projeção</dt><dd>Visão derivada para leitura rápida, reconstruível a partir da fonte de verdade.</dd></div>
           <div class="term"><dt>RPO</dt><dd>Quantidade máxima de dados que a recuperação aceita perder.</dd></div>
@@ -1140,13 +1191,14 @@
           <div class="term"><dt>Saldo</dt><dd>Crédito global originado por venda em Cash, conforme GDD/Economia; não é o termo histórico “Ganhos”.</dd></div>
           <div class="term"><dt>SLI/SLO</dt><dd>Indicador mensurável de serviço e objetivo associado para operação.</dd></div>
           <div class="term"><dt>Trust boundary</dt><dd>Fronteira em que dados ou autoridade mudam de nível de confiança.</dd></div>
+          <div class="term"><dt>Workspace</dt><dd>Conjunto de aplicações e pacotes administrados pelo pnpm com lockfile e comandos coordenados.</dd></div>
         </dl>
       </section>
     </main>
   </div>
 
   <footer class="shell footer">
-    Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0 · alinhadas ao GDD v17 e à Economia v1.0 · 28 de julho de 2026
+    Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.1 · alinhadas ao GDD v17 e à Economia v1.0 · 3 de agosto de 2026
   </footer>
 </body>
 </html>

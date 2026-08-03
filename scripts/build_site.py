@@ -52,11 +52,13 @@ def main() -> None:
 
     technology_html = TECHNOLOGY_SOURCE.read_text(encoding="utf-8")
     for expected in [
-        "<title>Idle Bud — Diretrizes de Tecnologia v1.0</title>",
+        "<title>Idle Bud — Diretrizes de Tecnologia v1.1</title>",
         "Tecnologia simples, autoritativa e reutilizável",
+        "Monorepo, aplicações e pacotes",
+        "pnpm workspaces",
         "Servidor autoritativo",
         "Backlog real de engenharia",
-        "Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.0",
+        "Idle Lovers — Diretrizes de Tecnologia e Engenharia v1.1",
     ]:
         if expected not in technology_html:
             raise RuntimeError(f"Fonte canônica de Tecnologia inválida: {expected}")
